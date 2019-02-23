@@ -328,3 +328,5 @@ ASALocalRun/
 
 # MFractors (Xamarin productivity tool) working folder 
 .mfractor/
+/JuegoProg4/JuegoProg4/JuegoProg4.vcxproj.filters
+/JuegoProg4/JuegoProg4/JuegoProg4.vcxproj
