@@ -10,6 +10,7 @@ int main()
 	//muy buenos dias
 	//holalalalalal
 	//hoasdasdasd
+	//ey que pasa
 	sf::Texture texture;
 	if (!texture.loadFromFile("./res/Imagenes/roca.png"))
 	{
