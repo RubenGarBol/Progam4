@@ -5,7 +5,7 @@
 int main()
 {
 	sf::RenderWindow window(sf::VideoMode(1056, 888), "Isaac");
-
+	//muy buenos dias
 	//holalalalalal
 	//hoasdasdasd
 	sf::Texture texture;
