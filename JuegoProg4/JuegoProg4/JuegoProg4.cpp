@@ -5,6 +5,7 @@
 int main()
 {
 	sf::RenderWindow window(sf::VideoMode(1056, 888), "Isaac");
+	//Hola
 	//muy buenos dias
 	//holalalalalal
 	//hoasdasdasd
