@@ -1,6 +1,8 @@
 #include "SFML/Graphics.hpp"
 #include <iostream>
 #include <stdio.h>
+#include "Cofre.h"
+#include "Personaje.h"
 
 int main()
 {
@@ -8,20 +10,8 @@ int main()
 	sf::RenderWindow window(sf::VideoMode(1056, 888), "Isaac");
 
 	//Carga de texturas desde los .png, si no se encuentran avisar al usuario mediante una excepción.
-	sf::Texture texture;
-	if (!texture.loadFromFile("./res/Imagenes/roca.png"))
-	{
-		std::cout << "No se ha encontrado la textura de: roca.png\n";
-	}
-
-	sf::Texture texture2;
-	if (!texture2.loadFromFile("./res/Imagenes/chest.png"))
-	{
-		std::cout << "No se ha encontrado la textura de: chest.png\n";
-	}
-
-	sf::Texture texture3;
-	if (!texture3.loadFromFile("./res/Imagenes/PiskelPrueba.png"))
+	sf::Texture texturaFondo;
+	if (!texturaFondo.loadFromFile("./res/Imagenes/PiskelPrueba.png"))
 	{
 		std::cout << "No se ha encontrado la textura de: PiskelPrueba.png\n";
 	}
@@ -43,20 +33,16 @@ int main()
 	pared4.setPosition(sf::Vector2f(1026, 0));
 	pared4.setSize(sf::Vector2f(30, 888));
 
-	//velocidad de movimiento del personaje principal.
-	double speed = 2.5;
-
+	
 	//Carga y posicionamiento de los sprites/objetos del juego.
-	sf::Sprite r1;
-	r1.setTexture(texture);
-	r1.setPosition(616, 160);
-
-	sf::Sprite r2;
-	r2.setTexture(texture2);
-	r2.setPosition(588, 489);
+	Personaje roca;
+	
+	sf::Vector2f vectorCofre(500, 489);
+	Cofre cofre(vectorCofre);
+	
 
 	sf::Sprite fondo;
-	fondo.setTexture(texture3);
+	fondo.setTexture(texturaFondo);
 
 	//Bucle ejecutado mientras la pantalla se mantenga abierta.
 	while (window.isOpen())
@@ -80,39 +66,39 @@ int main()
 
 		//Metodos encargados de gestionar el movimiento y colision del personaje principal con el resto de objetos y paredes del juego.
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
-			r1.move(0.0, -speed);
-			if (r1.getGlobalBounds().intersects(r2.getGlobalBounds())) {
-				r1.move(0.0, speed);
+			roca.move(0.0, -roca.velocidad);
+			if (roca.getGlobalBounds().intersects(cofre.getGlobalBounds())) {
+				roca.move(0.0, roca.velocidad);
 			}
-			if (r1.getGlobalBounds().intersects(pared1.getGlobalBounds())) {
-				r1.move(0.0, speed);
+			if (roca.getGlobalBounds().intersects(pared1.getGlobalBounds())) {
+				roca.move(0.0, roca.velocidad);
 			}
 		}
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
-			r1.move(-speed, 0.0);
-			if (r1.getGlobalBounds().intersects(r2.getGlobalBounds())) {
-				r1.move(speed, 0.0);
+			roca.move(-roca.velocidad, 0.0);
+			if (roca.getGlobalBounds().intersects(cofre.getGlobalBounds())) {
+				roca.move(roca.velocidad, 0.0);
 			}
-			if (r1.getGlobalBounds().intersects(pared2.getGlobalBounds())) {
-				r1.move(speed, 0.0);
+			if (roca.getGlobalBounds().intersects(pared2.getGlobalBounds())) {
+				roca.move(roca.velocidad, 0.0);
 			}
 		}
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
-			r1.move(0.0, speed);
-			if (r1.getGlobalBounds().intersects(r2.getGlobalBounds())) {
-				r1.move(0.0, -speed);
+			roca.move(0.0, roca.velocidad);
+			if (roca.getGlobalBounds().intersects(cofre.getGlobalBounds())) {
+				roca.move(0.0, -roca.velocidad);
 			}
-			if (r1.getGlobalBounds().intersects(pared3.getGlobalBounds())) {
-				r1.move(0.0, -speed);
+			if (roca.getGlobalBounds().intersects(pared3.getGlobalBounds())) {
+				roca.move(0.0, -roca.velocidad);
 			}
 		}
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
-			r1.move(speed, 0.0);
-			if (r1.getGlobalBounds().intersects(r2.getGlobalBounds())) {
-				r1.move(-speed, 0.0);
+			roca.move(roca.velocidad, 0.0);
+			if (roca.getGlobalBounds().intersects(cofre.getGlobalBounds())) {
+				roca.move(-roca.velocidad, 0.0);
 			}
-			if (r1.getGlobalBounds().intersects(pared4.getGlobalBounds())) {
-				r1.move(-speed, 0.0);
+			if (roca.getGlobalBounds().intersects(pared4.getGlobalBounds())) {
+				roca.move(-roca.velocidad, 0.0);
 			}
 		}
 
@@ -121,8 +107,8 @@ int main()
 
 		//Dibujar el fondo y los objetos, enemigos y personaje de la pantalla.
 		window.draw(fondo);
-		window.draw(r1);
-		window.draw(r2);
+		window.draw(roca);
+		window.draw(cofre);
 
 		//Mostrar en la ventana creada los objetos dibujados.
 		window.display();
