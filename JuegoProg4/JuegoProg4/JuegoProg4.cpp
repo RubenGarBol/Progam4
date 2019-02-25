@@ -3,6 +3,8 @@
 #include <stdio.h>
 #include "Cofre.h"
 #include "Personaje.h"
+#include "Item.h"
+#include "Coin.h"
 
 int main()
 {
@@ -39,7 +41,10 @@ int main()
 	
 	sf::Vector2f vectorCofre(500, 489);
 	Cofre cofre(vectorCofre);
-	
+
+	//Genera una moneda en el pixel 100,100
+	sf::Vector2f vectorCoin(100, 300);
+	Coin coin(vectorCoin);
 
 	sf::Sprite fondo;
 	fondo.setTexture(texturaFondo);
@@ -109,6 +114,7 @@ int main()
 		window.draw(fondo);
 		window.draw(roca);
 		window.draw(cofre);
+		window.draw(coin);
 
 		//Mostrar en la ventana creada los objetos dibujados.
 		window.display();

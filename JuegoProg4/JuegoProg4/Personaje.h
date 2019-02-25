@@ -2,7 +2,7 @@
 
 using namespace sf;
 
-class Personaje : public sf::Sprite {
+class Personaje : public Sprite {
 	public:
 		Texture textura;
 		Vector2f posicion;
