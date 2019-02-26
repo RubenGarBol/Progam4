@@ -56,7 +56,7 @@ int main()
 	
 	//Carga y posicionamiento de los sprites/objetos del juego.
 	Personaje roca;
-	Bullet bala(roca.getPosition());
+	Bullet bala(player.getPosition());
 	Bullet* p = &bala;      // p es puntero-a-Bullet señalando al objeto bala
 	
 	//Bullet * p;
@@ -191,7 +191,7 @@ int main()
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) 
 		{
 			
-			//bala.setPosition(roca.getPosition().x,roca.getPosition().y);
+			//bala.setPosition(player.getPosition().x,player.getPosition().y);
 			bala.move(0.0, -speed);
 			if (bala.getGlobalBounds().intersects(pared1.getGlobalBounds())) {
 				bala.move(0.0, speed);
@@ -234,6 +234,7 @@ int main()
 		//window.draw(roca);
 		window.draw(cofre);
 		window.draw(player);
+		window.draw(bala);
 
 		//Mostrar en la ventana creada los objetos dibujados.
 		window.display();
