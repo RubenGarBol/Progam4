@@ -5,6 +5,7 @@
 #include "Personaje.h"
 #include "Item.h"
 #include "Coin.h"
+#include "Bullet.h"
 
 int main()
 {
@@ -38,7 +39,12 @@ int main()
 	
 	//Carga y posicionamiento de los sprites/objetos del juego.
 	Personaje roca;
+	Bullet bala(roca.getPosition());
+	Bullet* p = &bala;      // p es puntero-a-Bullet señalando al objeto bala
 	
+	//Bullet * p;
+	//p->bala;
+
 	sf::Vector2f vectorCofre(500, 489);
 	Cofre cofre(vectorCofre);
 
@@ -108,6 +114,45 @@ int main()
 			}
 		}
 
+		//Movimiento y KeyBindings de los proyectiles
+		int speed = 15;
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) 
+		{
+			
+			//bala.setPosition(roca.getPosition().x,roca.getPosition().y);
+			bala.move(0.0, -speed);
+			if (bala.getGlobalBounds().intersects(pared1.getGlobalBounds())) {
+				bala.move(0.0, speed);
+			//	p-> ~Bullet(); //Destruye el objeto pero genera errores
+			}
+
+		}
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+		{
+
+			bala.move(0.0, speed);
+			if (bala.getGlobalBounds().intersects(pared3.getGlobalBounds())) {
+				bala.move(0.0, -speed);
+			}
+
+		}
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+		{
+			bala.move(-speed, 0.0);
+			if (bala.getGlobalBounds().intersects(pared2.getGlobalBounds())) {
+				bala.move(speed, 0.0);
+			}
+
+		}
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+		{
+			bala.move(speed, 0.0);
+			if (bala.getGlobalBounds().intersects(pared4.getGlobalBounds())) {
+				bala.move(-speed, 0.0);
+			}
+
+		}
+
 		//Limpiar la pantalla principal
 		window.clear();
 
@@ -116,9 +161,10 @@ int main()
 		window.draw(coin);
 		window.draw(roca);
 		window.draw(cofre);
-	
+		window.draw(bala);
 
 		//Mostrar en la ventana creada los objetos dibujados.
 		window.display();
+
 	}
 }
