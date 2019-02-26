@@ -3,7 +3,7 @@
 
 Coin::Coin(Vector2f vector) {
 
-	textura.loadFromFile("./res/Imagenes/moneda.png");
+	textura.loadFromFile("./res/Imagenes/Coin.png");
 	setTexture(textura);
 	setPosition(vector);
 }

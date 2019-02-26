@@ -83,6 +83,7 @@ int main()
 			roca.move(-roca.velocidad, 0.0);
 			if (roca.getGlobalBounds().intersects(cofre.getGlobalBounds())) {
 				roca.move(roca.velocidad, 0.0);
+				
 			}
 			if (roca.getGlobalBounds().intersects(pared2.getGlobalBounds())) {
 				roca.move(roca.velocidad, 0.0);
@@ -112,9 +113,10 @@ int main()
 
 		//Dibujar el fondo y los objetos, enemigos y personaje de la pantalla.
 		window.draw(fondo);
+		window.draw(coin);
 		window.draw(roca);
 		window.draw(cofre);
-		window.draw(coin);
+	
 
 		//Mostrar en la ventana creada los objetos dibujados.
 		window.display();
