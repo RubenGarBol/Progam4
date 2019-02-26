@@ -3,7 +3,10 @@
 #include <stdio.h>
 #include "Cofre.h"
 #include "Personaje.h"
-#include "Animacion.h"
+#include "Item.h"
+#include "Coin.h"
+#include "Bullet.h"
+
 int main()
 {
 	//Crear la pantalla principal de juego con nombre "Isaac" y dimensiones 1056x888p.
@@ -15,22 +18,6 @@ int main()
 	{
 		std::cout << "No se ha encontrado la textura de: PiskelPrueba.png\n";
 	}
-
-	sf::RectangleShape player(sf::Vector2f(90.0f, 122.0f));
-	player.setPosition(200.0f, 200.0f);
-
-	sf::Texture pjtextura;
-	if (!pjtextura.loadFromFile("./res/Imagenes/pjtextura.png"))
-	{
-		std::cout << "No se ha encontrado la textura de: knight_idle.png\n";
-	}
-
-	player.setTexture(&pjtextura);
-	sf::Vector2u vector (4, 3);
-	Animacion animapp(&pjtextura,vector, 0.20);
-	float deltatiempo = 0.0f;
-
-	sf::Clock timer;
 
 	//Objetos pared para delimitar los bordes jugables de la pantalla.
 	sf::RectangleShape pared1;
@@ -49,12 +36,21 @@ int main()
 	pared4.setPosition(sf::Vector2f(1026, 0));
 	pared4.setSize(sf::Vector2f(30, 888));
 
-
+	
 	//Carga y posicionamiento de los sprites/objetos del juego.
 	Personaje roca;
+	Bullet bala(roca.getPosition());
+	Bullet* p = &bala;      // p es puntero-a-Bullet señalando al objeto bala
+	
+	//Bullet * p;
+	//p->bala;
 
 	sf::Vector2f vectorCofre(500, 489);
 	Cofre cofre(vectorCofre);
+
+	//Genera una moneda en el pixel 100,100
+	sf::Vector2f vectorCoin(100, 300);
+	Coin coin(vectorCoin);
 
 	sf::Sprite fondo;
 	fondo.setTexture(texturaFondo);
@@ -63,132 +59,112 @@ int main()
 	while (window.isOpen())
 	{
 		sf::Event event;
-
+		
 		//Bloquear los frames por segundo a 60 para que la velocidad del personaje sea consistente en todos los dispositivos.
 		window.setFramerateLimit(60);
 
 		//Función para cerrar la aplicación al pulsar el boton X de la parte superior derecha.
 		while (window.pollEvent(event))
 		{
-			if (event.type == sf::Event::Closed) window.close();
+			switch (event.type)
+			{
+			case sf::Event::Closed:
+				window.close();
+				break;
+			}
+
 		}
 
-	
-		deltatiempo = timer.restart().asSeconds();
-		animapp.Update(0, deltatiempo);
-		player.setTextureRect(animapp.uvRect);
-		
-		int veloc = 4;
 		//Metodos encargados de gestionar el movimiento y colision del personaje principal con el resto de objetos y paredes del juego.
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-		{
-			/*roca.move(0.0, -roca.velocidad);
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
+			roca.move(0.0, -roca.velocidad);
 			if (roca.getGlobalBounds().intersects(cofre.getGlobalBounds())) {
 				roca.move(0.0, roca.velocidad);
 			}
 			if (roca.getGlobalBounds().intersects(pared1.getGlobalBounds())) {
 				roca.move(0.0, roca.velocidad);
 			}
-			*/
-			player.move(0.0, -veloc);
-			if (player.getGlobalBounds().intersects(cofre.getGlobalBounds())) {
-				player.move(0.0, veloc);
-			}
-			if (player.getGlobalBounds().intersects(pared1.getGlobalBounds())) {
-				player.move(0.0, veloc);
-			}
-			deltatiempo = timer.restart().asSeconds();
-			animapp.Update(1, deltatiempo);
-			player.setTextureRect(animapp.uvRect);
 		}
-		
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-		{
-			/*roca.move(-roca.velocidad, 0.0);
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
+			roca.move(-roca.velocidad, 0.0);
 			if (roca.getGlobalBounds().intersects(cofre.getGlobalBounds())) {
 				roca.move(roca.velocidad, 0.0);
+				
 			}
 			if (roca.getGlobalBounds().intersects(pared2.getGlobalBounds())) {
 				roca.move(roca.velocidad, 0.0);
 			}
-			*/
-			player.move(-veloc, 0.0);
-			if (player.getGlobalBounds().intersects(cofre.getGlobalBounds())) {
-				player.move(veloc, 0.0);
-			}
-			if (player.getGlobalBounds().intersects(pared2.getGlobalBounds())) {
-				player.move(veloc, 0.0);
-			}
-			deltatiempo = timer.restart().asSeconds();
-			animapp.Update(2, deltatiempo);
-			player.setTextureRect(animapp.uvRect);
-			
 		}
-
-		if(sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-		{
-			/*roca.move(0.0, roca.velocidad);
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
+			roca.move(0.0, roca.velocidad);
 			if (roca.getGlobalBounds().intersects(cofre.getGlobalBounds())) {
 				roca.move(0.0, -roca.velocidad);
 			}
 			if (roca.getGlobalBounds().intersects(pared3.getGlobalBounds())) {
 				roca.move(0.0, -roca.velocidad);
 			}
-			deltatiempo = timer.restart().asSeconds();
-			animapp.Update(1, deltatiempo);
-			player.setTextureRect(animapp.uvRect);
-			*/
-			player.move(0.0, veloc);
-			if (player.getGlobalBounds().intersects(cofre.getGlobalBounds())) {
-				player.move(0.0, -veloc);
-			}
-			if (player.getGlobalBounds().intersects(pared3.getGlobalBounds())) {
-				player.move(0.0, -veloc);
-			}
-			deltatiempo = timer.restart().asSeconds();
-			animapp.Update(1, deltatiempo);
-			player.setTextureRect(animapp.uvRect);
 		}
-
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-		{
-			/*roca.move(roca.velocidad, 0.0);
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
+			roca.move(roca.velocidad, 0.0);
 			if (roca.getGlobalBounds().intersects(cofre.getGlobalBounds())) {
 				roca.move(-roca.velocidad, 0.0);
 			}
 			if (roca.getGlobalBounds().intersects(pared4.getGlobalBounds())) {
 				roca.move(-roca.velocidad, 0.0);
 			}
-			*/
-			player.move(veloc, 0.0);
-			if (player.getGlobalBounds().intersects(cofre.getGlobalBounds())) {
-				player.move(-veloc, 0.0);
-			}
-			if (player.getGlobalBounds().intersects(pared4.getGlobalBounds())) {
-				player.move(-veloc, 0.0);
-			}
-
-			deltatiempo = timer.restart().asSeconds();
-			animapp.Update(1, deltatiempo);
-			player.setTextureRect(animapp.uvRect);
 		}
-	
-		//Limpiar la pantalla principal
-		
 
-		//Dibujar el fondo y los objetos, enemigos y personaje de la pantalla.
-		
-		
+		//Movimiento y KeyBindings de los proyectiles
+		int speed = 15;
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) 
+		{
+			
+			//bala.setPosition(roca.getPosition().x,roca.getPosition().y);
+			bala.move(0.0, -speed);
+			if (bala.getGlobalBounds().intersects(pared1.getGlobalBounds())) {
+				bala.move(0.0, speed);
+			//	p-> ~Bullet(); //Destruye el objeto pero genera errores
+			}
+
+		}
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+		{
+
+			bala.move(0.0, speed);
+			if (bala.getGlobalBounds().intersects(pared3.getGlobalBounds())) {
+				bala.move(0.0, -speed);
+			}
+
+		}
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+		{
+			bala.move(-speed, 0.0);
+			if (bala.getGlobalBounds().intersects(pared2.getGlobalBounds())) {
+				bala.move(speed, 0.0);
+			}
+
+		}
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+		{
+			bala.move(speed, 0.0);
+			if (bala.getGlobalBounds().intersects(pared4.getGlobalBounds())) {
+				bala.move(-speed, 0.0);
+			}
+
+		}
+
+		//Limpiar la pantalla principal
 		window.clear();
 
+		//Dibujar el fondo y los objetos, enemigos y personaje de la pantalla.
 		window.draw(fondo);
-		//window.draw(roca);
+		window.draw(coin);
+		window.draw(roca);
 		window.draw(cofre);
-		window.draw(player);
-		
+		window.draw(bala);
 
 		//Mostrar en la ventana creada los objetos dibujados.
 		window.display();
+
 	}
 }
-
