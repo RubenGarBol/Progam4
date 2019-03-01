@@ -5,6 +5,7 @@
 #include "Personaje.h"
 #include "Item.h"
 #include "Coin.h"
+#include "Bomba.h"
 #include "Bullet.h"
 #include "Animacion.h"
 
@@ -65,7 +66,11 @@ int main()
 	sf::Vector2f vectorCofre(500, 489);
 	Cofre cofre(vectorCofre);
 
-	//Genera una moneda en el pixel 100,100
+	//Genera la bomba en el pixel 250, 150.
+	sf::Vector2f vectorBomba(250, 150);
+	Bomba bomba(vectorBomba);
+
+	//Genera una moneda en el pixel 100,100.
 	sf::Vector2f vectorCoin(100, 300);
 	Coin coin(vectorCoin);
 
@@ -233,6 +238,7 @@ int main()
 		window.draw(coin);
 		//window.draw(roca);
 		window.draw(cofre);
+		window.draw(bomba);
 		window.draw(player);
 		window.draw(bala);
 
