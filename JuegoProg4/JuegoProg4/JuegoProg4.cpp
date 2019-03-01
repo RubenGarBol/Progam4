@@ -256,10 +256,11 @@ int main()
 		
 		 
 		 printf(" ");
-		 if (shottimer <= 5)
+
+		 if (shottimer < 5)
 		 {
 			
-			 printf(" Incremento el tiempo");
+			 printf(" Incremento el tiempo ");
 			 shottimer++;
 			 printf("%i ", shottimer);
 		 }
@@ -268,7 +269,7 @@ int main()
 		 {
 			 proyectil.setPosition(1000.f, 1000.f);
 			 proyectiles.push_back(CircleShape(proyectil));
-
+			 printf("ehjewjhfdjfahgjsdhjdshrjegjwetj");
 			 shottimer = 0;
 
 		 }
