@@ -5,9 +5,12 @@
 #include "Personaje.h"
 #include "Item.h"
 #include "Coin.h"
+#include "Bomba.h"
 #include "Bullet.h"
 #include "Animacion.h"
 #include "Mapa.h"
+
+#include<vector>
 
 int main()
 {
@@ -79,8 +82,16 @@ int main()
 
 	Mapa mapa(texturaFondo, paredes, paredes);
 
-	Bullet bala(player.getPosition());
-	Bullet* p = &bala;      // p es puntero-a-Bullet señalando al objeto bala
+	//Carga y posicionamiento de los sprites/objetos del juego.
+	Personaje roca;
+	//Definicion de las balas como objetos(formados por vectores) circulares
+	CircleShape proyectil;
+	proyectil.setFillColor(Color::Blue);
+	proyectil.setRadius(10.f);
+	//Arraay de proyectiles
+	std::vector<CircleShape> proyectiles;
+	
+	proyectiles.push_back(CircleShape(proyectil));
 	
 	//Bullet * p;
 	//p->bala;
@@ -89,7 +100,11 @@ int main()
 	sf::Vector2f vectorCofre(500, 489);
 	Cofre cofre(vectorCofre);
 
-	//Genera una moneda en la posición establecida
+	//Genera la bomba en el pixel 250, 150.
+	sf::Vector2f vectorBomba(250, 150);
+	Bomba bomba(vectorBomba);
+
+	//Genera una moneda en el pixel 100,100.
 	sf::Vector2f vectorCoin(100, 300);
 	Coin coin(vectorCoin);
 
@@ -204,7 +219,7 @@ int main()
 		}
 
 		//Movimiento y KeyBindings de los proyectiles hay que hacer un array
-		
+		int speed = 15;
 		
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 		{
@@ -244,7 +259,7 @@ int main()
 			}
 
 		}
-
+		*/
 		
 		//Limpiar la pantalla principal
 		window.clear();
@@ -254,13 +269,13 @@ int main()
 		window.draw(coin);
 		window.draw(bala);
 		window.draw(cofre);
+		window.draw(bomba);
 		window.draw(player);
-		
+		window.draw(bala);
 		/*if (bala.existe = 0) 
 		{
-		
+			window.draw(proyectiles[i]);
 		}
-		*/
 
 		//Mostrar en la ventana creada los objetos dibujados.
 		window.display();
