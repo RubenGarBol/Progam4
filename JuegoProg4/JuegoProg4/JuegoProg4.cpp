@@ -14,11 +14,16 @@
 int main()
 {
 	//Crear la pantalla principal de juego con nombre "Isaac" y dimensiones 1056x888p.
-	sf::RenderWindow window(sf::VideoMode(1056, 888), "Isaac");
+	sf::RenderWindow window(sf::VideoMode(1056, 888), "NIK");
+
+	sf::Image icon;
+	icon.loadFromFile("./res/Imagenes/icon.png"); // File/Image/Pixel
+	window.setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
+
 	//Carga de texturas desde los .png, si no se encuentran avisar al usuario mediante una excepción.
 	sf::Texture texturaFondo;
 	texturaFondo.loadFromFile("./res/Imagenes/PiskelPrueba.png");
-	if (!texturaFondo.loadFromFile("./res/Imagenes/PiskelPrueba.png"))
+	if (!texturaFondo.loadFromFile("./res/Imagenes/PiskelPasillo.png"))
 	{
 		std::cout << "No se ha encontrado la textura de: PiskelPrueba.png\n";
 	}
@@ -33,9 +38,11 @@ int main()
 	}
 
 	player.setTexture(&pjtextura);
-	sf::Vector2u vector(4, 3);
+	sf::Vector2u vector(4, 4);
 	Animacion animapp(&pjtextura, vector, 0.20);
 	float deltatiempo = 0.0f;
+	int anim = 0;
+	int animd = 0;
 
 	sf::Clock timer;
 	sf::Clock time;
@@ -99,19 +106,24 @@ int main()
 	while (window.isOpen())
 	{
 		sf::Event event;
+
+		printf("%i", anim);
+		deltatiempo = timer.restart().asSeconds();
+		animapp.Update(anim, deltatiempo);
+		player.setTextureRect(animapp.uvRect);
 		
 		//Bloquear los frames por segundo a 60 para que la velocidad del personaje sea consistente en todos los dispositivos.
 		window.setFramerateLimit(60);
-
+	
 		//Función para cerrar la aplicación al pulsar el boton X de la parte superior derecha.
 		while (window.pollEvent(event))
 		{
 			if (event.type == sf::Event::Closed) window.close();
 		}
 		
-		deltatiempo = timer.restart().asSeconds();
+		/*deltatiempo = timer.restart().asSeconds();
 		animapp.Update(0, deltatiempo);
-		player.setTextureRect(animapp.uvRect);
+		player.setTextureRect(animapp.uvRect);*/
 
 		int veloc = 4;
 
@@ -133,31 +145,16 @@ int main()
 			if (player.getGlobalBounds().intersects(mapa.conjParedes[0].getGlobalBounds())) {
 				player.move(0.0, veloc);
 			}
-
-			deltatiempo = timer.restart().asSeconds();
-			animapp.Update(1, deltatiempo);
-			player.setTextureRect(animapp.uvRect);
-		}
-
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-		{
-			/*roca.move(-roca.velocidad, 0.0);
-			if (roca.getGlobalBounds().intersects(cofre.getGlobalBounds())) {
-				roca.move(roca.velocidad, 0.0);
+			if(anim==3)
+			{ 
+				animd = 2;
 			}
-			if (roca.getGlobalBounds().intersects(pared2.getGlobalBounds())) {
-				roca.move(roca.velocidad, 0.0);
-			}
-			*/
-			player.move(-veloc, 0.0);
-			if (player.getGlobalBounds().intersects(cofre.getGlobalBounds())) {
-				player.move(veloc, 0.0);
-			}
-			if (player.getGlobalBounds().intersects(mapa.conjParedes[1].getGlobalBounds())) {
-				player.move(veloc, 0.0);
+			if(anim==0)
+			{
+				animd = 1;
 			}
 			deltatiempo = timer.restart().asSeconds();
-			animapp.Update(2, deltatiempo);
+			animapp.Update(animd, deltatiempo);
 			player.setTextureRect(animapp.uvRect);
 
 		}
@@ -182,10 +179,47 @@ int main()
 			if (player.getGlobalBounds().intersects(mapa.conjParedes[2].getGlobalBounds())) {
 				player.move(0.0, -veloc);
 			}
+			if (anim == 3)
+			{
+				animd = 2;
+			}
+			if(anim==0)
+			{
+				animd = 1;
+			}
 			deltatiempo = timer.restart().asSeconds();
-			animapp.Update(1, deltatiempo);
+			animapp.Update(animd, deltatiempo);
 			player.setTextureRect(animapp.uvRect);
+
 		}
+
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+		{
+			/*roca.move(-roca.velocidad, 0.0);
+			if (roca.getGlobalBounds().intersects(cofre.getGlobalBounds())) {
+				roca.move(roca.velocidad, 0.0);
+			}
+			if (roca.getGlobalBounds().intersects(pared2.getGlobalBounds())) {
+				roca.move(roca.velocidad, 0.0);
+			}
+			*/
+			player.move(-veloc, 0.0);
+			if (player.getGlobalBounds().intersects(cofre.getGlobalBounds())) {
+				player.move(veloc, 0.0);
+			}
+			if (player.getGlobalBounds().intersects(mapa.conjParedes[1].getGlobalBounds())) {
+				player.move(veloc, 0.0);
+			}
+
+			deltatiempo = timer.restart().asSeconds();
+			animapp.Update(2, deltatiempo);
+			player.setTextureRect(animapp.uvRect);
+
+			anim = 3;
+
+		}
+
+	
 
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
 		{
@@ -208,15 +242,23 @@ int main()
 			deltatiempo = timer.restart().asSeconds();
 			animapp.Update(1, deltatiempo);
 			player.setTextureRect(animapp.uvRect);
+
+			anim = 0;
 		}
 
 		//Movimiento y KeyBindings de los proyectiles en funcion de su array
 	
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 		{
-	
+			
+			//bala.setPosition(player.getPosition().x,player.getPosition().y);
+			bala.move(0.0, -speed);
+			if (bala.getGlobalBounds().intersects(pared1.getGlobalBounds())) {
+				bala.move(0.0, speed);
+			//	p-> ~Bullet(); //Destruye el objeto pero genera errores
+			}
+
 		}
-		/*
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
 		{
 			bala.move(0.0, speed);
