@@ -8,15 +8,23 @@
 #include "Bomba.h"
 #include "Bullet.h"
 #include "Animacion.h"
+#include "Mapa.h"
+
+#include<vector>
 
 int main()
 {
 	//Crear la pantalla principal de juego con nombre "Isaac" y dimensiones 1056x888p.
-	sf::RenderWindow window(sf::VideoMode(1056, 888), "Isaac");
+	sf::RenderWindow window(sf::VideoMode(1056, 888), "NIK");
+
+	sf::Image icon;
+	icon.loadFromFile("./res/Imagenes/icon.png"); // File/Image/Pixel
+	window.setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
 
 	//Carga de texturas desde los .png, si no se encuentran avisar al usuario mediante una excepción.
 	sf::Texture texturaFondo;
-	if (!texturaFondo.loadFromFile("./res/Imagenes/PiskelPrueba.png"))
+	texturaFondo.loadFromFile("./res/Imagenes/PiskelPrueba.png");
+	if (!texturaFondo.loadFromFile("./res/Imagenes/PiskelPasillo.png"))
 	{
 		std::cout << "No se ha encontrado la textura de: PiskelPrueba.png\n";
 	}
@@ -31,13 +39,18 @@ int main()
 	}
 
 	player.setTexture(&pjtextura);
-	sf::Vector2u vector(4, 3);
+	sf::Vector2u vector(4, 4);
 	Animacion animapp(&pjtextura, vector, 0.20);
 	float deltatiempo = 0.0f;
+	int anim = 0;
+	int animd = 0;
 
 	sf::Clock timer;
+	sf::Clock time;
+	
 
 	//Objetos pared para delimitar los bordes jugables de la pantalla.
+
 	sf::RectangleShape pared1;
 	pared1.setPosition(sf::Vector2f(0, 0));
 	pared1.setSize(sf::Vector2f(1056, 120));
@@ -54,11 +67,24 @@ int main()
 	pared4.setPosition(sf::Vector2f(1026, 0));
 	pared4.setSize(sf::Vector2f(30, 888));
 
-	
+	RectangleShape paredes[4];
+	paredes[0] = pared1;
+	paredes[1] = pared2;
+	paredes[2] = pared3;
+	paredes[3] = pared4;
+
+	Mapa mapa(texturaFondo, paredes, paredes);
+
 	//Carga y posicionamiento de los sprites/objetos del juego.
 	Personaje roca;
-	Bullet bala(player.getPosition());
-	Bullet* p = &bala;      // p es puntero-a-Bullet señalando al objeto bala
+	//Definicion de las balas como objetos(formados por vectores) circulares
+	CircleShape proyectil;
+	proyectil.setFillColor(Color::Blue);
+	proyectil.setRadius(10.f);
+	//Arraay de proyectiles
+	std::vector<CircleShape> proyectiles;
+	
+	proyectiles.push_back(CircleShape(proyectil));
 	
 	//Bullet * p;
 	//p->bala;
@@ -74,26 +100,35 @@ int main()
 	sf::Vector2f vectorCoin(100, 300);
 	Coin coin(vectorCoin);
 
+	//Timer
 	sf::Sprite fondo;
 	fondo.setTexture(texturaFondo);
+
+	float tiempo = 0.0f;
+
 
 	//Bucle ejecutado mientras la pantalla se mantenga abierta.
 	while (window.isOpen())
 	{
 		sf::Event event;
+
+		printf("%i", anim);
+		deltatiempo = timer.restart().asSeconds();
+		animapp.Update(anim, deltatiempo);
+		player.setTextureRect(animapp.uvRect);
 		
 		//Bloquear los frames por segundo a 60 para que la velocidad del personaje sea consistente en todos los dispositivos.
 		window.setFramerateLimit(60);
-
+	
 		//Función para cerrar la aplicación al pulsar el boton X de la parte superior derecha.
 		while (window.pollEvent(event))
 		{
 			if (event.type == sf::Event::Closed) window.close();
 		}
 		
-		deltatiempo = timer.restart().asSeconds();
+		/*deltatiempo = timer.restart().asSeconds();
 		animapp.Update(0, deltatiempo);
-		player.setTextureRect(animapp.uvRect);
+		player.setTextureRect(animapp.uvRect);*/
 
 		int veloc = 4;
 
@@ -112,33 +147,19 @@ int main()
 			if (player.getGlobalBounds().intersects(cofre.getGlobalBounds())) {
 				player.move(0.0, veloc);
 			}
-			if (player.getGlobalBounds().intersects(pared1.getGlobalBounds())) {
+			if (player.getGlobalBounds().intersects(mapa.conjParedes[0].getGlobalBounds())) {
 				player.move(0.0, veloc);
 			}
-			deltatiempo = timer.restart().asSeconds();
-			animapp.Update(1, deltatiempo);
-			player.setTextureRect(animapp.uvRect);
-		}
-
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-		{
-			/*roca.move(-roca.velocidad, 0.0);
-			if (roca.getGlobalBounds().intersects(cofre.getGlobalBounds())) {
-				roca.move(roca.velocidad, 0.0);
+			if(anim==3)
+			{ 
+				animd = 2;
 			}
-			if (roca.getGlobalBounds().intersects(pared2.getGlobalBounds())) {
-				roca.move(roca.velocidad, 0.0);
-			}
-			*/
-			player.move(-veloc, 0.0);
-			if (player.getGlobalBounds().intersects(cofre.getGlobalBounds())) {
-				player.move(veloc, 0.0);
-			}
-			if (player.getGlobalBounds().intersects(pared2.getGlobalBounds())) {
-				player.move(veloc, 0.0);
+			if(anim==0)
+			{
+				animd = 1;
 			}
 			deltatiempo = timer.restart().asSeconds();
-			animapp.Update(2, deltatiempo);
+			animapp.Update(animd, deltatiempo);
 			player.setTextureRect(animapp.uvRect);
 
 		}
@@ -160,13 +181,50 @@ int main()
 			if (player.getGlobalBounds().intersects(cofre.getGlobalBounds())) {
 				player.move(0.0, -veloc);
 			}
-			if (player.getGlobalBounds().intersects(pared3.getGlobalBounds())) {
+			if (player.getGlobalBounds().intersects(mapa.conjParedes[2].getGlobalBounds())) {
 				player.move(0.0, -veloc);
 			}
+			if (anim == 3)
+			{
+				animd = 2;
+			}
+			if(anim==0)
+			{
+				animd = 1;
+			}
 			deltatiempo = timer.restart().asSeconds();
-			animapp.Update(1, deltatiempo);
+			animapp.Update(animd, deltatiempo);
 			player.setTextureRect(animapp.uvRect);
+
 		}
+
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+		{
+			/*roca.move(-roca.velocidad, 0.0);
+			if (roca.getGlobalBounds().intersects(cofre.getGlobalBounds())) {
+				roca.move(roca.velocidad, 0.0);
+			}
+			if (roca.getGlobalBounds().intersects(pared2.getGlobalBounds())) {
+				roca.move(roca.velocidad, 0.0);
+			}
+			*/
+			player.move(-veloc, 0.0);
+			if (player.getGlobalBounds().intersects(cofre.getGlobalBounds())) {
+				player.move(veloc, 0.0);
+			}
+			if (player.getGlobalBounds().intersects(mapa.conjParedes[1].getGlobalBounds())) {
+				player.move(veloc, 0.0);
+			}
+
+			deltatiempo = timer.restart().asSeconds();
+			animapp.Update(2, deltatiempo);
+			player.setTextureRect(animapp.uvRect);
+
+			anim = 3;
+
+		}
+
+	
 
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
 		{
@@ -182,18 +240,20 @@ int main()
 			if (player.getGlobalBounds().intersects(cofre.getGlobalBounds())) {
 				player.move(-veloc, 0.0);
 			}
-			if (player.getGlobalBounds().intersects(pared4.getGlobalBounds())) {
+			if (player.getGlobalBounds().intersects(mapa.conjParedes[3].getGlobalBounds())) {
 				player.move(-veloc, 0.0);
 			}
 
 			deltatiempo = timer.restart().asSeconds();
 			animapp.Update(1, deltatiempo);
 			player.setTextureRect(animapp.uvRect);
+
+			anim = 0;
 		}
 
-		//Movimiento y KeyBindings de los proyectiles
-		int speed = 15;
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) 
+		//Movimiento y KeyBindings de los proyectiles en funcion de su array
+		/*
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 		{
 			
 			//bala.setPosition(player.getPosition().x,player.getPosition().y);
@@ -206,10 +266,10 @@ int main()
 		}
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
 		{
-
 			bala.move(0.0, speed);
 			if (bala.getGlobalBounds().intersects(pared3.getGlobalBounds())) {
 				bala.move(0.0, -speed);
+				p-> ~Bullet();
 			}
 
 		}
@@ -218,6 +278,7 @@ int main()
 			bala.move(-speed, 0.0);
 			if (bala.getGlobalBounds().intersects(pared2.getGlobalBounds())) {
 				bala.move(speed, 0.0);
+				p-> ~Bullet();
 			}
 
 		}
@@ -226,21 +287,27 @@ int main()
 			bala.move(speed, 0.0);
 			if (bala.getGlobalBounds().intersects(pared4.getGlobalBounds())) {
 				bala.move(-speed, 0.0);
+				p-> ~Bullet();
 			}
 
 		}
-
+		*/
+		
 		//Limpiar la pantalla principal
 		window.clear();
 
 		//Dibujar el fondo y los objetos, enemigos y personaje de la pantalla.
-		window.draw(fondo);
+		window.draw(mapa);
 		window.draw(coin);
 		//window.draw(roca);
 		window.draw(cofre);
 		window.draw(bomba);
 		window.draw(player);
-		window.draw(bala);
+		//Pintamos los proyectiles los cuales se encuantran en un array
+		for (size_t i = 0; i < proyectiles.size(); i++)
+		{
+			window.draw(proyectiles[i]);
+		}
 
 		//Mostrar en la ventana creada los objetos dibujados.
 		window.display();
