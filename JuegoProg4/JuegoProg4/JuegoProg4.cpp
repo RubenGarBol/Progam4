@@ -7,6 +7,7 @@
 #include "Coin.h"
 #include "Bullet.h"
 #include "Animacion.h"
+#include "Mapa.h"
 
 int main()
 {
@@ -14,6 +15,7 @@ int main()
 	sf::RenderWindow window(sf::VideoMode(1056, 888), "Isaac");
 	//Carga de texturas desde los .png, si no se encuentran avisar al usuario mediante una excepción.
 	sf::Texture texturaFondo;
+	texturaFondo.loadFromFile("./res/Imagenes/PiskelPrueba.png");
 	if (!texturaFondo.loadFromFile("./res/Imagenes/PiskelPrueba.png"))
 	{
 		std::cout << "No se ha encontrado la textura de: PiskelPrueba.png\n";
@@ -38,6 +40,7 @@ int main()
 	
 
 	//Objetos pared para delimitar los bordes jugables de la pantalla.
+
 	sf::RectangleShape pared1;
 	pared1.setPosition(sf::Vector2f(0, 0));
 	pared1.setSize(sf::Vector2f(1056, 120));
@@ -54,7 +57,14 @@ int main()
 	pared4.setPosition(sf::Vector2f(1026, 0));
 	pared4.setSize(sf::Vector2f(30, 888));
 
-	
+	RectangleShape paredes[4];
+	paredes[0] = pared1;
+	paredes[1] = pared2;
+	paredes[2] = pared3;
+	paredes[3] = pared4;
+
+	Mapa mapa(texturaFondo, paredes, paredes);
+
 	//Carga y posicionamiento de los sprites/objetos del juego.
 	Personaje roca;
 	Bullet bala(player.getPosition());
@@ -70,10 +80,13 @@ int main()
 	sf::Vector2f vectorCoin(100, 300);
 	Coin coin(vectorCoin);
 
+	//Timer
 	sf::Sprite fondo;
 	fondo.setTexture(texturaFondo);
 
 	float tiempo = 0.0f;
+
+
 	//Bucle ejecutado mientras la pantalla se mantenga abierta.
 	while (window.isOpen())
 	{
@@ -109,9 +122,10 @@ int main()
 			if (player.getGlobalBounds().intersects(cofre.getGlobalBounds())) {
 				player.move(0.0, veloc);
 			}
-			if (player.getGlobalBounds().intersects(pared1.getGlobalBounds())) {
+			if (player.getGlobalBounds().intersects(mapa.conjParedes[0].getGlobalBounds())) {
 				player.move(0.0, veloc);
 			}
+
 			deltatiempo = timer.restart().asSeconds();
 			animapp.Update(1, deltatiempo);
 			player.setTextureRect(animapp.uvRect);
@@ -131,7 +145,7 @@ int main()
 			if (player.getGlobalBounds().intersects(cofre.getGlobalBounds())) {
 				player.move(veloc, 0.0);
 			}
-			if (player.getGlobalBounds().intersects(pared2.getGlobalBounds())) {
+			if (player.getGlobalBounds().intersects(mapa.conjParedes[1].getGlobalBounds())) {
 				player.move(veloc, 0.0);
 			}
 			deltatiempo = timer.restart().asSeconds();
@@ -157,7 +171,7 @@ int main()
 			if (player.getGlobalBounds().intersects(cofre.getGlobalBounds())) {
 				player.move(0.0, -veloc);
 			}
-			if (player.getGlobalBounds().intersects(pared3.getGlobalBounds())) {
+			if (player.getGlobalBounds().intersects(mapa.conjParedes[2].getGlobalBounds())) {
 				player.move(0.0, -veloc);
 			}
 			deltatiempo = timer.restart().asSeconds();
@@ -179,7 +193,7 @@ int main()
 			if (player.getGlobalBounds().intersects(cofre.getGlobalBounds())) {
 				player.move(-veloc, 0.0);
 			}
-			if (player.getGlobalBounds().intersects(pared4.getGlobalBounds())) {
+			if (player.getGlobalBounds().intersects(mapa.conjParedes[3].getGlobalBounds())) {
 				player.move(-veloc, 0.0);
 			}
 
@@ -239,11 +253,12 @@ int main()
 
 		}
 
+		
 		//Limpiar la pantalla principal
 		window.clear();
 
 		//Dibujar el fondo y los objetos, enemigos y personaje de la pantalla.
-		window.draw(fondo);
+		window.draw(mapa);
 		window.draw(coin);
 		//window.draw(roca);
 		window.draw(cofre);
