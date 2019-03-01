@@ -9,6 +9,8 @@
 #include "Animacion.h"
 #include "Mapa.h"
 
+#include<vector>
+
 int main()
 {
 	//Crear la pantalla principal de juego con nombre "Isaac" y dimensiones 1056x888p.
@@ -67,8 +69,14 @@ int main()
 
 	//Carga y posicionamiento de los sprites/objetos del juego.
 	Personaje roca;
-	Bullet bala(player.getPosition());
-	Bullet* p = &bala;      // p es puntero-a-Bullet señalando al objeto bala
+	//Definicion de las balas como objetos(formados por vectores) circulares
+	CircleShape proyectil;
+	proyectil.setFillColor(Color::Blue);
+	proyectil.setRadius(10.f);
+	//Arraay de proyectiles
+	std::vector<CircleShape> proyectiles;
+	
+	proyectiles.push_back(CircleShape(proyectil));
 	
 	//Bullet * p;
 	//p->bala;
@@ -202,29 +210,13 @@ int main()
 			player.setTextureRect(animapp.uvRect);
 		}
 
-		//Movimiento y KeyBindings de los proyectiles hay que hacer un array
-		int speed = 15;
-		
+		//Movimiento y KeyBindings de los proyectiles en funcion de su array
+	
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 		{
-			
-			//tiempo = time.getElapsedTime().asSeconds();
-			//if ( tiempo <= 0.25)
-			//{
-				bala.move(0.0, -speed);
-				if (bala.getGlobalBounds().intersects(pared1.getGlobalBounds())) {
-					bala.move(0.0, speed);
-					//	p-> ~Bullet(); //Destruye el objeto pero genera errores
-				}
-				/*
-				if (tiempo>= 1.5)
-				{
-					bala.setPosition(player.getPosition().x, player.getPosition().y);
-					time.restart();
-				}
-			}*/
 	
 		}
+		/*
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
 		{
 			bala.move(0.0, speed);
@@ -252,7 +244,7 @@ int main()
 			}
 
 		}
-
+		*/
 		
 		//Limpiar la pantalla principal
 		window.clear();
@@ -263,12 +255,11 @@ int main()
 		//window.draw(roca);
 		window.draw(cofre);
 		window.draw(player);
-		window.draw(bala);
-		/*if (bala.existe = 0) 
+		//Pintamos los proyectiles los cuales se encuantran en un array
+		for (size_t i = 0; i < proyectiles.size(); i++)
 		{
-		
+			window.draw(proyectiles[i]);
 		}
-		*/
 
 		//Mostrar en la ventana creada los objetos dibujados.
 		window.display();
