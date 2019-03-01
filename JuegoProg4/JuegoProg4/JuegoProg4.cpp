@@ -247,7 +247,7 @@ int main()
 		}
 
 		//Movimiento y KeyBindings de los proyectiles en funcion de su array
-	
+		/*
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 		{
 			
