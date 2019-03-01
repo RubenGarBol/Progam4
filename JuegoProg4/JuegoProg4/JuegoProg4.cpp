@@ -12,7 +12,6 @@ int main()
 {
 	//Crear la pantalla principal de juego con nombre "Isaac" y dimensiones 1056x888p.
 	sf::RenderWindow window(sf::VideoMode(1056, 888), "Isaac");
-
 	//Carga de texturas desde los .png, si no se encuentran avisar al usuario mediante una excepción.
 	sf::Texture texturaFondo;
 	if (!texturaFondo.loadFromFile("./res/Imagenes/PiskelPrueba.png"))
@@ -35,6 +34,8 @@ int main()
 	float deltatiempo = 0.0f;
 
 	sf::Clock timer;
+	sf::Clock time;
+	
 
 	//Objetos pared para delimitar los bordes jugables de la pantalla.
 	sf::RectangleShape pared1;
@@ -72,6 +73,7 @@ int main()
 	sf::Sprite fondo;
 	fondo.setTexture(texturaFondo);
 
+	float tiempo = 0.0f;
 	//Bucle ejecutado mientras la pantalla se mantenga abierta.
 	while (window.isOpen())
 	{
@@ -186,25 +188,35 @@ int main()
 			player.setTextureRect(animapp.uvRect);
 		}
 
-		//Movimiento y KeyBindings de los proyectiles
+		//Movimiento y KeyBindings de los proyectiles hay que hacer un array
 		int speed = 15;
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) 
+		
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 		{
 			
-			//bala.setPosition(player.getPosition().x,player.getPosition().y);
-			bala.move(0.0, -speed);
-			if (bala.getGlobalBounds().intersects(pared1.getGlobalBounds())) {
-				bala.move(0.0, speed);
-			//	p-> ~Bullet(); //Destruye el objeto pero genera errores
-			}
-
+			//tiempo = time.getElapsedTime().asSeconds();
+			//if ( tiempo <= 0.25)
+			//{
+				bala.move(0.0, -speed);
+				if (bala.getGlobalBounds().intersects(pared1.getGlobalBounds())) {
+					bala.move(0.0, speed);
+					//	p-> ~Bullet(); //Destruye el objeto pero genera errores
+				}
+				/*
+				if (tiempo>= 1.5)
+				{
+					bala.setPosition(player.getPosition().x, player.getPosition().y);
+					time.restart();
+				}
+			}*/
+	
 		}
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
 		{
-
 			bala.move(0.0, speed);
 			if (bala.getGlobalBounds().intersects(pared3.getGlobalBounds())) {
 				bala.move(0.0, -speed);
+				p-> ~Bullet();
 			}
 
 		}
@@ -213,6 +225,7 @@ int main()
 			bala.move(-speed, 0.0);
 			if (bala.getGlobalBounds().intersects(pared2.getGlobalBounds())) {
 				bala.move(speed, 0.0);
+				p-> ~Bullet();
 			}
 
 		}
@@ -221,6 +234,7 @@ int main()
 			bala.move(speed, 0.0);
 			if (bala.getGlobalBounds().intersects(pared4.getGlobalBounds())) {
 				bala.move(-speed, 0.0);
+				p-> ~Bullet();
 			}
 
 		}
@@ -235,6 +249,11 @@ int main()
 		window.draw(cofre);
 		window.draw(player);
 		window.draw(bala);
+		/*if (bala.existe = 0) 
+		{
+		
+		}
+		*/
 
 		//Mostrar en la ventana creada los objetos dibujados.
 		window.display();
