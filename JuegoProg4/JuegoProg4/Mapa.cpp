@@ -24,7 +24,6 @@ RectangleShape Mapa::getPuertaIz() {
 	return conjPuertas[3];
 }
 
-
 Mapa::~Mapa()
 {
 }
