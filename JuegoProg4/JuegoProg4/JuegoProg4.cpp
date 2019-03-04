@@ -93,11 +93,12 @@ int main()
 	CircleShape proyectil;
 	proyectil.setFillColor(Color::Blue);
 	proyectil.setRadius(10.f);
-	//Arraay de proyectiles
+	//Array de proyectiles
 	std::vector<CircleShape> proyectiles;
 	
 	proyectiles.push_back(CircleShape(proyectil));
-	
+	int shottimer = 0;
+
 	//Bullet * p;
 	//p->bala;
 
@@ -107,7 +108,7 @@ int main()
 
 	//Genera la bomba en el pixel 250, 150.
 	sf::Vector2f vectorBomba(250, 150);
-	Bomba bomba(vectorBomba);
+//	Bomba bomba(vectorBomba);
 
 	//Genera una moneda en el pixel 100,100.
 	sf::Vector2f vectorCoin(100, 300);
@@ -219,21 +220,37 @@ int main()
 
 			anim = 0;
 		}
+		 int speed = 10;
+		//Movimiento y KeyBindings de los proyectiles en funcion de su array
+		
+		 
+		 printf(" ");
 
-		//Movimiento y KeyBindings de los proyectiles hay que hacer un array
-		int speed = 15;
-		/*
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-		{
+		 if (shottimer < 5)
+		 {
 			
-			//bala.setPosition(player.getPosition().x,player.getPosition().y);
-			bala.move(0.0, -speed);
-			if (bala.getGlobalBounds().intersects(pared1.getGlobalBounds())) {
-				bala.move(0.0, speed);
-			//	p-> ~Bullet(); //Destruye el objeto pero genera errores
-			}
+			 printf(" Incremento el tiempo ");
+			 shottimer++;
+			 printf("%i ", shottimer);
+		 }
+		//Al presionar arriba que se meta en un bucle que se resetea al final 
+		 if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && shottimer >= 5)
+		 {
+			 proyectil.setPosition(1000.f, 1000.f);
+			 proyectiles.push_back(CircleShape(proyectil));
+			 printf("ehjewjhfdjfahgjsdhjdshrjegjwetj");
+			 shottimer = 0;
 
-		}
+		 }
+		 for (size_t i = 0; i < proyectiles.size(); i++)
+		 {
+			 proyectil.move(0.0, speed);
+			 if (proyectiles[i].getPosition().y < 0)
+
+				 proyectiles.erase(proyectiles.begin() + i);
+
+		 }
+		/*
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
 		{
 			bala.move(0.0, speed);
@@ -271,14 +288,12 @@ int main()
 		//window.draw(coin);
 		//window.draw(bala);
 		window.draw(cofre);
-		//window.draw(bomba);
+	//	window.draw(bomba);
 		window.draw(player);
-		//window.draw(bala);
-		/* if (bala.existe = 0) 
-		{
+		//Pintamos los proyectiles los cuales se encuantran en un array
+		for (size_t i = 0; i < proyectiles.size(); i++)
 			window.draw(proyectiles[i]);
-		}
-		*/
+
 		//Mostrar en la ventana creada los objetos dibujados.
 		window.display();
 		
