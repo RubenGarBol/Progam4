@@ -27,7 +27,7 @@ int main()
 
 	//Carga de texturas desde los .png, si no se encuentran avisar al usuario mediante una excepción.
 	sf::Texture texturaFondo;
-	if (!texturaFondo.loadFromFile("./res/Imagenes/PiskelPrueba.png"))
+	if (!texturaFondo.loadFromFile("./res/Imagenes/PiskelPruebaAnim.png"))
 	{
 		std::cout << "No se ha encontrado la textura de: PiskelPrueba.png\n";
 	}
@@ -46,7 +46,7 @@ int main()
 	//Establecer la textura al personaje y declarar las propiedades de las animaciones y sprisheet
 	player.setTexture(&pjtextura);
 	sf::Vector2u vector(4, 4);
-	Animacion animapp(&pjtextura, vector, 0.20);
+	Animacion animapp(&pjtextura, vector, 0.15);
 	float deltatiempo = 0.0f;
 
 	//Variables encargadas de la posicion de la animación
@@ -55,6 +55,7 @@ int main()
 
 	//Timers encargados de la gestion del tiempo para el cambio de imagen de las animaciones
 	sf::Clock timer;
+	sf::Clock timer1;
 	sf::Clock time;
 	
 	//Objetos pared para delimitar los bordes jugables de la pantalla.
@@ -81,6 +82,10 @@ int main()
 	paredes[3] = pared4;
 
 	Mapa mapa(texturaFondo, paredes, paredes);
+	
+	sf::Vector2u vector1(3, 1);
+	Animacion animafondo(&texturaFondo, vector1, 0.25);
+	float deltatiempo1 = 0.0f;
 
 	//Carga y posicionamiento de los sprites/objetos del juego.
 	Personaje roca;
@@ -97,7 +102,7 @@ int main()
 	//p->bala;
 
 	//Genera un cofre en la posición establecida
-	sf::Vector2f vectorCofre(500, 489);
+	sf::Vector2f vectorCofre((window.getSize().x/2)-56, (window.getSize().y / 2 )- 40);
 	Cofre cofre(vectorCofre);
 
 	//Genera la bomba en el pixel 250, 150.
@@ -107,10 +112,6 @@ int main()
 	//Genera una moneda en el pixel 100,100.
 	sf::Vector2f vectorCoin(100, 300);
 	Coin coin(vectorCoin);
-
-	//Creación de un sprite que contendra la imagen de fondo de la aplicación
-	sf::Sprite fondo;
-	fondo.setTexture(texturaFondo);
 
 	//Velocidad personaje principal
 	int veloc = 4;
@@ -123,7 +124,10 @@ int main()
 	{
 		sf::Event event;
 
-		printf("%i", anim);
+		deltatiempo1 = timer1.restart().asSeconds();
+		animafondo.Update(0, deltatiempo1);
+		mapa.setTextureRect(animafondo.uvRect);
+
 		deltatiempo = timer.restart().asSeconds();
 		animapp.Update(anim, deltatiempo);
 		player.setTextureRect(animapp.uvRect);
@@ -137,8 +141,6 @@ int main()
 			if (event.type == sf::Event::Closed) window.close();
 		}
 		
-		
-
 		//Metodos encargados de gestionar el movimiento y colision del personaje principal con el resto de objetos y paredes del juego.
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
 		{
@@ -220,7 +222,7 @@ int main()
 
 		//Movimiento y KeyBindings de los proyectiles hay que hacer un array
 		int speed = 15;
-		
+		/*
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 		{
 			
@@ -266,19 +268,19 @@ int main()
 
 		//Dibujar el fondo y los objetos, enemigos y personaje de la pantalla.
 		window.draw(mapa);
-		window.draw(coin);
-		window.draw(bala);
+		//window.draw(coin);
+		//window.draw(bala);
 		window.draw(cofre);
-		window.draw(bomba);
+		//window.draw(bomba);
 		window.draw(player);
-		window.draw(bala);
-		/*if (bala.existe = 0) 
+		//window.draw(bala);
+		/* if (bala.existe = 0) 
 		{
 			window.draw(proyectiles[i]);
 		}
-
+		*/
 		//Mostrar en la ventana creada los objetos dibujados.
 		window.display();
-
+		
 	}
 }
