@@ -1,9 +1,8 @@
 #include "Coin.h"
 #include "SFML/Graphics.hpp"
 
-Coin::Coin(Vector2f vector) {
-
-	textura.loadFromFile("./res/Imagenes/Coin.png");
+Coin::Coin() 
+{
+	textura.loadFromFile("./res/Imagenes/coin.png");
 	setTexture(textura);
-	setPosition(vector);
 }
