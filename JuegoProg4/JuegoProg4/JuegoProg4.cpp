@@ -109,6 +109,7 @@ int main()
 	proyectil.setFillColor(Color::Blue);
 	proyectil.setRadius(10.f);
 	//Array de proyectiles
+
 	std::vector<CircleShape> proyectiles;
 	
 	proyectiles.push_back(CircleShape(proyectil));
@@ -327,20 +328,23 @@ int main()
 		//Al presionar arriba que se meta en un bucle que se resetea al final 
 		 if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && shottimer >= 5)
 		 {
-			 proyectil.setPosition(1000.f, 1000.f);
+			 proyectil.setPosition(100,100);
 			 proyectiles.push_back(CircleShape(proyectil));
-			 printf("ehjewjhfdjfahgjsdhjdshrjegjwetj");
+			 printf("Dispara ");
+			
 			 shottimer = 0;
-
 		 }
 		 for (size_t i = 0; i < proyectiles.size(); i++)
 		 {
 			 proyectil.move(0.0, speed);
+
 			 if (proyectiles[i].getPosition().y < 0)
 
 				 proyectiles.erase(proyectiles.begin() + i);
 
 		 }
+
+		
 		/*
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
 		{
