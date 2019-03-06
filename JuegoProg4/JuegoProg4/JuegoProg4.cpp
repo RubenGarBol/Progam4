@@ -6,7 +6,7 @@
 #include "Item.h"
 #include "Coin.h"
 #include "Bomba.h"
-#include "Bullet.h"
+
 #include "Animacion.h"
 #include "Mapa.h"
 
@@ -106,8 +106,8 @@ int main()
 	Personaje roca;
 	//Definicion de las balas como objetos(formados por vectores) circulares
 
-	std::vector<Bullet> bulletarray;
-	bool disp = false;
+	//std::vector<Bullet> bulletarray;
+
 	//Genera un cofre en la posición establecida
 	sf::Vector2f vectorCofre((window.getSize().x/2)-56, (window.getSize().y / 2 )- 40);
 	Cofre cofre(vectorCofre);
@@ -308,7 +308,7 @@ int main()
 
 		int speed = 10;
 		//Movimiento y KeyBindings de los proyectiles en funcion de su array
-
+		/*
 		 if (shottimer < 5)
 		 {
 			 printf(" Incremento el tiempo ");
