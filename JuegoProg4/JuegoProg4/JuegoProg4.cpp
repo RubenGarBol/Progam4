@@ -6,7 +6,7 @@
 #include "Item.h"
 #include "Coin.h"
 #include "Bomba.h"
-#include "Bullet.h"
+
 #include "Animacion.h"
 #include "Mapa.h"
 
@@ -105,18 +105,8 @@ int main()
 	//Carga y posicionamiento de los sprites/objetos del juego.
 	Personaje roca;
 	//Definicion de las balas como objetos(formados por vectores) circulares
-	CircleShape proyectil;
-	proyectil.setFillColor(Color::Blue);
-	proyectil.setRadius(10.f);
-	//Array de proyectiles
 
-	//std::vector<CircleShape> proyectiles;
-	
-	//proyectiles.push_back(CircleShape(proyectil));
-	int shottimer = 0;
-
-	//Bullet * p;
-	//p->bala;
+	//std::vector<Bullet> bulletarray;
 
 	//Genera un cofre en la posición establecida
 	sf::Vector2f vectorCofre((window.getSize().x/2)-56, (window.getSize().y / 2 )- 40);
@@ -456,7 +446,7 @@ int main()
 
 		int speed = 10;
 		//Movimiento y KeyBindings de los proyectiles en funcion de su array
-
+		/*
 		 if (shottimer < 5)
 		 {
 			 printf(" Incremento el tiempo ");
@@ -477,16 +467,16 @@ int main()
 			 proyectil.move(0.0, speed);
 
 			 if (proyectiles[i].getPosition().y < 0)
-
+				 balas--;
+				//proyectil.setPosition(200.0f, 300.f);
 				 proyectiles.erase(proyectiles.begin() + i);
 
 		 }
-		 */
-		
+		 printf("Hay %i", balas);
 		/*
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
 		{
-			bala.move(0.0, speed);
+			proyectil.move(0.0, speed);
 			if (bala.getGlobalBounds().intersects(pared3.getGlobalBounds())) {
 				bala.move(0.0, -speed);
 				p-> ~Bullet();
