@@ -56,6 +56,8 @@ int main()
 	//Timers encargados de la gestion del tiempo para el cambio de imagen de las animaciones
 	sf::Clock timer;
 	sf::Clock timer1;
+	sf::Clock timer2;
+	sf::Clock timercoin;
 	sf::Clock time;
 	
 	//Objetos pared para delimitar los bordes jugables de la pantalla.
@@ -87,6 +89,19 @@ int main()
 	Animacion animafondo(&texturaFondo, vector1, 0.25);
 	float deltatiempo1 = 0.0f;
 
+	sf::Texture texturaExpl;
+	if (!texturaExpl.loadFromFile("./res/Imagenes/explosion.png"))
+	{
+		std::cout << "No se ha encontrado la textura de: explosion.png\n";
+	}
+
+	sf::Sprite explosion;
+	
+	explosion.setTexture(texturaExpl);
+	sf::Vector2u vector2(12, 1);
+	Animacion animaexpl(&texturaExpl, vector2, 0.1);
+	float deltatiempo2 = 0.0f;
+
 	//Carga y posicionamiento de los sprites/objetos del juego.
 	Personaje roca;
 	//Definicion de las balas como objetos(formados por vectores) circulares
@@ -102,14 +117,63 @@ int main()
 //	Bomba bomba(vectorBomba);
 
 	//Genera una moneda en el pixel 100,100.
-	sf::Vector2f vectorCoin(100, 300);
-	Coin coin(vectorCoin);
+	//Coin coin(vectorCoin);
+
+	int cuenta = 0;
+
+	std::vector<Coin> coin(8);
+
+	sf::Vector2u vectorcoin(4, 1);
+	Animacion animacoin(&coin[0].textura, vectorcoin, 0.25);
+	float deltacoin = 0.0f;
+
+	for (int i = 0; i < coin.size(); i++)
+	{
+		coin[0].setPosition(460, 150);
+		coin[1].setPosition(140, 275);
+		coin[2].setPosition(800, 300);
+		coin[3].setPosition(700, 500);
+		coin[4].setPosition(125, 500);
+		coin[5].setPosition(250, 650);
+		coin[6].setPosition(700, 700);
+	}
+		
+	sf::Font font;
+	font.loadFromFile("./res/pixeled.ttf");
+
+	sf::Texture texturapuntos;
+	if (!texturapuntos.loadFromFile("./res/Imagenes/coinpunt.png"))
+	{
+		std::cout << "No se ha encontrado la textura de: coinpunt.png\n";
+	}
+
+	sf::Sprite coinpunt;
+	coinpunt.setTexture(texturapuntos);
+	coinpunt.setPosition(15, 830);
+
+	sf::Text puntos;
+	puntos.setFont(font);
+	puntos.setCharacterSize(25);
+	puntos.setStyle(sf::Text::Bold);
+	puntos.setFillColor(sf::Color::White);
+	puntos.setOutlineColor(sf::Color::Black);
+	puntos.setOutlineThickness(2);
+	puntos.setPosition(80, 845);
+
+	sf::Text text;
+	text.setFont(font);
+	text.setCharacterSize(25);
+	text.setStyle(sf::Text::Bold);
+	text.setFillColor(sf::Color::White);
+	text.setOutlineColor(sf::Color::Black);
+	text.setOutlineThickness(2);
+	text.setPosition(60, 845);
 
 	//Velocidad personaje principal
 	int veloc = 4;
 
 	//Velocidad proyectiles
-	int bspeed = 15;
+	int speed = 15;
 
 	//Bucle ejecutado mientras la pantalla se mantenga abierta.
 	while (window.isOpen())
@@ -123,7 +187,9 @@ int main()
 		deltatiempo = timer.restart().asSeconds();
 		animapp.Update(anim, deltatiempo);
 		player.setTextureRect(animapp.uvRect);
-		
+
+		explosion.setPosition(player.getPosition().x, player.getPosition().y);
+
 		//Bloquear los frames por segundo a 60 para que la velocidad del personaje sea consistente en todos los dispositivos.
 		window.setFramerateLimit(60);
 	
@@ -132,6 +198,22 @@ int main()
 		{
 			if (event.type == sf::Event::Closed) window.close();
 		}
+
+		for (int a=0; a<7; a++)
+		{ 
+			deltacoin = timercoin.restart().asSeconds();
+			animacoin.Update(0, deltacoin);
+			coin[a].setTextureRect(animacoin.uvRect);
+
+			if (player.getGlobalBounds().intersects(coin[a].getGlobalBounds()))
+			{
+				coin[a].setPosition(2000, 2000);
+				cuenta++;
+			}
+		}
+		
+		text.setString(": ");
+		puntos.setString(std::to_string(cuenta));
 		
 		//Metodos encargados de gestionar el movimiento y colision del personaje principal con el resto de objetos y paredes del juego.
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
@@ -194,8 +276,6 @@ int main()
 			anim = 3;
 		}
 
-	
-
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
 		{
 			player.move(veloc, 0.0);
@@ -211,41 +291,30 @@ int main()
 
 			anim = 0;
 		}
+		
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) && sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+		{
+			deltatiempo = timer.restart().asSeconds();
+			animapp.Update(anim, deltatiempo);
+			player.setTextureRect(animapp.uvRect);
+		}
+
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) && sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+		{
+			deltatiempo = timer.restart().asSeconds();
+			animapp.Update(anim, deltatiempo);
+			player.setTextureRect(animapp.uvRect);
+		}
+
+		int speed = 10;
 		//Movimiento y KeyBindings de los proyectiles en funcion de su array
-		
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-		{
-			printf("Hallo");
-			Bullet newBullet(sf::Vector2f(50, 5));
-			//Bullet::setTexture("./res/Imagenes/Coin.png");
-				
-		
-			//newBullet.setPos(sf::Vector2f(player.getPosition().x, player.getPosition().y));
-			bulletarray.push_back(newBullet);
-			printf("newBullet creada");
 
-		}
-		/*
-		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-		{
-
-		}
-		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-		{
-
-		}
-		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-		{
-
-		}
-		*/
-		for (int i = 0; i < bulletarray.size(); i++)
-		{
-			bulletarray[i].draw(window);
-			printf("Teoooooooooooooo");
-			bulletarray[i].disparo(bspeed);
-		}
-		 /*
+		 if (shottimer < 5)
+		 {
+			 printf(" Incremento el tiempo ");
+			 shottimer++;
+			 printf("%i ", shottimer);
+		 }
 		//Al presionar arriba que se meta en un bucle que se resetea al final 
 		 if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && shottimer >= 5)
 		 {
@@ -254,13 +323,9 @@ int main()
 			 printf("Dispara ");
 			
 			 shottimer = 0;
-			 
-		//	 Bullet proyectil(&disparar);
-		 } 
-		 int balas = 0;
-		 for (int i = 0; i < proyectiles.size(); i++)
+		 }
+		 for (size_t i = 0; i < proyectiles.size(); i++)
 		 {
-			 balas++;
 			 proyectil.move(0.0, speed);
 
 			 if (proyectiles[i].getPosition().y < 0)
@@ -305,13 +370,32 @@ int main()
 
 		//Dibujar el fondo y los objetos, enemigos y personaje de la pantalla.
 		window.draw(mapa);
-		window.draw(coin);
+		
+		for (int i=0; i < 7; i++)
+		{
+			window.draw(coin[i]);
+		}
+		window.draw(coinpunt);
 		//window.draw(bala);
-		window.draw(cofre);
-	//	window.draw(bomba);
-		window.draw(player);
-		//Pintamos los proyectiles los cuales se encuantran en un array
 	
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+		{
+			deltatiempo2 = timer2.restart().asSeconds();
+			animaexpl.Update(0, deltatiempo2);
+			explosion.setTextureRect(animaexpl.uvRect);
+			window.draw(explosion);
+		}
+
+		window.draw(puntos);
+		window.draw(text);
+		window.draw(cofre);
+		window.draw(text);
+		window.draw(player);
+		
+		//Pintamos los proyectiles los cuales se encuantran en un array
+		//for (size_t i = 0; i < proyectiles.size(); i++)
+		//	window.draw(proyectiles[i]);
+
 		//Mostrar en la ventana creada los objetos dibujados.
 		window.display();
 		
