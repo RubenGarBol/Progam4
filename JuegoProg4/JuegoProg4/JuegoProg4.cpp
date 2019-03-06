@@ -90,19 +90,9 @@ int main()
 	//Carga y posicionamiento de los sprites/objetos del juego.
 	Personaje roca;
 	//Definicion de las balas como objetos(formados por vectores) circulares
-	CircleShape proyectil;
-	proyectil.setFillColor(Color::Blue);
-	proyectil.setRadius(10.f);
-	//Array de proyectiles
 
-	std::vector<CircleShape> proyectiles;
-	
-	proyectiles.push_back(CircleShape(proyectil));
-	int shottimer = 0;
-
-	//Bullet * p;
-	//p->bala;
-
+	std::vector<Bullet> bulletarray;
+	bool disp = false;
 	//Genera un cofre en la posición establecida
 	sf::Vector2f vectorCofre((window.getSize().x/2)-56, (window.getSize().y / 2 )- 40);
 	Cofre cofre(vectorCofre);
@@ -119,7 +109,7 @@ int main()
 	int veloc = 4;
 
 	//Velocidad proyectiles
-	int speed = 15;
+	int bspeed = 15;
 
 	//Bucle ejecutado mientras la pantalla se mantenga abierta.
 	while (window.isOpen())
@@ -221,19 +211,41 @@ int main()
 
 			anim = 0;
 		}
-		 int speed = 10;
 		//Movimiento y KeyBindings de los proyectiles en funcion de su array
 		
-		 
-		 printf(" ");
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+		{
+			printf("Hallo");
+			Bullet newBullet(sf::Vector2f(50, 5));
+			//Bullet::setTexture("./res/Imagenes/Coin.png");
+				
+		
+			//newBullet.setPos(sf::Vector2f(player.getPosition().x, player.getPosition().y));
+			bulletarray.push_back(newBullet);
+			printf("newBullet creada");
 
-		 if (shottimer < 5)
-		 {
-			
-			 printf(" Incremento el tiempo ");
-			 shottimer++;
-			 printf("%i ", shottimer);
-		 }
+		}
+		/*
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+		{
+
+		}
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+		{
+
+		}
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+		{
+
+		}
+		*/
+		for (int i = 0; i < bulletarray.size(); i++)
+		{
+			bulletarray[i].draw(window);
+			printf("Teoooooooooooooo");
+			bulletarray[i].disparo(bspeed);
+		}
+		 /*
 		//Al presionar arriba que se meta en un bucle que se resetea al final 
 		 if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && shottimer >= 5)
 		 {
@@ -242,22 +254,26 @@ int main()
 			 printf("Dispara ");
 			
 			 shottimer = 0;
-		 }
-		 for (size_t i = 0; i < proyectiles.size(); i++)
+			 
+		//	 Bullet proyectil(&disparar);
+		 } 
+		 int balas = 0;
+		 for (int i = 0; i < proyectiles.size(); i++)
 		 {
+			 balas++;
 			 proyectil.move(0.0, speed);
 
 			 if (proyectiles[i].getPosition().y < 0)
-
+				 balas--;
+				//proyectil.setPosition(200.0f, 300.f);
 				 proyectiles.erase(proyectiles.begin() + i);
 
 		 }
-
-		
+		 printf("Hay %i", balas);
 		/*
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
 		{
-			bala.move(0.0, speed);
+			proyectil.move(0.0, speed);
 			if (bala.getGlobalBounds().intersects(pared3.getGlobalBounds())) {
 				bala.move(0.0, -speed);
 				p-> ~Bullet();
@@ -289,15 +305,13 @@ int main()
 
 		//Dibujar el fondo y los objetos, enemigos y personaje de la pantalla.
 		window.draw(mapa);
-		//window.draw(coin);
+		window.draw(coin);
 		//window.draw(bala);
 		window.draw(cofre);
 	//	window.draw(bomba);
 		window.draw(player);
 		//Pintamos los proyectiles los cuales se encuantran en un array
-		for (size_t i = 0; i < proyectiles.size(); i++)
-			window.draw(proyectiles[i]);
-
+	
 		//Mostrar en la ventana creada los objetos dibujados.
 		window.display();
 		

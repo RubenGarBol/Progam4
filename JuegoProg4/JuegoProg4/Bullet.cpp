@@ -1,16 +1,10 @@
 #include "Bullet.h"
 #include <SFML/Graphics.hpp>
 
-Bullet::Bullet(Vector2f vector)
-{
-	speed = 7;
+
+Bullet::Bullet(sf::Vector2f vector) {
+
 	textura.loadFromFile("./res/Imagenes/Coin.png");
 	setTexture(textura);
 	setPosition(vector);
 }
-Bullet::~Bullet()
-{
-	
-}
-
-
