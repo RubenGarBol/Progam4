@@ -318,8 +318,8 @@ int main()
 		}*/
 		///////////
 
-		mapa.deltatiempo = mapa.timer.restart().asSeconds();
-		mapa.Update(0, mapa.deltatiempo);
+		//mapa.deltatiempo = mapa.timer.restart().asSeconds();
+		mapa.Update(0, mapa.deltatiempo, mapa.timer);
 		mapa.setTextureRect(mapa.uvRect);
 
 		deltatiempo = timer.restart().asSeconds();

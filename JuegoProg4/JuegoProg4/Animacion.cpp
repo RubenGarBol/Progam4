@@ -1,4 +1,5 @@
 #include "Animacion.h"
+#include "SFML/Graphics.hpp"
 
 
 
@@ -18,6 +19,27 @@ Animacion::~Animacion()
 {
 }
 
+void Animacion::Update(int columna, float deltatiempo, sf::Clock &timer)
+{
+	deltatiempo = timer.restart().asSeconds();
+	ImgActual.y = columna;
+	tiempotot += deltatiempo;
+
+	if (tiempotot >= switchtiempo)
+	{
+		tiempotot -= switchtiempo;
+		ImgActual.x++;
+		
+		if (ImgActual.x >= CuentaImg.x)
+		{
+			ImgActual.x = 0;
+		}
+	}
+
+	uvRect.left = ImgActual.x * uvRect.width;
+	uvRect.top = ImgActual.y * uvRect.height;
+	
+}
 void Animacion::Update(int columna, float deltatiempo)
 {
 	ImgActual.y = columna;
@@ -27,7 +49,7 @@ void Animacion::Update(int columna, float deltatiempo)
 	{
 		tiempotot -= switchtiempo;
 		ImgActual.x++;
-		
+
 		if (ImgActual.x >= CuentaImg.x)
 		{
 			ImgActual.x = 0;
