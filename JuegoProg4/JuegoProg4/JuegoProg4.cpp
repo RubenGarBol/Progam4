@@ -319,8 +319,8 @@ int main()
 		///////////
 
 		//mapa.deltatiempo = mapa.timer.restart().asSeconds();
-		mapa.Update(0, mapa.deltatiempo, mapa.timer);
-		mapa.setTextureRect(mapa.uvRect);
+		mapa.Update(0, mapa.deltatiempo, mapa.timer, mapa);
+		//mapa.setTextureRect(mapa.uvRect);
 
 		deltatiempo = timer.restart().asSeconds();
 		animapp.Update(anim, deltatiempo);

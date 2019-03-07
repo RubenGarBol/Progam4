@@ -19,7 +19,7 @@ Animacion::~Animacion()
 {
 }
 
-void Animacion::Update(int columna, float deltatiempo, sf::Clock &timer)
+void Animacion::Update(int columna, float deltatiempo, sf::Clock &timer, sf::Sprite &objeto)
 {
 	deltatiempo = timer.restart().asSeconds();
 	ImgActual.y = columna;
@@ -38,7 +38,7 @@ void Animacion::Update(int columna, float deltatiempo, sf::Clock &timer)
 
 	uvRect.left = ImgActual.x * uvRect.width;
 	uvRect.top = ImgActual.y * uvRect.height;
-	
+	objeto.setTextureRect(this->uvRect);
 }
 void Animacion::Update(int columna, float deltatiempo)
 {
