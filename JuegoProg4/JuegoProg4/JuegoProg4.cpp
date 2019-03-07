@@ -127,7 +127,7 @@ int main()
 	Animacion animacoin(&coin[0].textura, vectorcoin, 0.25);
 	float deltacoin = 0.0f;
 
-	for (int i = 0; i < coin.size(); i++)
+	//for (int i = 0; i < coin.size(); i++)
 	{
 		coin[0].setPosition(460, 150);
 		coin[1].setPosition(140, 275);
@@ -162,6 +162,7 @@ int main()
 
 	sf::Text text;
 	text.setFont(font);
+	text.setString(": ");
 	text.setCharacterSize(25);
 	text.setStyle(sf::Text::Bold);
 	text.setFillColor(sf::Color::White);
@@ -175,10 +176,147 @@ int main()
 	//Velocidad proyectiles
 	int speed = 15;
 
+	///////////
+	CircleShape proyectil1;
+	proyectil1.setFillColor(Color::White);
+	proyectil1.setRadius(5.f);
+
+	CircleShape proyectil2;
+	proyectil2.setFillColor(Color::White);
+	proyectil2.setRadius(5.f);
+
+	CircleShape proyectil3;
+	proyectil3.setFillColor(Color::White);
+	proyectil3.setRadius(5.f);
+
+	CircleShape proyectil4;
+	proyectil4.setFillColor(Color::White);
+	proyectil4.setRadius(5.f);
+
+	RectangleShape enemigo1;
+	enemigo1.setFillColor(Color::Black);
+	enemigo1.setSize(Vector2f(50.f, 50.f));
+
+	std::vector<RectangleShape> enemigo;
+	std::vector<CircleShape> proyectiles1;
+	std::vector<CircleShape> proyectiles2;
+	std::vector<CircleShape> proyectiles3;
+	std::vector<CircleShape> proyectiles4;
+
+	proyectiles1.push_back(CircleShape(proyectil1));
+	proyectiles2.push_back(CircleShape(proyectil2));
+	proyectiles3.push_back(CircleShape(proyectil3));
+	proyectiles4.push_back(CircleShape(proyectil4));
+	enemigo.push_back(RectangleShape(enemigo1));
+
+	Vector2f centrar;
+	Vector2f balamove;
+
+	int delaytiro = 0;
+	///////////
+
+
+
 	//Bucle ejecutado mientras la pantalla se mantenga abierta.
 	while (window.isOpen())
 	{
 		sf::Event event;
+
+		
+		///////////
+		centrar = Vector2f(player.getPosition().x + player.getSize().x/2, player.getPosition().y + player.getSize().y/2);
+		
+		if (delaytiro < 10)
+		{
+			delaytiro++;
+		}
+
+		if (Keyboard::isKeyPressed(Keyboard::Up) && delaytiro >= 10)
+		{
+			proyectil1.setPosition(centrar);
+			proyectiles1.push_back(CircleShape(proyectil1));
+			delaytiro=0;
+			
+		}
+		for (size_t i = 0; i < proyectiles1.size(); i++)
+		{
+			
+			proyectiles1[i].move(0, -10.f);
+			if (proyectiles1[i].getGlobalBounds().intersects(cofre.getGlobalBounds()) || proyectiles1[i].getGlobalBounds().intersects(mapa.conjParedes[0].getGlobalBounds())
+				|| proyectiles1[i].getGlobalBounds().intersects(mapa.conjParedes[1].getGlobalBounds()) || proyectiles1[i].getGlobalBounds().intersects(mapa.conjParedes[2].getGlobalBounds())
+				|| proyectiles1[i].getGlobalBounds().intersects(mapa.conjParedes[3].getGlobalBounds()))
+			{
+				proyectiles1.erase(proyectiles1.begin() + i);
+			}
+		}
+		if (Keyboard::isKeyPressed(Keyboard::Down) && delaytiro >= 10)
+		{
+			proyectil2.setPosition(centrar);
+			proyectiles2.push_back(CircleShape(proyectil2));
+			delaytiro = 0;
+			
+		
+		}
+		for (size_t i = 0; i < proyectiles2.size(); i++)
+		{
+			
+			proyectiles2[i].move(0, 10.f);
+			if (proyectiles2[i].getGlobalBounds().intersects(cofre.getGlobalBounds()) || proyectiles2[i].getGlobalBounds().intersects(mapa.conjParedes[0].getGlobalBounds())
+				|| proyectiles2[i].getGlobalBounds().intersects(mapa.conjParedes[1].getGlobalBounds()) || proyectiles2[i].getGlobalBounds().intersects(mapa.conjParedes[2].getGlobalBounds())
+				|| proyectiles2[i].getGlobalBounds().intersects(mapa.conjParedes[3].getGlobalBounds()))
+			{
+				proyectiles2.erase(proyectiles2.begin() + i);
+			}
+		}
+		if (Keyboard::isKeyPressed(Keyboard::Left) && delaytiro >= 10)
+		{
+			proyectil3.setPosition(centrar);
+			proyectiles3.push_back(CircleShape(proyectil3));
+			delaytiro = 0;
+			
+		
+		}
+		for (size_t i = 0; i < proyectiles3.size(); i++)
+		{
+			
+			proyectiles3[i].move(-10.f, 0);
+			if (proyectiles3[i].getGlobalBounds().intersects(cofre.getGlobalBounds()) || proyectiles3[i].getGlobalBounds().intersects(mapa.conjParedes[0].getGlobalBounds())
+				|| proyectiles3[i].getGlobalBounds().intersects(mapa.conjParedes[1].getGlobalBounds()) || proyectiles3[i].getGlobalBounds().intersects(mapa.conjParedes[2].getGlobalBounds())
+				|| proyectiles3[i].getGlobalBounds().intersects(mapa.conjParedes[3].getGlobalBounds()))
+			{
+				proyectiles3.erase(proyectiles3.begin() + i);
+			}
+		}
+		if (Keyboard::isKeyPressed(Keyboard::Right) && delaytiro >= 10)
+		{
+			proyectil4.setPosition(centrar);
+			proyectiles4.push_back(CircleShape(proyectil4));
+			delaytiro = 0;
+			
+		}
+		for (size_t i = 0; i < proyectiles4.size(); i++)
+		{
+			proyectiles4[i].move(10.f, 0);
+			if (proyectiles4[i].getGlobalBounds().intersects(cofre.getGlobalBounds()) || proyectiles4[i].getGlobalBounds().intersects(mapa.conjParedes[0].getGlobalBounds())
+				|| proyectiles4[i].getGlobalBounds().intersects(mapa.conjParedes[1].getGlobalBounds()) || proyectiles4[i].getGlobalBounds().intersects(mapa.conjParedes[2].getGlobalBounds())
+				|| proyectiles4[i].getGlobalBounds().intersects(mapa.conjParedes[3].getGlobalBounds()))
+			{
+				proyectiles4.erase(proyectiles4.begin() + i);
+			}
+		}
+
+		
+		/*for (size_t i = 0; i < proyectiles.size(); i++)
+		{
+			proyectiles[i].move(balamove);
+			if (proyectiles[i].getGlobalBounds().intersects(cofre.getGlobalBounds()) || proyectiles[i].getGlobalBounds().intersects(mapa.conjParedes[0].getGlobalBounds()) 
+				|| proyectiles[i].getGlobalBounds().intersects(mapa.conjParedes[1].getGlobalBounds()) || proyectiles[i].getGlobalBounds().intersects(mapa.conjParedes[2].getGlobalBounds())
+				|| proyectiles[i].getGlobalBounds().intersects(mapa.conjParedes[3].getGlobalBounds()) )
+			{
+				proyectiles.erase(proyectiles.begin() + i);
+			}
+		}*/
+		///////////
 
 		deltatiempo1 = timer1.restart().asSeconds();
 		animafondo.Update(0, deltatiempo1);
@@ -212,7 +350,7 @@ int main()
 			}
 		}
 		
-		text.setString(": ");
+		
 		puntos.setString(std::to_string(cuenta));
 		
 		//Metodos encargados de gestionar el movimiento y colision del personaje principal con el resto de objetos y paredes del juego.
@@ -316,7 +454,7 @@ int main()
 			 printf("%i ", shottimer);
 		 }
 		//Al presionar arriba que se meta en un bucle que se resetea al final 
-		 if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && shottimer >= 5)
+		/* if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && shottimer >= 5)
 		 {
 			 proyectil.setPosition(100,100);
 			 proyectiles.push_back(CircleShape(proyectil));
@@ -369,12 +507,42 @@ int main()
 		window.clear();
 
 		//Dibujar el fondo y los objetos, enemigos y personaje de la pantalla.
+		
+		
+		if (player.getGlobalBounds().intersects(mapa.conjParedes[3].getGlobalBounds()))
+		{
+
+		}
+		else
+		{
+
+		
 		window.draw(mapa);
 		
+		///////////
+		for (size_t i = 0; i < proyectiles1.size(); i++)
+		{
+			window.draw(proyectiles1[i]);
+		}
+		for (size_t i = 0; i < proyectiles2.size(); i++)
+		{
+			window.draw(proyectiles2[i]);
+		}
+		for (size_t i = 0; i < proyectiles3.size(); i++)
+		{
+			window.draw(proyectiles3[i]);
+		}
+		for (size_t i = 0; i < proyectiles4.size(); i++)
+		{
+			window.draw(proyectiles4[i]);
+		}
+	
 		for (int i=0; i < 7; i++)
 		{
 			window.draw(coin[i]);
 		}
+		///////////
+
 		window.draw(coinpunt);
 		
 	
@@ -397,6 +565,7 @@ int main()
 		//	window.draw(proyectiles[i]);
 
 		//Mostrar en la ventana creada los objetos dibujados.
+		}
 		window.display();
 		
 	}
