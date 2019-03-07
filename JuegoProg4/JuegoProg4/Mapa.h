@@ -8,6 +8,10 @@ class Mapa : public sf::Sprite , public Animacion
 {
 	public:
 		Texture texture;
+		Clock timer;
+		float deltatiempo = 0.0f;
+		
+
 
 		RectangleShape conjParedes[4];
 		RectangleShape conjPuertas[4];

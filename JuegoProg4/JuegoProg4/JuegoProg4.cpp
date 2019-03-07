@@ -87,7 +87,7 @@ int main()
 	
 	//sf::Vector2u vector1(3, 1);
 	//Animacion animafondo(&mapa.texture, vector1, 0.25);
-	float deltatiempo1 = 0.0f;
+	//float deltatiempo1 = 0.0f;
 
 	sf::Texture texturaExpl;
 	if (!texturaExpl.loadFromFile("./res/Imagenes/explosion.png"))
@@ -318,8 +318,8 @@ int main()
 		}*/
 		///////////
 
-		deltatiempo1 = timer1.restart().asSeconds();
-		mapa.Update(0, deltatiempo1);
+		mapa.deltatiempo = mapa.timer.restart().asSeconds();
+		mapa.Update(0, mapa.deltatiempo);
 		mapa.setTextureRect(mapa.uvRect);
 
 		deltatiempo = timer.restart().asSeconds();
