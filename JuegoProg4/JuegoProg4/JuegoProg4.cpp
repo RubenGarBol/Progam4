@@ -379,6 +379,16 @@ int main()
 		window.clear();
 
 		//Dibujar el fondo y los objetos, enemigos y personaje de la pantalla.
+		
+		
+		if (player.getGlobalBounds().intersects(mapa.conjParedes[3].getGlobalBounds()))
+		{
+
+		}
+		else
+		{
+
+		
 		window.draw(mapa);
 		
 		for (int i=0; i < 7; i++)
@@ -407,6 +417,7 @@ int main()
 		//	window.draw(proyectiles[i]);
 
 		//Mostrar en la ventana creada los objetos dibujados.
+		}
 		window.display();
 		
 	}
