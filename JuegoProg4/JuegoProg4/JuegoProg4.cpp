@@ -85,8 +85,8 @@ int main()
 
 	Mapa mapa(texturaFondo, paredes, paredes);
 	
-	sf::Vector2u vector1(3, 1);
-	Animacion animafondo(&mapa.texture, vector1, 0.25);
+	//sf::Vector2u vector1(3, 1);
+	//Animacion animafondo(&mapa.texture, vector1, 0.25);
 	float deltatiempo1 = 0.0f;
 
 	sf::Texture texturaExpl;
@@ -319,8 +319,8 @@ int main()
 		///////////
 
 		deltatiempo1 = timer1.restart().asSeconds();
-		animafondo.Update(0, deltatiempo1);
-		mapa.setTextureRect(animafondo.uvRect);
+		mapa.Update(0, deltatiempo1);
+		mapa.setTextureRect(mapa.uvRect);
 
 		deltatiempo = timer.restart().asSeconds();
 		animapp.Update(anim, deltatiempo);
