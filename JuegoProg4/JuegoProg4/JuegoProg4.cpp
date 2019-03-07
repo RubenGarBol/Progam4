@@ -15,7 +15,7 @@
 int main()
 {
 	//Crear la pantalla principal de juego con nombre "Isaac" y dimensiones 1056x888p.
-	sf::RenderWindow window(sf::VideoMode(1056, 888), "DNI");
+	sf::RenderWindow window(sf::VideoMode(1056, 888), "Issac");
 
 	//Cargar y establecer un icono de aplicación
 	sf::Image icon;
@@ -376,7 +376,7 @@ int main()
 			window.draw(coin[i]);
 		}
 		window.draw(coinpunt);
-		//window.draw(bala);
+		
 	
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
 		{
