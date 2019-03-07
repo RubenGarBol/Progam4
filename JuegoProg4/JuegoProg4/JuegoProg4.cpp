@@ -86,7 +86,7 @@ int main()
 	Mapa mapa(texturaFondo, paredes, paredes);
 	
 	sf::Vector2u vector1(3, 1);
-	Animacion animafondo(&texturaFondo, vector1, 0.25);
+	Animacion animafondo(&mapa.texture, vector1, 0.25);
 	float deltatiempo1 = 0.0f;
 
 	sf::Texture texturaExpl;

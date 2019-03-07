@@ -5,7 +5,7 @@ using namespace sf;
 
 class Mapa : public sf::Sprite {
 	public:
-		Texture textura;
+		Texture texture;
 
 		RectangleShape conjParedes[4];
 		RectangleShape conjPuertas[4];
