@@ -121,7 +121,7 @@ int main()
 
 	int cuenta = 0;
 
-	std::vector<Coin> coin(8);
+	std::vector<Coin> coin(7);
 
 	sf::Vector2u vectorcoin(4, 1);
 	Animacion animacoin(&coin[0].textura, vectorcoin, 0.25);
@@ -346,6 +346,7 @@ int main()
 			if (player.getGlobalBounds().intersects(coin[a].getGlobalBounds()))
 			{
 				coin[a].setPosition(2000, 2000);
+				
 				cuenta++;
 			}
 		}
