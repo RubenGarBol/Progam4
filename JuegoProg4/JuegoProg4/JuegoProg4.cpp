@@ -15,7 +15,7 @@
 int main()
 {
 	//Crear la pantalla principal de juego con nombre "Isaac" y dimensiones 1056x888p.
-	sf::RenderWindow window(sf::VideoMode(1056, 888), "DNI");
+	sf::RenderWindow window(sf::VideoMode(1056, 888), "Issac");
 
 	//Cargar y establecer un icono de aplicación
 	sf::Image icon;
@@ -85,9 +85,9 @@ int main()
 
 	Mapa mapa(texturaFondo, paredes, paredes);
 	
-	sf::Vector2u vector1(3, 1);
-	Animacion animafondo(&texturaFondo, vector1, 0.25);
-	float deltatiempo1 = 0.0f;
+	//sf::Vector2u vector1(3, 1);
+	//Animacion animafondo(&mapa.texture, vector1, 0.25);
+	//float deltatiempo1 = 0.0f;
 
 	sf::Texture texturaExpl;
 	if (!texturaExpl.loadFromFile("./res/Imagenes/explosion.png"))
@@ -318,9 +318,9 @@ int main()
 		}*/
 		///////////
 
-		deltatiempo1 = timer1.restart().asSeconds();
-		animafondo.Update(0, deltatiempo1);
-		mapa.setTextureRect(animafondo.uvRect);
+		//mapa.deltatiempo = mapa.timer.restart().asSeconds();
+		mapa.Update(0, mapa.deltatiempo, mapa.timer, mapa);
+		//mapa.setTextureRect(mapa.uvRect);
 
 		deltatiempo = timer.restart().asSeconds();
 		animapp.Update(anim, deltatiempo);
@@ -545,7 +545,7 @@ int main()
 		///////////
 
 		window.draw(coinpunt);
-		//window.draw(bala);
+		
 	
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
 		{
