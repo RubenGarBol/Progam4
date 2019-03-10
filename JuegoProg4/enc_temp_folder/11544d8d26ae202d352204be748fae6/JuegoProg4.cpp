@@ -114,7 +114,7 @@ int main()
 
 	//Carga y posicionamiento de los sprites/objetos del juego.
 	Personaje roca;
-	//sDefinicion de las balas como objetos(formados por vectores) circulares
+	//Definicion de las balas como objetos(formados por vectores) circulares
 	Enemigo ene(Vector2f size, int danyo, int vida, int ptos, Texture &texture);
 
 	//std::vector<Bullet> bulletarray;

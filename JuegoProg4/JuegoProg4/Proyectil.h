@@ -6,14 +6,9 @@ class Proyectil : public sf::CircleShape
 {
 public:
 
-	int dirx;
-	int diry;
-	Proyectil(int x, int y);
-
-	Vector2f getDirUp();
-	Vector2f getDirDown();
-	Vector2f getDirLeft();
-	Vector2f getDirRight();
+	float dirx;
+	float diry;
+	Proyectil(float x, float y);
 
 	~Proyectil();
 };
