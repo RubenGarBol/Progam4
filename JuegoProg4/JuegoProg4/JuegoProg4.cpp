@@ -6,8 +6,7 @@
 #include "Item.h"
 #include "Coin.h"
 #include "Bomba.h"
-
-
+#include "Proyectil.h"
 #include "Animacion.h"
 #include "Mapa.h"
 #include "Enemigo.h"
@@ -17,7 +16,10 @@
 int main()
 {
 	//Crear la pantalla principal de juego con nombre "Isaac" y dimensiones 1056x888p.
-	sf::RenderWindow window(sf::VideoMode(1056, 888), "Issac");
+	sf::RenderWindow window(sf::VideoMode(1056.f, 888.f), "Issac");
+
+	//Bloquear los frames por segundo a 60 para que la velocidad del personaje sea consistente en todos los dispositivos.
+	window.setFramerateLimit(60);
 
 	//Cargar y establecer un icono de aplicación
 	sf::Image icon;
@@ -37,6 +39,11 @@ int main()
 	//Creación de objeto rectangular que contendrá la textura del personaje
 	sf::RectangleShape player(sf::Vector2f(90.0f, 122.0f));
 	player.setPosition(200.0f, 200.0f);
+	
+	sf::RectangleShape hitbox;
+	hitbox.setSize(sf::Vector2f(60.f, 20.f));
+	hitbox.setOrigin(-18.f, -95.f);
+	//hitbox.setFillColor(Color::White);
 
 	//Carga del spritesheet de las animaciones del personaje principal
 	sf::Texture pjtextura;
@@ -64,20 +71,20 @@ int main()
 	
 	//Objetos pared para delimitar los bordes jugables de la pantalla.
 	sf::RectangleShape pared1;
-	pared1.setPosition(sf::Vector2f(0, 0));
-	pared1.setSize(sf::Vector2f(1056, 120));
+	pared1.setPosition(sf::Vector2f(0.f, 0.f));
+	pared1.setSize(sf::Vector2f(1056.f, 120.f));
 
 	sf::RectangleShape pared2;
-	pared2.setPosition(sf::Vector2f(0, 0));
-	pared2.setSize(sf::Vector2f(30, 888));
+	pared2.setPosition(sf::Vector2f(0.f, 0.f));
+	pared2.setSize(sf::Vector2f(30.f, 888.f));
 
 	sf::RectangleShape pared3;
-	pared3.setPosition(sf::Vector2f(0, 768));
-	pared3.setSize(sf::Vector2f(1056, 120));
+	pared3.setPosition(sf::Vector2f(0.f, 768.f));
+	pared3.setSize(sf::Vector2f(1056.f, 120.f));
 
 	sf::RectangleShape pared4;
-	pared4.setPosition(sf::Vector2f(1026, 0));
-	pared4.setSize(sf::Vector2f(30, 888));
+	pared4.setPosition(sf::Vector2f(1026.f, 0.f));
+	pared4.setSize(sf::Vector2f(30.f, 888.f));
 
 	RectangleShape paredes[4];
 	paredes[0] = pared1;
@@ -113,33 +120,31 @@ int main()
 	//std::vector<Bullet> bulletarray;
 
 	//Genera un cofre en la posición establecida
-	sf::Vector2f vectorCofre((window.getSize().x/2)-56, (window.getSize().y / 2 )- 40);
+	sf::Vector2f vectorCofre((window.getSize().x/2)-56.f, (window.getSize().y / 2 )- 40.f);
 	Cofre cofre(vectorCofre);
 
 	//Genera la bomba en el pixel 250, 150.
 	sf::Vector2f vectorBomba(250, 150);
-//	Bomba bomba(vectorBomba);
 
-	//Genera una moneda en el pixel 100,100.
-	//Coin coin(vectorCoin);
+	//
 
 	int cuenta = 0;
 
-	std::vector<Coin> coin(8);
+	std::vector<Coin> coin(7);
 
 	sf::Vector2u vectorcoin(4, 1);
 	Animacion animacoin(&coin[0].textura, vectorcoin, 0.25);
 	float deltacoin = 0.0f;
 
-	//for (int i = 0; i < coin.size(); i++)
+	for (int i = 0; i < coin.size(); i++)
 	{
-		coin[0].setPosition(460, 150);
-		coin[1].setPosition(140, 275);
-		coin[2].setPosition(800, 300);
-		coin[3].setPosition(700, 500);
-		coin[4].setPosition(125, 500);
-		coin[5].setPosition(250, 650);
-		coin[6].setPosition(700, 700);
+		coin[0].setPosition(460.f, 150.f);
+		coin[1].setPosition(140.f, 275.f);
+		coin[2].setPosition(800.f, 300.f);
+		coin[3].setPosition(700.f, 500.f);
+		coin[4].setPosition(125.f, 500.f);
+		coin[5].setPosition(250.f, 650.f);
+		coin[6].setPosition(700.f, 700.f);
 	}
 		
 	sf::Font font;
@@ -153,80 +158,68 @@ int main()
 
 	sf::Sprite coinpunt;
 	coinpunt.setTexture(texturapuntos);
-	coinpunt.setPosition(15, 830);
+	coinpunt.setPosition(15.f, 830.f);
 
 	sf::Text puntos;
 	puntos.setFont(font);
-	puntos.setCharacterSize(25);
+	puntos.setCharacterSize(25.f);
 	puntos.setStyle(sf::Text::Bold);
 	puntos.setFillColor(sf::Color::White);
 	puntos.setOutlineColor(sf::Color::Black);
 	puntos.setOutlineThickness(2);
-	puntos.setPosition(80, 845);
+	puntos.setPosition(80.f, 845.f);
 
 	sf::Text text;
 	text.setFont(font);
 	text.setString(": ");
-	text.setCharacterSize(25);
+	text.setCharacterSize(25.f);
 	text.setStyle(sf::Text::Bold);
 	text.setFillColor(sf::Color::White);
 	text.setOutlineColor(sf::Color::Black);
 	text.setOutlineThickness(2);
-	text.setPosition(60, 845);
+	text.setPosition(60.f, 845.f);
+
+	//
 
 	//Velocidad personaje principal
 	int veloc = 4;
 
-	//Velocidad proyectiles
-	int speed = 15;
-
 	///////////
-	CircleShape proyectil1;
-	proyectil1.setFillColor(Color::White);
-	proyectil1.setRadius(5.f);
-
-	CircleShape proyectil2;
-	proyectil2.setFillColor(Color::White);
-	proyectil2.setRadius(5.f);
-
-	CircleShape proyectil3;
-	proyectil3.setFillColor(Color::White);
-	proyectil3.setRadius(5.f);
-
-	CircleShape proyectil4;
-	proyectil4.setFillColor(Color::White);
-	proyectil4.setRadius(5.f);
-
-	RectangleShape enemigo1;
-	enemigo1.setFillColor(Color::Black);
-	enemigo1.setSize(Vector2f(50.f, 50.f));
-
-	std::vector<RectangleShape> enemigo;
-	std::vector<CircleShape> proyectiles1;
-	std::vector<CircleShape> proyectiles2;
-	std::vector<CircleShape> proyectiles3;
-	std::vector<CircleShape> proyectiles4;
-
-	proyectiles1.push_back(CircleShape(proyectil1));
-	proyectiles2.push_back(CircleShape(proyectil2));
-	proyectiles3.push_back(CircleShape(proyectil3));
-	proyectiles4.push_back(CircleShape(proyectil4));
-	enemigo.push_back(RectangleShape(enemigo1));
 
 	Vector2f centrar;
-	Vector2f balamove;
 
 	int delaytiro = 0;
+
+	Proyectil disparoup(0, -10);
+	Proyectil disparodown(0, 10);
+	Proyectil disparoR(10, 0);
+	Proyectil disparoL(-10, 0);
+	Proyectil disparoLUp(-7, -7);
+	Proyectil disparoLDown(-7, 7);
+	Proyectil disparoRUp(7, -7);
+	Proyectil disparoRDown(7, 7);
+
+	std::vector<Proyectil> disparos;
+
 	///////////
 
 
+	///////////
 
 	//Bucle ejecutado mientras la pantalla se mantenga abierta.
 	while (window.isOpen())
 	{
 		sf::Event event;
 
+		//Función para cerrar la aplicación al pulsar el boton X de la parte superior derecha.
+		while (window.pollEvent(event))
+		{
+			if (event.type == sf::Event::Closed) window.close();
+		}
+
+		///////////
 		
+
 		///////////
 		centrar = Vector2f(player.getPosition().x + player.getSize().x/2, player.getPosition().y + player.getSize().y/2);
 		
@@ -235,111 +228,82 @@ int main()
 			delaytiro++;
 		}
 
+		if (Keyboard::isKeyPressed(Keyboard::Up) && Keyboard::isKeyPressed(Keyboard::Left) && delaytiro >= 10)
+		{
+			disparoLUp.setPosition(centrar);
+			disparos.push_back(Proyectil(disparoLUp));
+			delaytiro = 0;
+		}
+
+		if (Keyboard::isKeyPressed(Keyboard::Up) && Keyboard::isKeyPressed(Keyboard::Right) && delaytiro >= 10)
+		{
+			disparoRUp.setPosition(centrar);
+			disparos.push_back(Proyectil(disparoRUp));
+			delaytiro = 0;
+		}
+
+		if (Keyboard::isKeyPressed(Keyboard::Down) && Keyboard::isKeyPressed(Keyboard::Left) && delaytiro >= 10)
+		{
+			disparoLDown.setPosition(centrar);
+			disparos.push_back(Proyectil(disparoLDown));
+			delaytiro = 0;
+		}
+
+		if (Keyboard::isKeyPressed(Keyboard::Down) && Keyboard::isKeyPressed(Keyboard::Right) && delaytiro >= 10)
+		{
+			disparoRDown.setPosition(centrar);
+			disparos.push_back(Proyectil(disparoRDown));
+			delaytiro = 0;
+		}
+
 		if (Keyboard::isKeyPressed(Keyboard::Up) && delaytiro >= 10)
 		{
-			proyectil1.setPosition(centrar);
-			proyectiles1.push_back(CircleShape(proyectil1));
+			disparoup.setPosition(centrar);
+			disparos.push_back(Proyectil(disparoup));
 			delaytiro=0;
-			
 		}
-		for (size_t i = 0; i < proyectiles1.size(); i++)
-		{
-			
-			proyectiles1[i].move(0, -10.f);
-			if (proyectiles1[i].getGlobalBounds().intersects(cofre.getGlobalBounds()) || proyectiles1[i].getGlobalBounds().intersects(mapa.conjParedes[0].getGlobalBounds())
-				|| proyectiles1[i].getGlobalBounds().intersects(mapa.conjParedes[1].getGlobalBounds()) || proyectiles1[i].getGlobalBounds().intersects(mapa.conjParedes[2].getGlobalBounds())
-				|| proyectiles1[i].getGlobalBounds().intersects(mapa.conjParedes[3].getGlobalBounds()))
-			{
-				proyectiles1.erase(proyectiles1.begin() + i);
-			}
-		}
+		
 		if (Keyboard::isKeyPressed(Keyboard::Down) && delaytiro >= 10)
 		{
-			proyectil2.setPosition(centrar);
-			proyectiles2.push_back(CircleShape(proyectil2));
+			disparodown.setPosition(centrar);
+			disparos.push_back(Proyectil(disparodown));
 			delaytiro = 0;
-			
-		
 		}
-		for (size_t i = 0; i < proyectiles2.size(); i++)
-		{
-			
-			proyectiles2[i].move(0, 10.f);
-			if (proyectiles2[i].getGlobalBounds().intersects(cofre.getGlobalBounds()) || proyectiles2[i].getGlobalBounds().intersects(mapa.conjParedes[0].getGlobalBounds())
-				|| proyectiles2[i].getGlobalBounds().intersects(mapa.conjParedes[1].getGlobalBounds()) || proyectiles2[i].getGlobalBounds().intersects(mapa.conjParedes[2].getGlobalBounds())
-				|| proyectiles2[i].getGlobalBounds().intersects(mapa.conjParedes[3].getGlobalBounds()))
-			{
-				proyectiles2.erase(proyectiles2.begin() + i);
-			}
-		}
+
 		if (Keyboard::isKeyPressed(Keyboard::Left) && delaytiro >= 10)
 		{
-			proyectil3.setPosition(centrar);
-			proyectiles3.push_back(CircleShape(proyectil3));
+			disparoL.setPosition(centrar);
+			disparos.push_back(Proyectil(disparoL));
 			delaytiro = 0;
-			
+		}
 		
-		}
-		for (size_t i = 0; i < proyectiles3.size(); i++)
-		{
-			
-			proyectiles3[i].move(-10.f, 0);
-			if (proyectiles3[i].getGlobalBounds().intersects(cofre.getGlobalBounds()) || proyectiles3[i].getGlobalBounds().intersects(mapa.conjParedes[0].getGlobalBounds())
-				|| proyectiles3[i].getGlobalBounds().intersects(mapa.conjParedes[1].getGlobalBounds()) || proyectiles3[i].getGlobalBounds().intersects(mapa.conjParedes[2].getGlobalBounds())
-				|| proyectiles3[i].getGlobalBounds().intersects(mapa.conjParedes[3].getGlobalBounds()))
-			{
-				proyectiles3.erase(proyectiles3.begin() + i);
-			}
-		}
 		if (Keyboard::isKeyPressed(Keyboard::Right) && delaytiro >= 10)
 		{
-			proyectil4.setPosition(centrar);
-			proyectiles4.push_back(CircleShape(proyectil4));
+			disparoR.setPosition(centrar);
+			disparos.push_back(Proyectil(disparoR));
 			delaytiro = 0;
+		}
+	
+		for (size_t i = 0; i < disparos.size(); i++)
+		{
+			disparos[i].move(disparos[i].dirx, disparos[i].diry);
 			
-		}
-		for (size_t i = 0; i < proyectiles4.size(); i++)
-		{
-			proyectiles4[i].move(10.f, 0);
-			if (proyectiles4[i].getGlobalBounds().intersects(cofre.getGlobalBounds()) || proyectiles4[i].getGlobalBounds().intersects(mapa.conjParedes[0].getGlobalBounds())
-				|| proyectiles4[i].getGlobalBounds().intersects(mapa.conjParedes[1].getGlobalBounds()) || proyectiles4[i].getGlobalBounds().intersects(mapa.conjParedes[2].getGlobalBounds())
-				|| proyectiles4[i].getGlobalBounds().intersects(mapa.conjParedes[3].getGlobalBounds()))
+			if (disparos[i].getGlobalBounds().intersects(cofre.getGlobalBounds()) || disparos[i].getGlobalBounds().intersects(mapa.conjParedes[0].getGlobalBounds()) 
+				|| disparos[i].getGlobalBounds().intersects(mapa.conjParedes[1].getGlobalBounds()) || disparos[i].getGlobalBounds().intersects(mapa.conjParedes[2].getGlobalBounds())
+				|| disparos[i].getGlobalBounds().intersects(mapa.conjParedes[3].getGlobalBounds()) )
 			{
-				proyectiles4.erase(proyectiles4.begin() + i);
+				disparos.erase(disparos.begin() + i);
 			}
 		}
-
-		
-		/*for (size_t i = 0; i < proyectiles.size(); i++)
-		{
-			proyectiles[i].move(balamove);
-			if (proyectiles[i].getGlobalBounds().intersects(cofre.getGlobalBounds()) || proyectiles[i].getGlobalBounds().intersects(mapa.conjParedes[0].getGlobalBounds()) 
-				|| proyectiles[i].getGlobalBounds().intersects(mapa.conjParedes[1].getGlobalBounds()) || proyectiles[i].getGlobalBounds().intersects(mapa.conjParedes[2].getGlobalBounds())
-				|| proyectiles[i].getGlobalBounds().intersects(mapa.conjParedes[3].getGlobalBounds()) )
-			{
-				proyectiles.erase(proyectiles.begin() + i);
-			}
-		}*/
 		///////////
 
-		//mapa.deltatiempo = mapa.timer.restart().asSeconds();
 		mapa.Update(0, mapa.deltatiempo, mapa.timer, mapa);
-		//mapa.setTextureRect(mapa.uvRect);
-
+		
 		deltatiempo = timer.restart().asSeconds();
 		animapp.Update(anim, deltatiempo);
 		player.setTextureRect(animapp.uvRect);
 
 		explosion.setPosition(player.getPosition().x, player.getPosition().y);
-
-		//Bloquear los frames por segundo a 60 para que la velocidad del personaje sea consistente en todos los dispositivos.
-		window.setFramerateLimit(60);
-	
-		//Función para cerrar la aplicación al pulsar el boton X de la parte superior derecha.
-		while (window.pollEvent(event))
-		{
-			if (event.type == sf::Event::Closed) window.close();
-		}
 
 		for (int a=0; a<7; a++)
 		{ 
@@ -350,22 +314,26 @@ int main()
 			if (player.getGlobalBounds().intersects(coin[a].getGlobalBounds()))
 			{
 				coin[a].setPosition(2000, 2000);
+				
 				cuenta++;
 			}
 		}
 		
-		
 		puntos.setString(std::to_string(cuenta));
 		
 		//Metodos encargados de gestionar el movimiento y colision del personaje principal con el resto de objetos y paredes del juego.
+
+		hitbox.setPosition(Vector2f(player.getPosition().x, player.getPosition().y));
+
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
 		{
-			player.move(0.0, -veloc);
-			if (player.getGlobalBounds().intersects(cofre.getGlobalBounds())) {
-				player.move(0.0, veloc);
+			player.move(0.f, -veloc);
+			hitbox.setPosition(Vector2f(player.getPosition().x, player.getPosition().y));
+			if (hitbox.getGlobalBounds().intersects(cofre.getGlobalBounds())) {
+				player.move(0.f, veloc);
 			}
-			if (player.getGlobalBounds().intersects(mapa.conjParedes[0].getGlobalBounds())) {
-				player.move(0.0, veloc);
+			if (hitbox.getGlobalBounds().intersects(mapa.conjParedes[0].getGlobalBounds())) {
+				player.move(0.f, veloc);
 			}
 			if(anim==3)
 			{ 
@@ -382,12 +350,13 @@ int main()
 
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
 		{
-			player.move(0.0, veloc);
-			if (player.getGlobalBounds().intersects(cofre.getGlobalBounds())) {
-				player.move(0.0, -veloc);
+			player.move(0.f, veloc);
+			hitbox.setPosition(Vector2f(player.getPosition().x, player.getPosition().y));
+			if (hitbox.getGlobalBounds().intersects(cofre.getGlobalBounds())) {
+				player.move(0.f, -veloc);
 			}
 			if (player.getGlobalBounds().intersects(mapa.conjParedes[2].getGlobalBounds())) {
-				player.move(0.0, -veloc);
+				player.move(0.f, -veloc);
 			}
 			if (anim == 3)
 			{
@@ -404,12 +373,13 @@ int main()
 
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
 		{
-			player.move(-veloc, 0.0);
-			if (player.getGlobalBounds().intersects(cofre.getGlobalBounds())) {
-				player.move(veloc, 0.0);
+			player.move(-veloc, 0.f);
+			hitbox.setPosition(Vector2f(player.getPosition().x, player.getPosition().y));
+			if (hitbox.getGlobalBounds().intersects(cofre.getGlobalBounds())) {
+				player.move(veloc, 0.f);
 			}
-			if (player.getGlobalBounds().intersects(mapa.conjParedes[1].getGlobalBounds())) {
-				player.move(veloc, 0.0);
+			if (hitbox.getGlobalBounds().intersects(mapa.conjParedes[1].getGlobalBounds())) {
+				player.move(veloc, 0.f);
 			}
 			deltatiempo = timer.restart().asSeconds();
 			animapp.Update(2, deltatiempo);
@@ -420,12 +390,13 @@ int main()
 
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
 		{
-			player.move(veloc, 0.0);
-			if (player.getGlobalBounds().intersects(cofre.getGlobalBounds())) {
-				player.move(-veloc, 0.0);
+			player.move(veloc, 0.f);
+			hitbox.setPosition(Vector2f(player.getPosition().x, player.getPosition().y));
+			if (hitbox.getGlobalBounds().intersects(cofre.getGlobalBounds())) {
+				player.move(-veloc, 0.f);
 			}
-			if (player.getGlobalBounds().intersects(mapa.conjParedes[3].getGlobalBounds())) {
-				player.move(-veloc, 0.0);
+			if (hitbox.getGlobalBounds().intersects(mapa.conjParedes[3].getGlobalBounds())) {
+				player.move(-veloc, 0.f);
 			}
 			deltatiempo = timer.restart().asSeconds();
 			animapp.Update(1, deltatiempo);
@@ -447,66 +418,7 @@ int main()
 			animapp.Update(anim, deltatiempo);
 			player.setTextureRect(animapp.uvRect);
 		}
-
-		int speed = 10;
-		//Movimiento y KeyBindings de los proyectiles en funcion de su array
-		/*
-		 if (shottimer < 5)
-		 {
-			 printf(" Incremento el tiempo ");
-			 shottimer++;
-			 printf("%i ", shottimer);
-		 }
-		//Al presionar arriba que se meta en un bucle que se resetea al final 
-		/* if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && shottimer >= 5)
-		 {
-			 proyectil.setPosition(100,100);
-			 proyectiles.push_back(CircleShape(proyectil));
-			 printf("Dispara ");
-			
-			 shottimer = 0;
-		 }
-		 for (size_t i = 0; i < proyectiles.size(); i++)
-		 {
-			 proyectil.move(0.0, speed);
-
-			 if (proyectiles[i].getPosition().y < 0)
-				 balas--;
-				//proyectil.setPosition(200.0f, 300.f);
-				 proyectiles.erase(proyectiles.begin() + i);
-
-		 }
-		 printf("Hay %i", balas);
-		/*
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-		{
-			proyectil.move(0.0, speed);
-			if (bala.getGlobalBounds().intersects(pared3.getGlobalBounds())) {
-				bala.move(0.0, -speed);
-				p-> ~Bullet();
-			}
-
-		}
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-		{
-			bala.move(-speed, 0.0);
-			if (bala.getGlobalBounds().intersects(pared2.getGlobalBounds())) {
-				bala.move(speed, 0.0);
-				p-> ~Bullet();
-			}
-
-		}
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-		{
-			bala.move(speed, 0.0);
-			if (bala.getGlobalBounds().intersects(pared4.getGlobalBounds())) {
-				bala.move(-speed, 0.0);
-				p-> ~Bullet();
-			}
-
-		}
-		*/
-		
+	
 		//Limpiar la pantalla principal
 		window.clear();
 
@@ -524,10 +436,11 @@ int main()
 		window.draw(mapa);
 		
 		///////////
-		for (size_t i = 0; i < proyectiles1.size(); i++)
+		for (size_t i = 0; i < disparos.size(); i++)
 		{
-			window.draw(proyectiles1[i]);
+			window.draw(disparos[i]);
 		}
+		/*
 		for (size_t i = 0; i < proyectiles2.size(); i++)
 		{
 			window.draw(proyectiles2[i]);
@@ -540,7 +453,7 @@ int main()
 		{
 			window.draw(proyectiles4[i]);
 		}
-	
+		*/
 		for (int i=0; i < 7; i++)
 		{
 			window.draw(coin[i]);
@@ -563,7 +476,7 @@ int main()
 		window.draw(cofre);
 		window.draw(text);
 		window.draw(player);
-	
+		//window.draw(hitbox);
 		
 		//Pintamos los proyectiles los cuales se encuantran en un array
 		//for (size_t i = 0; i < proyectiles.size(); i++)
