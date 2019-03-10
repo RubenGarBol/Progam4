@@ -7,8 +7,10 @@
 #include "Coin.h"
 #include "Bomba.h"
 
+
 #include "Animacion.h"
 #include "Mapa.h"
+#include "Enemigo.h"
 
 #include<vector>
 
@@ -85,6 +87,7 @@ int main()
 
 	Mapa mapa(texturaFondo, paredes, paredes);
 	
+	
 	//sf::Vector2u vector1(3, 1);
 	//Animacion animafondo(&mapa.texture, vector1, 0.25);
 	//float deltatiempo1 = 0.0f;
@@ -105,6 +108,7 @@ int main()
 	//Carga y posicionamiento de los sprites/objetos del juego.
 	Personaje roca;
 	//Definicion de las balas como objetos(formados por vectores) circulares
+	Enemigo ene(Vector2f size, int danyo, int vida, int ptos, Texture &texture);
 
 	//std::vector<Bullet> bulletarray;
 
@@ -559,6 +563,7 @@ int main()
 		window.draw(cofre);
 		window.draw(text);
 		window.draw(player);
+	
 		
 		//Pintamos los proyectiles los cuales se encuantran en un array
 		//for (size_t i = 0; i < proyectiles.size(); i++)
