@@ -6,7 +6,7 @@ Proyectil::Proyectil(int x, int y)
 {
 	setFillColor(Color::White);
 	setRadius(5.f);
-	
+
 	dirx = x;
 	diry = y;
 
@@ -15,7 +15,7 @@ Proyectil::Proyectil(int x, int y)
 
 
 Vector2f Proyectil::getDirUp() {
-	Vector2f vectorUp (0.f, -10.f);
+	Vector2f vectorUp(0.f, -10.f);
 	return vectorUp;
 }
 Vector2f Proyectil::getDirDown() {
