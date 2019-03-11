@@ -2,7 +2,7 @@
 
 
 
-Proyectil::Proyectil(int x, int y)
+Proyectil::Proyectil(float x, float y)
 {
 	setFillColor(Color::White);
 	setRadius(5.f);
