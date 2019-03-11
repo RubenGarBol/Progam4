@@ -10,11 +10,6 @@ public:
 	float diry;
 	Proyectil(float x, float y);
 
-	Vector2f getDirUp();
-	Vector2f getDirDown();
-	Vector2f getDirLeft();
-	Vector2f getDirRight();
-
 	~Proyectil();
 };
 

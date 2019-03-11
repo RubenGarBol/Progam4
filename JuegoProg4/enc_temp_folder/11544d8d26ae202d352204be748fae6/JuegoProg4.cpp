@@ -42,7 +42,7 @@ int main()
 	
 	sf::RectangleShape hitbox;
 	hitbox.setSize(sf::Vector2f(60.f, 20.f));
-	hitbox.setOrigin(-15.f, -95.f);
+	hitbox.setOrigin(-18.f, -95.f);
 	//hitbox.setFillColor(Color::White);
 
 	//Carga del spritesheet de las animaciones del personaje principal
@@ -114,7 +114,7 @@ int main()
 
 	//Carga y posicionamiento de los sprites/objetos del juego.
 	Personaje roca;
-	//sDefinicion de las balas como objetos(formados por vectores) circulares
+	//Definicion de las balas como objetos(formados por vectores) circulares
 	Enemigo ene(Vector2f size, int danyo, int vida, int ptos, Texture &texture);
 
 	//std::vector<Bullet> bulletarray;
@@ -147,11 +147,7 @@ int main()
 
 		
 	sf::Font font;
-	
-	if (!font.loadFromFile("./res/pixeled.ttf"))
-	{
-		std::cout << "No se ha encontrado la fuente de: pixeled.ttf\n";
-	}
+	font.loadFromFile("./res/pixeled.ttf");
 
 	sf::Texture texturapuntos;
 	if (!texturapuntos.loadFromFile("./res/Imagenes/coinpunt.png"))
@@ -191,7 +187,7 @@ int main()
 
 	Vector2f centrar;
 
-	float delaytiro = 0.f;
+	int delaytiro = 0;
 
 	Proyectil disparoup(0, -10);
 	Proyectil disparodown(0, 10);
@@ -308,15 +304,15 @@ int main()
 
 		explosion.setPosition(player.getPosition().x, player.getPosition().y);
 
-		for (size_t i=0; i<coin.size(); i++)
+		for (int a=0; a<7; a++)
 		{ 
 			deltacoin = timercoin.restart().asSeconds();
 			animacoin.Update(0, deltacoin);
-			coin[i].setTextureRect(animacoin.uvRect);
+			coin[a].setTextureRect(animacoin.uvRect);
 
-			if (player.getGlobalBounds().intersects(coin[i].getGlobalBounds()))
+			if (player.getGlobalBounds().intersects(coin[a].getGlobalBounds()))
 			{
-				coin[i].setPosition(2000.f, 2000.f);
+				coin[a].setPosition(2000.f, 2000.f);
 				
 				cuenta++;
 			}
@@ -427,26 +423,44 @@ int main()
 
 		//Dibujar el fondo y los objetos, enemigos y personaje de la pantalla.
 		
-		/*if (player.getGlobalBounds().intersects(mapa.conjParedes[3].getGlobalBounds()))
+		
+		if (player.getGlobalBounds().intersects(mapa.conjParedes[3].getGlobalBounds()))
 		{
 
 		}
 		else
 		{
-*/
-		window.draw(mapa);
-		window.draw(coinpunt);
-		window.draw(puntos);
 
+		
+		window.draw(mapa);
+		
+		///////////
 		for (size_t i = 0; i < disparos.size(); i++)
 		{
 			window.draw(disparos[i]);
 		}
-	
+		/*
+		for (size_t i = 0; i < proyectiles2.size(); i++)
+		{
+			window.draw(proyectiles2[i]);
+		}
+		for (size_t i = 0; i < proyectiles3.size(); i++)
+		{
+			window.draw(proyectiles3[i]);
+		}
+		for (size_t i = 0; i < proyectiles4.size(); i++)
+		{
+			window.draw(proyectiles4[i]);
+		}
+		*/
 		for (int i=0; i < 7; i++)
 		{
 			window.draw(coin[i]);
 		}
+		///////////
+
+		window.draw(coinpunt);
+		
 	
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
 		{
@@ -455,15 +469,21 @@ int main()
 			explosion.setTextureRect(animaexpl.uvRect);
 			window.draw(explosion);
 		}
-		
+
+		window.draw(puntos);
 		window.draw(text);
 		window.draw(cofre);
 		window.draw(text);
 		window.draw(player);
 		//window.draw(hitbox);
-		//}
+		
+		//Pintamos los proyectiles los cuales se encuantran en un array
+		//for (size_t i = 0; i < proyectiles.size(); i++)
+		//	window.draw(proyectiles[i]);
 
 		//Mostrar en la ventana creada los objetos dibujados.
+		}
 		window.display();
+		
 	}
 }

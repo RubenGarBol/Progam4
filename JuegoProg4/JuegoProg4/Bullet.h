@@ -36,6 +36,5 @@ public:
 	}
 private:
 	sf::RectangleShape bullet;
-	Bullet();
 };
 
