@@ -1,13 +1,16 @@
 #include "Personaje.h"
 #include "SFML/Graphics.hpp"
 
-Personaje::Personaje() {
-	posicion.x = 616;
-	posicion.y = 160;
+Personaje::Personaje(sf::Texture &textura) :Sprite(textura), Animacion(&textura, Vector2u(4, 4), 0.15) {
+	anim = 0;
+	animd = 0;
+	setTexture(textura);
+	texture = textura;
+
+	posicion.x = 200.0f;
+	posicion.y = 200.0f;
 	velocidad = 4;
 
-	textura.loadFromFile("./res/Imagenes/roca.png");
-	setTexture(textura);
 	setPosition(posicion.x, posicion.y);
 
 }
