@@ -36,15 +36,6 @@ int main()
 		std::cout << "No se ha encontrado la textura de: PiskelPrueba.png\n";
 	}
 
-	//Creación de objeto rectangular que contendrá la textura del personaje
-	sf::RectangleShape player(sf::Vector2f(90.0f, 122.0f));
-	player.setPosition(200.0f, 200.0f);
-	
-	sf::RectangleShape hitbox;
-	hitbox.setSize(sf::Vector2f(60.f, 20.f));
-	hitbox.setOrigin(-15.f, -95.f);
-	//hitbox.setFillColor(Color::White);
-
 	//Carga del spritesheet de las animaciones del personaje principal
 	sf::Texture pjtextura;
 	if (!pjtextura.loadFromFile("./res/Imagenes/pjtextura.png"))
@@ -52,15 +43,27 @@ int main()
 		std::cout << "No se ha encontrado la textura de: knight_idle.png\n";
 	}
 
-	//Establecer la textura al personaje y declarar las propiedades de las animaciones y sprisheet
-	player.setTexture(&pjtextura);
-	sf::Vector2u vector(4, 4);
-	Animacion animapp(&pjtextura, vector, 0.15f);
-	float deltatiempo = 0.0f;
+	//Creación de objeto rectangular que contendrá la textura del personaje
+	/*
+	sf::Sprite player(pjtextura);
+	player.setPosition(200.0f, 200.0f);
+	*/
+	sf::RectangleShape hitbox;
+	hitbox.setSize(sf::Vector2f(60.f, 20.f));
+	hitbox.setOrigin(-15.f, -95.f);
+	//hitbox.setFillColor(Color::White);
 
+	
+
+	//Establecer la textura al personaje y declarar las propiedades de las animaciones y sprisheet
+	
+	//sf::Vector2u vector(4, 4);
+	//Animacion animapp(&pjtextura, vector, 0.15f);
+	//float deltatiempo = 0.0f;
+	
 	//Variables encargadas de la posicion de la animación
-	int anim = 0;
-	int animd = 0;
+	//int anim = 0;
+	//int animd = 0;
 
 	//Timers encargados de la gestion del tiempo para el cambio de imagen de las animaciones
 	sf::Clock timer;
@@ -93,6 +96,7 @@ int main()
 	paredes[3] = pared4;
 
 	Mapa mapa(texturaFondo, paredes, paredes);
+	Personaje player(pjtextura);
 	
 	
 	//sf::Vector2u vector1(3, 1);
@@ -113,7 +117,7 @@ int main()
 	float deltatiempo2 = 0.0f;
 
 	//Carga y posicionamiento de los sprites/objetos del juego.
-	Personaje roca;
+	
 	//sDefinicion de las balas como objetos(formados por vectores) circulares
 	Texture textur;
 	textur.loadFromFile("./res/Imagenes/coin.png");
@@ -226,7 +230,7 @@ int main()
 		
 
 		///////////
-		centrar = Vector2f(player.getPosition().x + player.getSize().x/2, player.getPosition().y + player.getSize().y/2);
+		centrar = Vector2f(player.getPosition().x + player.getTextureRect().width/2, player.getPosition().y + player.getTextureRect().height/2);
 		
 		if (delaytiro < 10)
 		{
@@ -303,10 +307,12 @@ int main()
 		///////////
 
 		mapa.Update(0, mapa.deltatiempo, mapa.timer, mapa);
-		
+		/*
 		deltatiempo = timer.restart().asSeconds();
 		animapp.Update(anim, deltatiempo);
 		player.setTextureRect(animapp.uvRect);
+		*/
+		player.Update(player.anim, player.deltatiempo, player.timer, player);
 
 		explosion.setPosition(player.getPosition().x, player.getPosition().y);
 
@@ -340,17 +346,16 @@ int main()
 			if (hitbox.getGlobalBounds().intersects(mapa.conjParedes[0].getGlobalBounds())) {
 				player.move(0.f, veloc);
 			}
-			if(anim==3)
+			if(player.anim==3)
 			{ 
-				animd = 2;
+				player.animd = 2;
 			}
-			if(anim==0)
+			if(player.anim ==0)
 			{
-				animd = 1;
+				player.animd = 1;
 			}
-			deltatiempo = timer.restart().asSeconds();
-			animapp.Update(animd, deltatiempo);
-			player.setTextureRect(animapp.uvRect);
+
+			player.Update(player.animd, player.deltatiempo, player.timer, player);
 		}
 
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
@@ -363,17 +368,15 @@ int main()
 			if (player.getGlobalBounds().intersects(mapa.conjParedes[2].getGlobalBounds())) {
 				player.move(0.f, -veloc);
 			}
-			if (anim == 3)
+			if (player.anim == 3)
 			{
-				animd = 2;
+				player.animd = 2;
 			}
-			if(anim==0)
+			if(player.anim ==0)
 			{
-				animd = 1;
+				player.animd = 1;
 			}
-			deltatiempo = timer.restart().asSeconds();
-			animapp.Update(animd, deltatiempo);
-			player.setTextureRect(animapp.uvRect);
+			player.Update(player.animd, player.deltatiempo, player.timer, player);
 		}
 
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
@@ -386,11 +389,11 @@ int main()
 			if (hitbox.getGlobalBounds().intersects(mapa.conjParedes[1].getGlobalBounds())) {
 				player.move(veloc, 0.f);
 			}
-			deltatiempo = timer.restart().asSeconds();
-			animapp.Update(2, deltatiempo);
-			player.setTextureRect(animapp.uvRect);
+			
 
-			anim = 3;
+			player.Update(2, player.deltatiempo, player.timer, player);
+
+			player.anim = 3;
 		}
 
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
@@ -403,25 +406,21 @@ int main()
 			if (hitbox.getGlobalBounds().intersects(mapa.conjParedes[3].getGlobalBounds())) {
 				player.move(-veloc, 0.f);
 			}
-			deltatiempo = timer.restart().asSeconds();
-			animapp.Update(1, deltatiempo);
-			player.setTextureRect(animapp.uvRect);
+			player.Update(1, player.deltatiempo, player.timer, player);
 
-			anim = 0;
+			player.anim = 0;
 		}
 		
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) && sf::Keyboard::isKeyPressed(sf::Keyboard::D))
 		{
-			deltatiempo = timer.restart().asSeconds();
-			animapp.Update(anim, deltatiempo);
-			player.setTextureRect(animapp.uvRect);
+
+			player.Update(player.anim, player.deltatiempo, player.timer, player);
 		}
 
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) && sf::Keyboard::isKeyPressed(sf::Keyboard::S))
 		{
-			deltatiempo = timer.restart().asSeconds();
-			animapp.Update(anim, deltatiempo);
-			player.setTextureRect(animapp.uvRect);
+			
+			player.Update(player.anim, player.deltatiempo, player.timer, player);
 		}
 	
 		//Limpiar la pantalla principal
