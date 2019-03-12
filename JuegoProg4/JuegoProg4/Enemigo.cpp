@@ -1,21 +1,24 @@
 #include "Enemigo.h"
 
+#include "SFML/Graphics.hpp"
 
 
-Enemigo::Enemigo(Vector2f size, int danyo, int vida, int ptos, Texture &texture)
+Enemigo::Enemigo(Vector2f pos, int danyo, int vida, Texture& texture)
 {
 	//texture.loadFromFile("./res/Imagenes/coin.png");
-	//setTexture(texture);
 	danyo = 0;
 	vida = 0;
-	ptos = 0;
-	size.x = 0;
-	size.y = 0;
 	
-	setSize(size);
+	setPosition(pos);
+	setTexture(texture);
+
+	
 }
 
+void Enemigo::track(Personaje p1)
+{
 
+}  
 
 Enemigo::~Enemigo()
 {

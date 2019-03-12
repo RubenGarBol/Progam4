@@ -115,7 +115,9 @@ int main()
 	//Carga y posicionamiento de los sprites/objetos del juego.
 	Personaje roca;
 	//sDefinicion de las balas como objetos(formados por vectores) circulares
-	Enemigo ene(Vector2f size, int danyo, int vida, int ptos, Texture &texture);
+	Texture textur;
+	textur.loadFromFile("./res/Imagenes/coin.png");
+	Enemigo ene(Vector2f(100.0f,100.0f),0,10,textur);
 
 	//std::vector<Bullet> bulletarray;
 
@@ -460,6 +462,7 @@ int main()
 		window.draw(cofre);
 		window.draw(text);
 		window.draw(player);
+		window.draw(ene);
 		//window.draw(hitbox);
 		//}
 
