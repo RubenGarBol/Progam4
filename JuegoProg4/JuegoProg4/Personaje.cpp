@@ -1,7 +1,7 @@
 #include "Personaje.h"
 #include "SFML/Graphics.hpp"
 
-Personaje::Personaje(sf::Texture &textura) :Sprite(textura), Animacion(&textura, Vector2u(4, 4), 0.15) {
+Personaje::Personaje(sf::Texture &textura) :Sprite(textura), Animacion(&textura, Vector2u(4, 4), 0.15f) {
 	anim = 0;
 	animd = 0;
 	setTexture(textura);

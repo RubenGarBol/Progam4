@@ -71,6 +71,7 @@ int main()
 	sf::Clock timer2;
 	sf::Clock timercoin;
 	sf::Clock time;
+	sf::Clock invframes;
 	
 	//Objetos pared para delimitar los bordes jugables de la pantalla.
 	sf::RectangleShape pared1;
@@ -116,10 +117,24 @@ int main()
 	Animacion animaexpl(&texturaExpl, vector2, 0.1f);
 	float deltatiempo2 = 0.0f;
 
+
+
+	sf::Texture texturaVida;
+	if (!texturaVida.loadFromFile("./res/Imagenes/Vida_Full_6.png"))
+	{
+		std::cout << "No se ha encontrado la textura de: Vida_Full_6.png\n";
+	}
+	sf::Sprite vida;
+
+	vida.setTexture(texturaVida);
+	vida.setPosition(840, 820);
+
+	int vidacount=6;
+
 	//Carga y posicionamiento de los sprites/objetos del juego.
 	
 	//sDefinicion de las balas como objetos(formados por vectores) circulares
-	Enemigo ene(Vector2f size, int danyo, int vida, int ptos, Texture &texture);
+	//Enemigo ene(Vector2f size, int danyo, int vida, int ptos, Texture &texture);
 
 	//std::vector<Bullet> bulletarray;
 
@@ -328,6 +343,29 @@ int main()
 			}
 		}
 		
+		if (vidacount <= 5)
+		{
+			texturaVida.loadFromFile("./res/Imagenes/Vida_Full_5.png");
+		}
+		if (vidacount <= 4)
+		{
+			texturaVida.loadFromFile("./res/Imagenes/Vida_Full_4.png");
+		}
+		if (vidacount <= 3)
+		{
+			texturaVida.loadFromFile("./res/Imagenes/Vida_Full_3.png");
+		}
+		if (vidacount <= 2)
+		{
+			texturaVida.loadFromFile("./res/Imagenes/Vida_Full_2.png");
+		}
+		if (vidacount <= 1)
+		{
+			texturaVida.loadFromFile("./res/Imagenes/Vida_Full_1.png");
+		}
+		
+
+
 		puntos.setString(std::to_string(cuenta));
 		
 		//Metodos encargados de gestionar el movimiento y colision del personaje principal con el resto de objetos y paredes del juego.
@@ -340,9 +378,16 @@ int main()
 			hitbox.setPosition(Vector2f(player.getPosition().x, player.getPosition().y));
 			if (hitbox.getGlobalBounds().intersects(cofre.getGlobalBounds())) {
 				player.move(0.f, veloc);
+				if (invframes.getElapsedTime().asSeconds() >= 1)
+				{
+					vidacount = vidacount - 1;
+					invframes.restart();
+				}
 			}
 			if (hitbox.getGlobalBounds().intersects(mapa.conjParedes[0].getGlobalBounds())) {
+				
 				player.move(0.f, veloc);
+				
 			}
 			if(player.anim==3)
 			{ 
@@ -426,15 +471,14 @@ int main()
 
 		//Dibujar el fondo y los objetos, enemigos y personaje de la pantalla.
 		
-		/*if (player.getGlobalBounds().intersects(mapa.conjParedes[3].getGlobalBounds()))
-		{
-
+		/*
+		if (player.getGlobalBounds().intersects(mapa.conjParedes[3].getGlobalBounds())){
 		}
-		else
-		{
-*/
+		else{
+		*/
 		window.draw(mapa);
 		window.draw(coinpunt);
+		window.draw(vida);
 		window.draw(puntos);
 
 		for (size_t i = 0; i < disparos.size(); i++)
@@ -442,7 +486,7 @@ int main()
 			window.draw(disparos[i]);
 		}
 	
-		for (int i=0; i < 7; i++)
+		for (size_t i = 0; i < coin.size(); i++)
 		{
 			window.draw(coin[i]);
 		}
