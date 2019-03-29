@@ -12,6 +12,7 @@
 #include "Enemigo.h"
 
 #include<vector>
+#include "JuegoProg4.h"
 
 int main()
 {
@@ -53,14 +54,14 @@ int main()
 	hitbox.setOrigin(-15.f, -95.f);
 	//hitbox.setFillColor(Color::White);
 
-	
+
 
 	//Establecer la textura al personaje y declarar las propiedades de las animaciones y sprisheet
-	
+
 	//sf::Vector2u vector(4, 4);
 	//Animacion animapp(&pjtextura, vector, 0.15f);
 	//float deltatiempo = 0.0f;
-	
+
 	//Variables encargadas de la posicion de la animación
 	//int anim = 0;
 	//int animd = 0;
@@ -71,7 +72,7 @@ int main()
 	sf::Clock timer2;
 	sf::Clock timercoin;
 	sf::Clock time;
-	
+
 	//Objetos pared para delimitar los bordes jugables de la pantalla.
 	sf::RectangleShape pared1;
 	pared1.setPosition(sf::Vector2f(0.f, 0.f));
@@ -97,8 +98,8 @@ int main()
 
 	Mapa mapa(texturaFondo, paredes, paredes);
 	Personaje player(pjtextura);
-	
-	
+
+
 	//sf::Vector2u vector1(3, 1);
 	//Animacion animafondo(&mapa.texture, vector1, 0.25);
 	//float deltatiempo1 = 0.0f;
@@ -110,23 +111,23 @@ int main()
 	}
 
 	sf::Sprite explosion;
-	
+
 	explosion.setTexture(texturaExpl);
 	sf::Vector2u vector2(12, 1);
 	Animacion animaexpl(&texturaExpl, vector2, 0.1f);
 	float deltatiempo2 = 0.0f;
 
 	//Carga y posicionamiento de los sprites/objetos del juego.
+	sf::Texture texturaEn;
+	texturaEn.loadFromFile("./res/Imagenes/chest.png");
+	Enemigo e1(Vector2f(200.0f,200.0f),0,0,10,texturaEn);
 	
 	//sDefinicion de las balas como objetos(formados por vectores) circulares
-	Texture textur;
-	textur.loadFromFile("./res/Imagenes/coin.png");
-	Enemigo ene(Vector2f(100.0f,100.0f),0,10,textur);
 
 	//std::vector<Bullet> bulletarray;
 
 	//Genera un cofre en la posición establecida
-	sf::Vector2f vectorCofre((window.getSize().x/2)-56.f, (window.getSize().y / 2 )- 40.f);
+	sf::Vector2f vectorCofre((window.getSize().x / 2) - 56.f, (window.getSize().y / 2) - 40.f);
 	Cofre cofre(vectorCofre);
 
 	//Genera la bomba en el pixel 250, 150.
@@ -151,9 +152,9 @@ int main()
 	coin[5].setPosition(250.f, 650.f);
 	coin[6].setPosition(700.f, 700.f);
 
-		
+
 	sf::Font font;
-	
+
 	if (!font.loadFromFile("./res/pixeled.ttf"))
 	{
 		std::cout << "No se ha encontrado la fuente de: pixeled.ttf\n";
@@ -218,6 +219,7 @@ int main()
 	//Bucle ejecutado mientras la pantalla se mantenga abierta.
 	while (window.isOpen())
 	{
+		//e1.track(player);
 		sf::Event event;
 
 		//Función para cerrar la aplicación al pulsar el boton X de la parte superior derecha.
@@ -227,11 +229,11 @@ int main()
 		}
 
 		///////////
-		
+
 
 		///////////
-		centrar = Vector2f(player.getPosition().x + player.getTextureRect().width/2, player.getPosition().y + player.getTextureRect().height/2);
-		
+		centrar = Vector2f(player.getPosition().x + player.getTextureRect().width / 2, player.getPosition().y + player.getTextureRect().height / 2);
+
 		if (delaytiro < 10)
 		{
 			delaytiro++;
@@ -269,9 +271,9 @@ int main()
 		{
 			disparoup.setPosition(centrar);
 			disparos.push_back(Proyectil(disparoup));
-			delaytiro=0;
+			delaytiro = 0;
 		}
-		
+
 		if (Keyboard::isKeyPressed(Keyboard::Down) && delaytiro >= 10)
 		{
 			disparodown.setPosition(centrar);
@@ -285,27 +287,28 @@ int main()
 			disparos.push_back(Proyectil(disparoL));
 			delaytiro = 0;
 		}
-		
+
 		if (Keyboard::isKeyPressed(Keyboard::Right) && delaytiro >= 10)
 		{
 			disparoR.setPosition(centrar);
 			disparos.push_back(Proyectil(disparoR));
 			delaytiro = 0;
 		}
-	
+
 		for (size_t i = 0; i < disparos.size(); i++)
 		{
 			disparos[i].move(disparos[i].dirx, disparos[i].diry);
-			
-			if (disparos[i].getGlobalBounds().intersects(cofre.getGlobalBounds()) || disparos[i].getGlobalBounds().intersects(mapa.conjParedes[0].getGlobalBounds()) 
+
+			if (disparos[i].getGlobalBounds().intersects(cofre.getGlobalBounds()) || disparos[i].getGlobalBounds().intersects(mapa.conjParedes[0].getGlobalBounds())
 				|| disparos[i].getGlobalBounds().intersects(mapa.conjParedes[1].getGlobalBounds()) || disparos[i].getGlobalBounds().intersects(mapa.conjParedes[2].getGlobalBounds())
-				|| disparos[i].getGlobalBounds().intersects(mapa.conjParedes[3].getGlobalBounds()) )
+				|| disparos[i].getGlobalBounds().intersects(mapa.conjParedes[3].getGlobalBounds()))
 			{
 				disparos.erase(disparos.begin() + i);
 			}
 		}
 		///////////
 
+	
 		mapa.Update(0, mapa.deltatiempo, mapa.timer, mapa);
 		/*
 		deltatiempo = timer.restart().asSeconds();
@@ -316,8 +319,8 @@ int main()
 
 		explosion.setPosition(player.getPosition().x, player.getPosition().y);
 
-		for (size_t i=0; i<coin.size(); i++)
-		{ 
+		for (size_t i = 0; i < coin.size(); i++)
+		{
 			deltacoin = timercoin.restart().asSeconds();
 			animacoin.Update(0, deltacoin);
 			coin[i].setTextureRect(animacoin.uvRect);
@@ -325,13 +328,13 @@ int main()
 			if (player.getGlobalBounds().intersects(coin[i].getGlobalBounds()))
 			{
 				coin[i].setPosition(2000.f, 2000.f);
-				
+
 				cuenta++;
 			}
 		}
-		
+
 		puntos.setString(std::to_string(cuenta));
-		
+
 		//Metodos encargados de gestionar el movimiento y colision del personaje principal con el resto de objetos y paredes del juego.
 
 		hitbox.setPosition(Vector2f(player.getPosition().x, player.getPosition().y));
@@ -346,11 +349,11 @@ int main()
 			if (hitbox.getGlobalBounds().intersects(mapa.conjParedes[0].getGlobalBounds())) {
 				player.move(0.f, veloc);
 			}
-			if(player.anim==3)
-			{ 
+			if (player.anim == 3)
+			{
 				player.animd = 2;
 			}
-			if(player.anim ==0)
+			if (player.anim == 0)
 			{
 				player.animd = 1;
 			}
@@ -372,7 +375,7 @@ int main()
 			{
 				player.animd = 2;
 			}
-			if(player.anim ==0)
+			if (player.anim == 0)
 			{
 				player.animd = 1;
 			}
@@ -389,7 +392,7 @@ int main()
 			if (hitbox.getGlobalBounds().intersects(mapa.conjParedes[1].getGlobalBounds())) {
 				player.move(veloc, 0.f);
 			}
-			
+
 
 			player.Update(2, player.deltatiempo, player.timer, player);
 
@@ -410,7 +413,7 @@ int main()
 
 			player.anim = 0;
 		}
-		
+
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) && sf::Keyboard::isKeyPressed(sf::Keyboard::D))
 		{
 
@@ -419,18 +422,17 @@ int main()
 
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) && sf::Keyboard::isKeyPressed(sf::Keyboard::S))
 		{
-			
+
 			player.Update(player.anim, player.deltatiempo, player.timer, player);
 		}
-	
+
 		//Limpiar la pantalla principal
 		window.clear();
 
 		//Dibujar el fondo y los objetos, enemigos y personaje de la pantalla.
-		
+
 		/*if (player.getGlobalBounds().intersects(mapa.conjParedes[3].getGlobalBounds()))
 		{
-
 		}
 		else
 		{
@@ -443,12 +445,12 @@ int main()
 		{
 			window.draw(disparos[i]);
 		}
-	
-		for (int i=0; i < 7; i++)
+
+		for (int i = 0; i < 7; i++)
 		{
 			window.draw(coin[i]);
 		}
-	
+
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
 		{
 			deltatiempo2 = timer2.restart().asSeconds();
@@ -461,10 +463,10 @@ int main()
 		window.draw(cofre);
 		window.draw(text);
 		window.draw(player);
-		window.draw(ene);
+		window.draw(e1);
 		//window.draw(hitbox);
 		//}
-
+		
 		//Mostrar en la ventana creada los objetos dibujados.
 		window.display();
 	}
