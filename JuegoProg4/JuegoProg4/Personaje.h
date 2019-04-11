@@ -1,21 +1,27 @@
+#pragma once
+
 #include "SFML/Graphics.hpp"
 #include "Animacion.h"
+#include "Enemigo.h"
 
 using namespace sf;
 
-class Personaje : public Sprite, public Animacion {
-	public:
+class Personaje : public Sprite, public Animacion
+{
+public:
+	Texture texture;
 
-		Texture texture;
-
-		Vector2f posicion;
-		float deltatiempo = 0.0f;
-		Clock timer;
-		double velocidad;
-		int anim;
-		int animd;
+	Vector2f posicion;
+	float deltatiempo = 0.0f;
+	Clock timer;
+	double velocidad;
+	int anim;
+	int animd;
+	int vida;
 
 	Personaje(sf::Texture &textura);
+
+
+	//void inmune(Personaje p,Enemigo e);
 	
 };
-

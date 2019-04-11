@@ -4,7 +4,7 @@
 
 using namespace sf;
 
-class Mapa : public sf::Sprite , public Animacion
+class Mapa : public Sprite , public Animacion
 {
 	public:
 		Texture texture;

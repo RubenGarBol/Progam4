@@ -13,6 +13,7 @@
 #include "Enemigo.h"
 
 #include<vector>
+#include "JuegoProg4.h"
 
 int main()
 {
@@ -57,11 +58,11 @@ int main()
 	
 	
 	//Establecer la textura al personaje y declarar las propiedades de las animaciones y sprisheet
-	
+
 	//sf::Vector2u vector(4, 4);
 	//Animacion animapp(&pjtextura, vector, 0.15f);
 	//float deltatiempo = 0.0f;
-	
+
 	//Variables encargadas de la posicion de la animación
 	//int anim = 0;
 	//int animd = 0;
@@ -118,6 +119,12 @@ int main()
 	Animacion animaexpl(&texturaExpl, vector2, 0.1f);
 	float deltatiempo2 = 0.0f;
 
+	//Carga y posicionamiento de los sprites/objetos del juego.
+	sf::Texture texturaEn;
+	texturaEn.loadFromFile("./res/Imagenes/chest.png");
+	Enemigo e1(Vector2f(200.0f,200.0f),0,0,10,texturaEn);
+	
+	//sDefinicion de las balas como objetos(formados por vectores) circulares
 	sf::Texture texturaVida;
 	if (!texturaVida.loadFromFile("./res/Imagenes/Vida_Full_6.png"))
 	{
@@ -131,7 +138,7 @@ int main()
 	int vidacount=6;
 
 	//Genera un cofre en la posición establecida
-	sf::Vector2f vectorCofre((window.getSize().x/2)-56.f, (window.getSize().y / 2 )- 40.f);
+	sf::Vector2f vectorCofre((window.getSize().x / 2) - 56.f, (window.getSize().y / 2) - 40.f);
 	Cofre cofre(vectorCofre);
 
 	//Genera la bomba en el pixel 250, 150.
@@ -156,7 +163,7 @@ int main()
 
 
 	sf::Font font;
-	
+
 	if (!font.loadFromFile("./res/pixeled.ttf"))
 	{
 		std::cout << "No se ha encontrado la fuente de: pixeled.ttf\n";
