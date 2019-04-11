@@ -5,6 +5,7 @@ using namespace sf;
 
 class Personaje : public Sprite, public Animacion {
 	public:
+
 		Texture texture;
 
 		Vector2f posicion;
