@@ -7,8 +7,9 @@
 Personaje::Personaje(sf::Texture &textura) :Sprite(textura), Animacion(&textura, Vector2u(4, 4), 0.15) {
 	anim = 0;
 	animd = 0;
-	setTexture(textura);
+	
 	texture = textura;
+	setTexture(texture);
 
 	posicion.x = 200.0f;
 	posicion.y = 200.0f;

@@ -1,4 +1,5 @@
 #include "SFML/Graphics.hpp"
+#include "SFML/Audio.hpp"
 #include <iostream>
 #include <stdio.h>
 #include "Cofre.h"
@@ -55,8 +56,8 @@ int main()
 	hitbox.setOrigin(-15.f, -95.f);
 	//hitbox.setFillColor(Color::White);
 
-
-
+	
+	
 	//Establecer la textura al personaje y declarar las propiedades de las animaciones y sprisheet
 
 	//sf::Vector2u vector(4, 4);
@@ -73,7 +74,9 @@ int main()
 	sf::Clock timer2;
 	sf::Clock timercoin;
 	sf::Clock time;
-
+	sf::Clock invframes;
+	sf::Clock vidaanim;
+	
 	//Objetos pared para delimitar los bordes jugables de la pantalla.
 	sf::RectangleShape pared1;
 	pared1.setPosition(sf::Vector2f(0.f, 0.f));
@@ -98,9 +101,9 @@ int main()
 	paredes[3] = pared4;
 
 	Mapa mapa(texturaFondo, paredes, paredes);
+
 	Personaje player(pjtextura);
-
-
+	
 	//sf::Vector2u vector1(3, 1);
 	//Animacion animafondo(&mapa.texture, vector1, 0.25);
 	//float deltatiempo1 = 0.0f;
@@ -112,7 +115,6 @@ int main()
 	}
 
 	sf::Sprite explosion;
-
 	explosion.setTexture(texturaExpl);
 	sf::Vector2u vector2(12, 1);
 	Animacion animaexpl(&texturaExpl, vector2, 0.1f);
@@ -124,8 +126,17 @@ int main()
 	Enemigo e1(Vector2f(200.0f,200.0f),0,0,10,texturaEn);
 	
 	//sDefinicion de las balas como objetos(formados por vectores) circulares
+	sf::Texture texturaVida;
+	if (!texturaVida.loadFromFile("./res/Imagenes/Vida_Full_6.png"))
+	{
+		std::cout << "No se ha encontrado la textura de: Vida_Full_6.png\n";
+	}
+	sf::Sprite vida;
 
-	//std::vector<Bullet> bulletarray;
+	vida.setTexture(texturaVida);
+	vida.setPosition(840, 820);
+
+	int vidacount=6;
 
 	//Genera un cofre en la posición establecida
 	sf::Vector2f vectorCofre((window.getSize().x / 2) - 56.f, (window.getSize().y / 2) - 40.f);
@@ -133,8 +144,6 @@ int main()
 
 	//Genera la bomba en el pixel 250, 150.
 	sf::Vector2f vectorBomba(250, 150);
-
-	//
 
 	int cuenta = 0;
 
@@ -190,8 +199,6 @@ int main()
 	text.setOutlineThickness(2);
 	text.setPosition(60.f, 845.f);
 
-	//
-
 	//Velocidad personaje principal
 	float veloc = 4.f;
 
@@ -213,269 +220,850 @@ int main()
 	std::vector<Proyectil> disparos;
 
 	///////////
-	void hola();
-	{
-		e1.disparoe();
-	}
+
+	sf::RectangleShape prueba;
+	prueba.setSize(sf::Vector2f(60.f, 60.f));
 	///////////
+
+	int state=0;
+
+	//////////
+	float opacidadint = 0;
+	float opacidadext = 0;
+	float opacidadtextint = 0;
+	float opacidadtextext = 0;
+	float opacidadint1 = 140;
+	float opacidadext1 = 255;
+	float opacidadtextint1 = 255;
+	float opacidadtextext1 = 255;
+
+	RectangleShape rectangle;
+	rectangle.setSize(Vector2f(820.f,600.f));
+	rectangle.setOrigin(rectangle.getSize().x / 2, rectangle.getSize().y / 2);
+	rectangle.setPosition(window.getSize().x/2, window.getSize().y / 2);
+	rectangle.setOutlineThickness(11.f);
+
+	RectangleShape playboton;
+	Text play;
+	Text opciones;
+	Text salir;
+
+	playboton.setSize(Vector2f(200.f, 30.f));
+	playboton.setOrigin(playboton.getSize().x / 2, playboton.getSize().y / 2);
+	playboton.setPosition(window.getSize().x / 2, window.getSize().y / 2);
+
+	play.setFont(font);
+	play.setString("C O N T I N U A R");
+	play.setCharacterSize(45);
+	play.setStyle(sf::Text::Bold);
+	play.setFillColor(sf::Color::White);
+	play.setOutlineColor(sf::Color::Black);
+	play.setOutlineThickness(4);
+	play.setOrigin(play.getGlobalBounds().width / 2, play.getGlobalBounds().height / 2);
+	play.setPosition(playboton.getPosition().x, playboton.getPosition().y - 180);
+	
+	opciones.setFont(font);
+	opciones.setString("O P C I O N E S");
+	opciones.setCharacterSize(45);
+	opciones.setStyle(sf::Text::Bold);
+	opciones.setFillColor(sf::Color::White);
+	opciones.setOutlineColor(sf::Color::Black);
+	opciones.setOutlineThickness(4);
+	opciones.setOrigin(opciones.getGlobalBounds().width / 2, opciones.getGlobalBounds().height / 2);
+	opciones.setPosition(playboton.getPosition().x, playboton.getPosition().y);
+	
+	salir.setFont(font);
+	salir.setString("S A L I R");
+	salir.setCharacterSize(45);
+	salir.setStyle(sf::Text::Bold);
+	salir.setFillColor(sf::Color::White);
+	salir.setOutlineColor(sf::Color::Black);
+	salir.setOutlineThickness(4);
+	salir.setOrigin(salir.getGlobalBounds().width / 2, salir.getGlobalBounds().height / 2);
+	salir.setPosition(playboton.getPosition().x, playboton.getPosition().y + 180);
+	
+	//Cursor Personalizado
+	window.setMouseCursorVisible(false);
+	sf::Texture cursortexture;
+	if (!cursortexture.loadFromFile("./res/Imagenes/cursor.png"))
+	{
+		std::cout << "No se ha encontrado la textura de: cursor.png\n";
+	}
+	sf::Sprite cursor(cursortexture);
+	
+	//Efecto Daño
+	int opacidaddaño = 0;
+	sf::Texture texturadaño;
+	if (!texturadaño.loadFromFile("./res/Imagenes/DamageEffect.png"))
+	{
+		std::cout << "No se ha encontrado la textura de: DamageEffect.png\n";
+	}
+	sf::Sprite efectodaño;
+	efectodaño.setTexture(texturadaño);
+	
+	sf::Clock dañoclock;
+
+	int seleccion = 1;
+
+	//Musica
+	sf::SoundBuffer buffer_moneda;
+	if (!buffer_moneda.loadFromFile("./res/Sonidos/Find_Money.wav"))
+	{
+		return EXIT_FAILURE;
+	}
+	sf::Sound sonido_moneda;
+	sonido_moneda.setBuffer(buffer_moneda);
+	sonido_moneda.setVolume(80);
+
+	sf::SoundBuffer buffer_daño_personaje;
+	if (!buffer_daño_personaje.loadFromFile("./res/Sonidos/Hero_Hurt.wav"))
+	{
+		return EXIT_FAILURE;
+	}
+	sf::Sound sonido_daño_personaje;
+	sonido_daño_personaje.setBuffer(buffer_daño_personaje);
+	sonido_daño_personaje.setVolume(80);
+
+	sf::SoundBuffer buffer_muerte_personaje;
+	if (!buffer_muerte_personaje.loadFromFile("./res/Sonidos/Hero_Dies.wav"))
+	{
+		return EXIT_FAILURE;
+	}
+	sf::Sound sonido_muerte_personaje;
+	sonido_muerte_personaje.setBuffer(buffer_muerte_personaje);
+	sonido_muerte_personaje.setVolume(80);
+
+	sf::SoundBuffer buffer_pared;
+	if (!buffer_pared.loadFromFile("./res/Sonidos/Wall_Collision.wav"))
+	{
+		return EXIT_FAILURE;
+	}
+	sf::Sound sonido_pared;
+	sonido_pared.setBuffer(buffer_pared);
+	sonido_pared.setVolume(80);
+
+	sf::Music musica_juego;
+	musica_juego.openFromFile("./res/Sonidos/mountainoftrials.wav");
+	musica_juego.setLoop(true);
+	musica_juego.play();
+
+	sf::Music musica_menu;
+	musica_menu.openFromFile("./res/Sonidos/mountainoftrials_muffled.wav");
+	musica_menu.setLoop(true);
+	musica_menu.play();
+	
+	//Death screen
+	sf::Texture texturamuerte;
+	if (!texturamuerte.loadFromFile("./res/Imagenes/death_screen.png"))
+	{
+		std::cout << "No se ha encontrado la textura de: death_Screen.png\n";
+	}
+
+	sf::Texture texturacalavera;
+	if (!texturacalavera.loadFromFile("./res/Imagenes/skull.png"))
+	{
+		std::cout << "No se ha encontrado la textura de: skull.png\n";
+	}
+
+	//B&W texturas
+	sf::Texture texturamapaBW;
+	if (!texturamapaBW.loadFromFile("./res/Imagenes/PiskelPruebaAnimBW.png"))
+	{
+		std::cout << "No se ha encontrado la textura de: PiskelPruebaAnim_BW.png\n";
+	}
+
+	sf::Texture texturachestBW;
+	if (!texturachestBW.loadFromFile("./res/Imagenes/chestBW.png"))
+	{
+		std::cout << "No se ha encontrado la textura de: PiskelPruebaAnim_BW.png\n";
+	}
+
+	sf::Texture texturacoinBW;
+	if (!texturacoinBW.loadFromFile("./res/Imagenes/coinBW.png"))
+	{
+		std::cout << "No se ha encontrado la textura de: PiskelPruebaAnim_BW.png\n";
+	}
+
+	sf::Texture texturacoinpuntBW;
+	if (!texturacoinpuntBW.loadFromFile("./res/Imagenes/coinpuntBW.png"))
+	{
+		std::cout << "No se ha encontrado la textura de: PiskelPruebaAnim_BW.png\n";
+	}
+
+	sf::Texture pjtextura_muerte;
+	if (!pjtextura_muerte.loadFromFile("./res/Imagenes/pjtextura_death.png"))
+	{
+		std::cout << "No se ha encontrado la textura de: pjtextura_death.png\n";
+	}
+
+	sf::Sprite you_died;
+	you_died.setTexture(texturamuerte);
+
+	sf::Clock clock_muerte;
+	float opacidadmuerte= 0.f;
 
 	//Bucle ejecutado mientras la pantalla se mantenga abierta.
 	while (window.isOpen())
 	{
-	
-		
-		//e1.disparoe(proyecene);
-		//ejecutar el metodo de abajo con un thread
-		sf::Thread hilodispe(hola());
-		//e1.track(player);
-		sf::Event event;
-
-		//Función para cerrar la aplicación al pulsar el boton X de la parte superior derecha.
-		while (window.pollEvent(event))
+		while (state==1)
 		{
-			if (event.type == sf::Event::Closed) window.close();
-		}
+			musica_juego.setVolume(0);
+			musica_menu.setVolume(80);
 
-		///////////
-
-
-		///////////
-		centrar = Vector2f(player.getPosition().x + player.getTextureRect().width / 2, player.getPosition().y + player.getTextureRect().height / 2);
-
-		if (delaytiro < 10)
-		{ 
-			delaytiro++;
-		}
-
-		if (Keyboard::isKeyPressed(Keyboard::Up) && Keyboard::isKeyPressed(Keyboard::Left) && delaytiro >= 10)
-		{
-			disparoLUp.setPosition(centrar);
-			disparos.push_back(Proyectil(disparoLUp));
-			delaytiro = 0;
-		}
-
-		if (Keyboard::isKeyPressed(Keyboard::Up) && Keyboard::isKeyPressed(Keyboard::Right) && delaytiro >= 10)
-		{
-			disparoRUp.setPosition(centrar);
-			disparos.push_back(Proyectil(disparoRUp));
-			delaytiro = 0;
-		}
-
-		if (Keyboard::isKeyPressed(Keyboard::Down) && Keyboard::isKeyPressed(Keyboard::Left) && delaytiro >= 10)
-		{
-			disparoLDown.setPosition(centrar);
-			disparos.push_back(Proyectil(disparoLDown));
-			delaytiro = 0;
-		}
-
-		if (Keyboard::isKeyPressed(Keyboard::Down) && Keyboard::isKeyPressed(Keyboard::Right) && delaytiro >= 10)
-		{
-			disparoRDown.setPosition(centrar);
-			disparos.push_back(Proyectil(disparoRDown));
-			delaytiro = 0;
-		}
-
-		if (Keyboard::isKeyPressed(Keyboard::Up) && delaytiro >= 10)
-		{
-			disparoup.setPosition(centrar);
-			disparos.push_back(Proyectil(disparoup));
-			delaytiro = 0;
-		}
-
-		if (Keyboard::isKeyPressed(Keyboard::Down) && delaytiro >= 10)
-		{
-			disparodown.setPosition(centrar);
-			disparos.push_back(Proyectil(disparodown));
-			delaytiro = 0;
-		}
-
-		if (Keyboard::isKeyPressed(Keyboard::Left) && delaytiro >= 10)
-		{
-			disparoL.setPosition(centrar);
-			disparos.push_back(Proyectil(disparoL));
-			delaytiro = 0;
-		}
-
-		if (Keyboard::isKeyPressed(Keyboard::Right) && delaytiro >= 10)
-		{
-			disparoR.setPosition(centrar);
-			disparos.push_back(Proyectil(disparoR));
-			delaytiro = 0;
-		}
-
-		for (size_t i = 0; i < disparos.size(); i++)
-		{
-			disparos[i].move(disparos[i].dirx, disparos[i].diry);
-
-			if (disparos[i].getGlobalBounds().intersects(cofre.getGlobalBounds()) || disparos[i].getGlobalBounds().intersects(mapa.conjParedes[0].getGlobalBounds())
-				|| disparos[i].getGlobalBounds().intersects(mapa.conjParedes[1].getGlobalBounds()) || disparos[i].getGlobalBounds().intersects(mapa.conjParedes[2].getGlobalBounds())
-				|| disparos[i].getGlobalBounds().intersects(mapa.conjParedes[3].getGlobalBounds()))
+			sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+			sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
+			
+			if (opacidadint < 140.f)
 			{
-				disparos.erase(disparos.begin() + i);
+				opacidadint += 140 / 6;
+				rectangle.setFillColor(sf::Color::Color(64, 89, 102, opacidadint));
 			}
-		}
-		///////////
-
-	
-		mapa.Update(0, mapa.deltatiempo, mapa.timer, mapa);
-		/*
-		deltatiempo = timer.restart().asSeconds();
-		animapp.Update(anim, deltatiempo);
-		player.setTextureRect(animapp.uvRect);
-		*/
-		player.Update(player.anim, player.deltatiempo, player.timer, player);
-
-		explosion.setPosition(player.getPosition().x, player.getPosition().y);
-
-		for (size_t i = 0; i < coin.size(); i++)
-		{
-			deltacoin = timercoin.restart().asSeconds();
-			animacoin.Update(0, deltacoin);
-			coin[i].setTextureRect(animacoin.uvRect);
-
-			if (player.getGlobalBounds().intersects(coin[i].getGlobalBounds()))
+			if (opacidadext < 252.f)
 			{
-				coin[i].setPosition(2000.f, 2000.f);
-
-				cuenta++;
+				opacidadext += 252 / 6;
+				rectangle.setOutlineColor(sf::Color::Color(209, 178, 100, opacidadext));
 			}
-		}
-
-		puntos.setString(std::to_string(cuenta));
-
-		//Metodos encargados de gestionar el movimiento y colision del personaje principal con el resto de objetos y paredes del juego.
-
-		hitbox.setPosition(Vector2f(player.getPosition().x, player.getPosition().y));
-
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-		{
-			player.move(0.f, -veloc);
-			hitbox.setPosition(Vector2f(player.getPosition().x, player.getPosition().y));
-			if (hitbox.getGlobalBounds().intersects(cofre.getGlobalBounds())) {
-				player.move(0.f, veloc);
-			}
-			if (hitbox.getGlobalBounds().intersects(mapa.conjParedes[0].getGlobalBounds())) {
-				player.move(0.f, veloc);
-			}
-			if (player.anim == 3)
+			if (opacidadtextint < 252.f)
 			{
-				player.animd = 2;
+				opacidadtextint += 252 / 6;
+				play.setFillColor(sf::Color::Color(255, 255, 255, opacidadtextint));
+				opciones.setFillColor(sf::Color::Color(255, 255, 255, opacidadtextint));
+				salir.setFillColor(sf::Color::Color(255, 255, 255, opacidadtextint));
 			}
-			if (player.anim == 0)
+			if (opacidadtextext < 252.f)
 			{
-				player.animd = 1;
+				opacidadtextext += 252 / 6;
+				play.setOutlineColor(sf::Color::Color(0, 0, 0, opacidadtextext));
+				opciones.setOutlineColor(sf::Color::Color(0, 0, 0, opacidadtextext));
+				salir.setOutlineColor(sf::Color::Color(0, 0, 0, opacidadtextext));
 			}
+			
+			printf("%f", opacidadtextext);
 
-			player.Update(player.animd, player.deltatiempo, player.timer, player);
-		}
+			sf::Event event;
 
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-		{
-			player.move(0.f, veloc);
-			hitbox.setPosition(Vector2f(player.getPosition().x, player.getPosition().y));
-			if (hitbox.getGlobalBounds().intersects(cofre.getGlobalBounds())) {
-				player.move(0.f, -veloc);
-			}
-			if (player.getGlobalBounds().intersects(mapa.conjParedes[2].getGlobalBounds())) {
-				player.move(0.f, -veloc);
-			}
-			if (player.anim == 3)
+			while (window.pollEvent(event))
 			{
-				player.animd = 2;
+				switch (event.type)
+				{
+					case sf::Event::Closed:
+						window.close();
+						break;
+							
+					case sf::Event::MouseMoved:
+					{
+						if (play.getGlobalBounds().contains(mousePosF) && opacidadtextint >= 252)
+						{
+							seleccion = 1;
+						}
+						else if (opciones.getGlobalBounds().contains(mousePosF) && opacidadtextint >= 252)
+						{
+							seleccion = 2;
+						}
+						else if (salir.getGlobalBounds().contains(mousePosF) && opacidadtextint >= 252)
+						{
+							seleccion = 3;
+						}
+					
+					}
+					break;
+					
+					case sf::Event::MouseButtonPressed:
+					{
+						if (play.getGlobalBounds().contains(mousePosF))
+						{
+							opacidadext = 0;
+							opacidadint = 0;
+							opacidadtextext = 0;
+							opacidadtextint = 0;
+						
+							player.tiempotot -= player.timer.getElapsedTime().asSeconds();
+							animacoin.tiempotot -= timercoin.getElapsedTime().asSeconds();
+							mapa.tiempotot -= mapa.timer.getElapsedTime().asSeconds();
+
+							musica_menu.pause();
+
+							state = 0;
+						}
+
+						if (opciones.getGlobalBounds().contains(mousePosF))
+						{
+							opciones.setPosition(2000.f,2000.f);
+							salir.setPosition(2000.f, 2000.f);
+						}
+
+						if (salir.getGlobalBounds().contains(mousePosF))
+						{
+							window.close();
+						}
+					}
+
+					case sf::Event::KeyPressed:
+						switch(event.key.code)
+						{
+							case sf::Keyboard::S:
+								if (seleccion < 3)
+								{
+									seleccion++;
+									printf("%i\n", seleccion);
+								}
+								break;
+							case sf::Keyboard::W:
+								if (seleccion > 1)
+								{
+									seleccion--;
+									printf("%i\n", seleccion);
+								}
+								break;
+							case sf::Keyboard::Enter:
+								if (seleccion == 1)
+								{							
+									opacidadext = 0;
+									opacidadint = 0;
+									opacidadtextext = 0;
+									opacidadtextint = 0;
+									
+									player.tiempotot -= player.timer.getElapsedTime().asSeconds();
+									animacoin.tiempotot -= timercoin.getElapsedTime().asSeconds();
+									mapa.tiempotot -= mapa.timer.getElapsedTime().asSeconds();
+
+									state = 0;
+								}
+								if (seleccion == 2)
+								{
+									opciones.setPosition(2000.f, 2000.f);
+									salir.setPosition(2000.f, 2000.f);
+								}
+								if (seleccion == 3)
+								{
+									window.close();
+								}
+								break;
+						}
+						break;
+				}
 			}
-			if (player.anim == 0)
+
+			if (Mouse::isButtonPressed(Mouse::Left))
 			{
-				player.animd = 1;
+				cursortexture.loadFromFile("./res/Imagenes/pressed_cursor.png");
 			}
-			player.Update(player.animd, player.deltatiempo, player.timer, player);
+			else
+			{
+				cursortexture.loadFromFile("./res/Imagenes/cursor.png");
+			}
+			
+			if (seleccion == 1)
+			{
+				play.setFillColor(sf::Color(163, 131, 55));
+				opciones.setFillColor(sf::Color::White);
+				salir.setFillColor(sf::Color::White);
+			}
+			else if (seleccion == 2)
+			{
+				play.setFillColor(sf::Color::White);
+				opciones.setFillColor(sf::Color(163, 131, 55));
+				salir.setFillColor(sf::Color::White);
+
+			}
+			else if (seleccion == 3)
+			{
+				play.setFillColor(sf::Color::White);
+				opciones.setFillColor(sf::Color::White);
+				salir.setFillColor(sf::Color(163, 131, 55));
+			}
+			else 
+			{
+				//main();
+				/*
+				play.setFillColor(sf::Color::White);
+				opciones.setFillColor(sf::Color::White);
+				salir.setFillColor(sf::Color::White);
+				*/
+			}
+			
+			cursor.setPosition(sf::Vector2f(mousePos));
+
+			window.clear();
+
+			window.draw(mapa);
+			window.draw(coinpunt);
+			window.draw(vida);
+			window.draw(puntos);
+			
+			for (size_t i = 0; i < disparos.size(); i++)
+			{
+				window.draw(disparos[i]);
+			}
+
+			for (size_t i = 0; i < coin.size(); i++)
+			{
+				window.draw(coin[i]);
+			}
+
+			window.draw(text);
+			window.draw(cofre);
+			window.draw(text);
+			window.draw(player);
+			window.draw(rectangle);
+			window.draw(play);
+			window.draw(opciones);
+			window.draw(salir);
+			window.draw(cursor);
+
+			window.display();
 		}
 
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+		while (state==0)
 		{
-			player.move(-veloc, 0.f);
-			hitbox.setPosition(Vector2f(player.getPosition().x, player.getPosition().y));
-			if (hitbox.getGlobalBounds().intersects(cofre.getGlobalBounds())) {
-				player.move(veloc, 0.f);
+			//musica_juego.setPlayingOffset(musica_menu.getPlayingOffset());
+			musica_juego.setVolume(80);
+			musica_menu.setVolume(0);
+
+			
+
+			sf::Event event;
+
+			//Función para cerrar la aplicación al pulsar el boton X de la parte superior derecha.
+			while (window.pollEvent(event))
+			{
+				switch (event.type)
+				{
+				case sf::Event::Closed:
+					window.close();
+					break;
+				}
 			}
-			if (hitbox.getGlobalBounds().intersects(mapa.conjParedes[1].getGlobalBounds())) {
-				player.move(veloc, 0.f);
+
+			if (Keyboard::isKeyPressed(Keyboard::Escape))
+			{
+				state = 1;
+				opciones.setPosition(playboton.getPosition().x, playboton.getPosition().y);
+				salir.setPosition(playboton.getPosition().x, playboton.getPosition().y + 180);
 			}
 
+			///////////
 
-			player.Update(2, player.deltatiempo, player.timer, player);
+			efectodaño.setColor(sf::Color(255, 0, 0, opacidaddaño));
 
-			player.anim = 3;
-		}
+			///////////
+			centrar = Vector2f(player.getPosition().x + player.getTextureRect().width / 2, player.getPosition().y + player.getTextureRect().height / 2);
 
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-		{
-			player.move(veloc, 0.f);
-			hitbox.setPosition(Vector2f(player.getPosition().x, player.getPosition().y));
-			if (hitbox.getGlobalBounds().intersects(cofre.getGlobalBounds())) {
-				player.move(-veloc, 0.f);
+			if (delaytiro < 10)
+			{
+				delaytiro++;
 			}
-			if (hitbox.getGlobalBounds().intersects(mapa.conjParedes[3].getGlobalBounds())) {
-				player.move(-veloc, 0.f);
+
+			if (Keyboard::isKeyPressed(Keyboard::Up) && Keyboard::isKeyPressed(Keyboard::Left) && delaytiro >= 10)
+			{
+				disparoLUp.setPosition(centrar);
+				disparos.push_back(Proyectil(disparoLUp));
+				delaytiro = 0;
+				sonido_daño_personaje.play();
 			}
-			player.Update(1, player.deltatiempo, player.timer, player);
 
-			player.anim = 0;
-		}
+			if (Keyboard::isKeyPressed(Keyboard::Up) && Keyboard::isKeyPressed(Keyboard::Right) && delaytiro >= 10)
+			{
+				disparoRUp.setPosition(centrar);
+				disparos.push_back(Proyectil(disparoRUp));
+				delaytiro = 0;
+			}
 
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) && sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-		{
+			if (Keyboard::isKeyPressed(Keyboard::Down) && Keyboard::isKeyPressed(Keyboard::Left) && delaytiro >= 10)
+			{
+				disparoLDown.setPosition(centrar);
+				disparos.push_back(Proyectil(disparoLDown));
+				delaytiro = 0;
+			}
 
+			if (Keyboard::isKeyPressed(Keyboard::Down) && Keyboard::isKeyPressed(Keyboard::Right) && delaytiro >= 10)
+			{
+				disparoRDown.setPosition(centrar);
+				disparos.push_back(Proyectil(disparoRDown));
+				delaytiro = 0;
+			}
+
+			if (Keyboard::isKeyPressed(Keyboard::Up) && delaytiro >= 10)
+			{
+				disparoup.setPosition(centrar);
+				disparos.push_back(Proyectil(disparoup));
+				delaytiro = 0;
+			}
+
+			if (Keyboard::isKeyPressed(Keyboard::Down) && delaytiro >= 10)
+			{
+				disparodown.setPosition(centrar);
+				disparos.push_back(Proyectil(disparodown));
+				delaytiro = 0;
+			}
+
+			if (Keyboard::isKeyPressed(Keyboard::Left) && delaytiro >= 10)
+			{
+				disparoL.setPosition(centrar);
+				disparos.push_back(Proyectil(disparoL));
+				delaytiro = 0;
+			}
+
+			if (Keyboard::isKeyPressed(Keyboard::Right) && delaytiro >= 10)
+			{
+				disparoR.setPosition(centrar);
+				disparos.push_back(Proyectil(disparoR));
+				delaytiro = 0;
+			}
+
+			for (size_t i = 0; i < disparos.size(); i++)
+			{
+				disparos[i].move(disparos[i].dirx, disparos[i].diry);
+
+				if (disparos[i].getGlobalBounds().intersects(cofre.getGlobalBounds()) || disparos[i].getGlobalBounds().intersects(mapa.conjParedes[0].getGlobalBounds())
+					|| disparos[i].getGlobalBounds().intersects(mapa.conjParedes[1].getGlobalBounds()) || disparos[i].getGlobalBounds().intersects(mapa.conjParedes[2].getGlobalBounds())
+					|| disparos[i].getGlobalBounds().intersects(mapa.conjParedes[3].getGlobalBounds()))
+				{
+					disparos.erase(disparos.begin() + i);
+				}
+			}
+			///////////
+
+			mapa.Update(0, mapa.deltatiempo, mapa.timer, mapa);
+			/*
+			deltatiempo = timer.restart().asSeconds();
+			animapp.Update(anim, deltatiempo);
+			player.setTextureRect(animapp.uvRect);
+			*/
 			player.Update(player.anim, player.deltatiempo, player.timer, player);
+
+			explosion.setPosition(player.getPosition().x, player.getPosition().y);
+
+			for (size_t i = 0; i < coin.size(); i++)
+			{
+				deltacoin = timercoin.restart().asSeconds();
+				animacoin.Update(0, deltacoin);
+				coin[i].setTextureRect(animacoin.uvRect);
+
+				if (player.getGlobalBounds().intersects(coin[i].getGlobalBounds()))
+				{
+					coin[i].setPosition(2000.f, 2000.f);
+					sonido_moneda.play();
+					cuenta++;
+				}
+			}
+
+			if (vidacount <= 5)
+			{
+				texturaVida.loadFromFile("./res/Imagenes/Vida_Full_5.png");
+			}
+			if (vidacount <= 4)
+			{
+				texturaVida.loadFromFile("./res/Imagenes/Vida_Full_4.png");
+
+			}
+			if (vidacount <= 3)
+			{
+				texturaVida.loadFromFile("./res/Imagenes/Vida_Full_3.png");
+			}
+			if (vidacount <= 2)
+			{
+				texturaVida.loadFromFile("./res/Imagenes/Vida_Full_2.png");
+			}
+			if (vidacount <= 1)
+			{
+				texturaVida.loadFromFile("./res/Imagenes/Vida_Full_1.png");
+			}
+			if (vidacount <= 0)
+			{
+				
+				musica_juego.stop();
+
+				mapa.setTexture(texturamapaBW);
+				player.setTexture(pjtextura_muerte);
+				cofre.setTexture(texturachestBW);			
+				coinpunt.setTexture(texturacoinpuntBW);
+
+				for (int i = 0; i < coin.size(); i++)
+				{
+					coin[i].setTexture(texturacoinBW);
+				}
+
+				sonido_muerte_personaje.play();
+				clock_muerte.restart();
+				opacidadmuerte = 0;
+				
+				state = 3;
+			}
+	
+			puntos.setString(std::to_string(cuenta));
+
+			player.setColor(sf::Color::Color(255, 255, 255, 255));
+			//Metodos encargados de gestionar el movimiento y colision del personaje principal con el resto de objetos y paredes del juego.
+
+			hitbox.setPosition(Vector2f(player.getPosition().x, player.getPosition().y));
+
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+			{
+				player.move(0.f, -veloc);
+				hitbox.setPosition(Vector2f(player.getPosition().x, player.getPosition().y));
+				if (hitbox.getGlobalBounds().intersects(cofre.getGlobalBounds())) {
+					player.move(0.f, veloc);
+					vidaanim.restart();
+					if (invframes.getElapsedTime().asSeconds() >= 1.f)
+					{
+						sonido_daño_personaje.play();
+						vidacount = vidacount - 1;
+						invframes.restart();
+					}
+					if (invframes.getElapsedTime().asSeconds() <= 0.1f)
+					{
+						texturaVida.loadFromFile("./res/Imagenes/Vida_Anim.png");
+						player.setColor(sf::Color::Color(255, 0, 0, 255));
+					}
+				}
+				if (hitbox.getGlobalBounds().intersects(mapa.conjParedes[0].getGlobalBounds())) {
+									
+					player.move(0.f, veloc);
+
+					if (invframes.getElapsedTime().asSeconds() >= 0.8f)
+					{
+						sonido_pared.play();
+						invframes.restart();
+					}
+
+				}
+				if (player.anim == 3)
+				{
+					player.animd = 2;
+				}
+				if (player.anim == 0)
+				{
+					player.animd = 1;
+				}
+
+				player.Update(player.animd, player.deltatiempo, player.timer, player);
+			}
+
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+			{
+				player.move(0.f, veloc);
+				hitbox.setPosition(Vector2f(player.getPosition().x, player.getPosition().y));
+				if (hitbox.getGlobalBounds().intersects(cofre.getGlobalBounds())) {
+					player.move(0.f, -veloc);
+					vidaanim.restart();
+					if (invframes.getElapsedTime().asSeconds() >= 1)
+					{
+						sonido_daño_personaje.play();
+						vidacount = vidacount - 1;
+						invframes.restart();
+					}
+					if (invframes.getElapsedTime().asSeconds() <= 0.1f)
+					{
+						texturaVida.loadFromFile("./res/Imagenes/Vida_Anim.png");
+						player.setColor(sf::Color::Color(255, 0, 0, 255));
+					}
+				}
+				if (player.getGlobalBounds().intersects(mapa.conjParedes[2].getGlobalBounds())) {
+					player.move(0.f, -veloc);
+
+					if (invframes.getElapsedTime().asSeconds() >= 0.8f)
+					{
+						sonido_pared.play();
+						invframes.restart();
+					}
+				}
+				if (player.anim == 3)
+				{
+					player.animd = 2;
+				}
+				if (player.anim == 0)
+				{
+					player.animd = 1;
+				}
+				player.Update(player.animd, player.deltatiempo, player.timer, player);
+			}
+
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+			{
+				player.move(-veloc, 0.f);
+				hitbox.setPosition(Vector2f(player.getPosition().x, player.getPosition().y));
+				if (hitbox.getGlobalBounds().intersects(cofre.getGlobalBounds())) {
+					player.move(veloc, 0.f);
+					vidaanim.restart();
+					if (invframes.getElapsedTime().asSeconds() >= 1)
+					{
+						sonido_daño_personaje.play();
+						vidacount = vidacount - 1;
+						invframes.restart();
+					}
+					if (invframes.getElapsedTime().asSeconds() <= 0.1f)
+					{
+						texturaVida.loadFromFile("./res/Imagenes/Vida_Anim.png");
+						player.setColor(sf::Color::Color(255, 0, 0, 255));
+					}
+				}
+				if (hitbox.getGlobalBounds().intersects(mapa.conjParedes[1].getGlobalBounds())) {
+					player.move(veloc, 0.f);
+					if (invframes.getElapsedTime().asSeconds() >= 0.8f)
+					{
+						sonido_pared.play();
+						invframes.restart();
+					}
+				}
+
+				player.Update(2, player.deltatiempo, player.timer, player);
+
+				player.anim = 3;
+			}
+
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+			{
+				player.move(veloc, 0.f);
+				hitbox.setPosition(Vector2f(player.getPosition().x, player.getPosition().y));
+				if (hitbox.getGlobalBounds().intersects(cofre.getGlobalBounds())) {
+					player.move(-veloc, 0.f);
+					vidaanim.restart();
+					if (invframes.getElapsedTime().asSeconds() >= 1)
+					{
+						sonido_daño_personaje.play();
+						vidacount = vidacount - 1;
+						invframes.restart();
+					}
+					if (invframes.getElapsedTime().asSeconds() <= 0.1f)
+					{
+						texturaVida.loadFromFile("./res/Imagenes/Vida_Anim.png");
+						player.setColor(sf::Color::Color(255, 0, 0, 255));
+					}
+				}
+				if (hitbox.getGlobalBounds().intersects(mapa.conjParedes[3].getGlobalBounds())) {
+					player.move(-veloc, 0.f);
+					if (invframes.getElapsedTime().asSeconds() >= 0.8f)
+					{
+						sonido_pared.play();
+						invframes.restart();
+					}
+				}
+				player.Update(1, player.deltatiempo, player.timer, player);
+
+				player.anim = 0;
+			}
+
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) && sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+			{
+
+				player.Update(player.anim, player.deltatiempo, player.timer, player);
+			}
+
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) && sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+			{
+
+				player.Update(player.anim, player.deltatiempo, player.timer, player);
+			}
+
+			cursor.setPosition(sf::Vector2f(sf::Mouse::getPosition(window)));
+
+
+			//Limpiar la pantalla principal
+			window.clear();
+
+			//Dibujar el fondo y los objetos, enemigos y personaje de la pantalla.
+			window.draw(mapa);
+			window.draw(coinpunt);
+			window.draw(vida);
+			window.draw(puntos);
+
+			for (size_t i = 0; i < disparos.size(); i++)
+			{
+				window.draw(disparos[i]);
+			}
+
+			for (size_t i = 0; i < coin.size(); i++)
+			{
+				window.draw(coin[i]);
+			}
+
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+			{
+				animaexpl.tiempotot -= timer2.getElapsedTime().asSeconds();
+				animaexpl.Update(0, deltatiempo2);
+				explosion.setTextureRect(animaexpl.uvRect);
+				window.draw(explosion);
+			}
+
+			window.draw(text);
+			window.draw(cofre);
+			window.draw(text);
+			window.draw(player);
+			window.draw(efectodaño);
+			//window.draw(cursor);
+			//window.draw(hitbox);
+
+			//Mostrar en la ventana creada los objetos dibujados.
+			window.display();
+
 		}
 
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::W) && sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+		while (state == 3)
 		{
 
-			player.Update(player.anim, player.deltatiempo, player.timer, player);
+			sf::Event event;
+
+			while (window.pollEvent(event))
+			{
+				switch (event.type)
+				{
+				case sf::Event::Closed:
+					window.close();
+					break;
+				}
+			}
+
+			if (clock_muerte.getElapsedTime().asSeconds() >= 8)
+			{
+				state = 0;
+				
+				window.close();
+
+				main();
+			}
+
+			if (opacidadmuerte < 255.f)
+			{
+				opacidadmuerte += 3;
+				you_died.setColor(sf::Color::Color(255, 255, 255, opacidadmuerte));
+			}
+
+			window.draw(mapa);
+			window.draw(coinpunt);
+			window.draw(vida);
+			window.draw(puntos);
+
+			for (size_t i = 0; i < disparos.size(); i++)
+			{
+				window.draw(disparos[i]);
+			}
+
+			for (size_t i = 0; i < coin.size(); i++)
+			{
+				window.draw(coin[i]);
+			}
+
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+			{
+				animaexpl.tiempotot -= timer2.getElapsedTime().asSeconds();
+				animaexpl.Update(0, deltatiempo2);
+				explosion.setTextureRect(animaexpl.uvRect);
+				window.draw(explosion);
+			}
+
+			window.draw(text);
+			window.draw(cofre);
+			window.draw(text);
+			window.draw(player);
+			window.draw(efectodaño);
+			window.draw(you_died);
+			//window.draw(cursor);
+
+			//Mostrar en la ventana creada los objetos dibujados.
+			window.display();
+
 		}
 
-		//Limpiar la pantalla principal
-		window.clear();
-
-		//Dibujar el fondo y los objetos, enemigos y personaje de la pantalla.
-
-		/*if (player.getGlobalBounds().intersects(mapa.conjParedes[3].getGlobalBounds()))
-		{
-		}
-		else
-		{
-*/
-		window.draw(mapa);
-		window.draw(coinpunt);
-		window.draw(puntos);
-
-		for (size_t i = 0; i < disparos.size(); i++)
-		{
-			window.draw(disparos[i]);
-		}
-
-		for (int i = 0; i < 7; i++)
-		{
-			window.draw(coin[i]);
-		}
-
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
-		{
-			deltatiempo2 = timer2.restart().asSeconds();
-			animaexpl.Update(0, deltatiempo2);
-			explosion.setTextureRect(animaexpl.uvRect);
-			window.draw(explosion);
-		}
-		
-		window.draw(text);
-		window.draw(cofre);
-		window.draw(text);
-		window.draw(player);
-		window.draw(e1);
-		//window.draw(hitbox);
-		//}
-		
-		//Mostrar en la ventana creada los objetos dibujados.
-		window.display();
 	}
 }
