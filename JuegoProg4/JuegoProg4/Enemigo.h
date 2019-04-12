@@ -15,9 +15,10 @@ public:
 	int danyo;
 	int vida;
 	int espeed;
-	//Va a se un enemigo estático asi que la velocidad es 0
+	//Va a ser un enemigo estático así que la velocidad es 0
+
 	Enemigo(Vector2f pos,int danyo, int vida,int espeed, Texture& texture);
 	~Enemigo();
 
-	void disparoe(Proyectil p) {}
+	void disparoe();
 };

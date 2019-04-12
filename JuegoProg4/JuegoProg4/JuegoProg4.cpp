@@ -11,6 +11,7 @@
 #include "Mapa.h"
 #include "Enemigo.h"
 
+#include "SFML/System.hpp"
 #include<vector>
 #include "JuegoProg4.h"
 
@@ -212,13 +213,20 @@ int main()
 	std::vector<Proyectil> disparos;
 
 	///////////
-
-
+	void hola();
+	{
+		e1.disparoe();
+	}
 	///////////
 
 	//Bucle ejecutado mientras la pantalla se mantenga abierta.
 	while (window.isOpen())
 	{
+	
+		
+		//e1.disparoe(proyecene);
+		//ejecutar el metodo de abajo con un thread
+		sf::Thread hilodispe(hola());
 		//e1.track(player);
 		sf::Event event;
 
@@ -235,7 +243,7 @@ int main()
 		centrar = Vector2f(player.getPosition().x + player.getTextureRect().width / 2, player.getPosition().y + player.getTextureRect().height / 2);
 
 		if (delaytiro < 10)
-		{
+		{ 
 			delaytiro++;
 		}
 
