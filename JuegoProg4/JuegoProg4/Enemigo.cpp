@@ -1,6 +1,8 @@
 #include "Enemigo.h"
 #include <iostream>
 #include "SFML/Graphics.hpp"
+#include <thread>
+#include <stdio.h>
 
 
 Enemigo::Enemigo(Vector2f pos, int danyo, int vida, int espeed, Texture& texture)
@@ -15,86 +17,29 @@ Enemigo::Enemigo(Vector2f pos, int danyo, int vida, int espeed, Texture& texture
 Enemigo::~Enemigo()
 {
 }
-
+int j = 1;
+float xb = 100.0f;
 void Enemigo::disparoe()
 {
+	bool ward = false;
+	using namespace std::literals::chrono_literals;
 	Proyectil disparoRe(10, 0); //Dispara hacia el lado derecho
 	std::vector<Proyectil> disparosene;
-	disparoRe.setPosition(100.0f, 100.0f);
-	sf::Clock temporizador;
-	int x = temporizador.getElapsedTime().asSeconds();
-	printf("IM A SKAT MAN ");
-	int j=0;
-	/*
-	// Para comprobar que x asciende
-	if (x = 0)
-	{
-		printf("Secuendo %i", x);
-		disparoRe.move(10.0f, 0);
-	}
-	if (x = 1)
-	{
-		printf("Secuendo %i", x);
-		disparoRe.move(10.0f, 0);
-	}
-	if (x = 2)
-	{
-		printf("Secuendo %i", x);
-		disparoRe.move(10.0f, 0);
-	}
-	if (x = 3)
-	{
-		printf("Secuendo %i", x);
-		disparoRe.move(10.0f, 0);
-	}
+	disparoRe.setPosition(xb, 100.0f);
 
-	if (x = 4)
+	while (ward != true)
 	{
-		disparoRe.move(10.0f, 0);
-		printf("posicion del proyectil es (%f) y (%f) ", disparoRe.getPosition().x, disparoRe.getPosition().y);
-		//No se mueven solo son introducidas en el array
-	//	disparosene.push_back(Proyectil(disparoRe));
-		temporizador.restart().asSeconds();
-		x = 0;
-	}*/
-	printf("El tiempo es... %i", x);
-	
-	do
-	{
-		if (x = 0)
+		printf("Disparo numero %i%\n", j);
+		std::this_thread::sleep_for(10ms);//18000 IQ
+		if (j % 40 == 0) 
 		{
-			printf("Secuendo %i", x);
-			disparoRe.move(10.0f, 0);
-		}
-		if (x = 1)
-		{
-			printf("Secuendo %i", x);
-			disparoRe.move(10.0f, 0);
-		}
-		if (x = 2)
-		{
-			printf("Secuendo %i", x);
-			disparoRe.move(10.0f, 0);
-		}
-		if (x = 3)
-		{
-			printf("Secuendo %i", x);
-			disparoRe.move(10.0f, 0);
-		}
-
-		if (x = 4)
-		{
-			disparoRe.move(10.0f, 0);
+			xb = xb + 10.0f;
+			disparoRe.move(xb, 0);//Se movera 20 pixels
 			printf("posicion del proyectil es (%f) y (%f) ", disparoRe.getPosition().x, disparoRe.getPosition().y);
-			//No se mueven solo son introducidas en el array
-		//	disparosene.push_back(Proyectil(disparoRe));
-			temporizador.restart().asSeconds();
-			x = 0;
-			j++;
+			printf("adsajafgfjgygajya");
+			disparosene.push_back(disparoRe);
 		}
-		printf("El tiempo es... %i", x);
-	}while (j <= 5);
-	//	std::cout << "Thread" << std::end;
-	
+		j++;
+		ward = true;
+	}
 }
-

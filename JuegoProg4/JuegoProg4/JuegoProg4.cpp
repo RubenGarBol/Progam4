@@ -12,6 +12,7 @@
 #include "Mapa.h"
 #include "Enemigo.h"
 
+#include <thread>
 #include "SFML/System.hpp"
 #include<vector>
 #include "JuegoProg4.h"
@@ -405,6 +406,7 @@ int main()
 	//Bucle ejecutado mientras la pantalla se mantenga abierta.
 	while (window.isOpen())
 	{
+	
 		while (state==1)
 		{
 			musica_juego.setVolume(0);
@@ -985,12 +987,18 @@ int main()
 				explosion.setTextureRect(animaexpl.uvRect);
 				window.draw(explosion);
 			}
+			Enemigo e2(Vector2f(700.0f, 700.0f), 0, 0, 10, texturaEn);
+
+			//	std::thread hilodisp{};
+			//	hilodisp.join();
+			e2.disparoe();//Esto va a un hilo
 
 			window.draw(text);
 			window.draw(cofre);
 			window.draw(text);
 			window.draw(player);
 			window.draw(efectodaño);
+			window.draw(e2);
 			//window.draw(cursor);
 			//window.draw(hitbox);
 
