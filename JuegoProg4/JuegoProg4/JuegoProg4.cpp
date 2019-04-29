@@ -780,7 +780,7 @@ int main()
 				player.setTexture(pjtextura_muerte);
 				cofre.setTexture(texturachestBW);			
 				coinpunt.setTexture(texturacoinpuntBW);
-
+			
 				for (int i = 0; i < coin.size(); i++)
 				{
 					coin[i].setTexture(texturacoinBW);
@@ -992,7 +992,8 @@ int main()
 			//	std::thread hilodisp{};
 			//	hilodisp.join();
 			e2.disparoe();//Esto va a un hilo
-
+		//	e2.limpiarbal(cofre,mapa);
+		//	window.draw(e2.disparoRe);
 			window.draw(text);
 			window.draw(cofre);
 			window.draw(text);

@@ -4,7 +4,6 @@
 #include "SFML/Graphics.hpp"
 #include "Proyectil.h"
 
-
 using namespace sf;
 
 class Enemigo : public Sprite
@@ -21,4 +20,5 @@ public:
 	~Enemigo();
 
 	void disparoe();
+//	void limpiarbal(Cofre f, Mapa m);
 };
