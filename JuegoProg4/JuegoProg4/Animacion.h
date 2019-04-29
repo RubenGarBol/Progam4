@@ -12,11 +12,12 @@ public:
 
 	sf::IntRect uvRect;
 
-private:
+	float tiempotot;
+
 	sf::Vector2u CuentaImg;
 	sf::Vector2u ImgActual;
 	
-	float tiempotot;
+	
 	float switchtiempo;
 	
 };

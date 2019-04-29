@@ -1,10 +1,10 @@
 #pragma once
-#include "SFML/Graphics.hpp"
+   #include "SFML/Graphics.hpp"
 #include "Animacion.h"
 
 using namespace sf;
 
-class Mapa : public sf::Sprite , public Animacion
+class Mapa : public Sprite , public Animacion
 {
 	public:
 		Texture texture;
