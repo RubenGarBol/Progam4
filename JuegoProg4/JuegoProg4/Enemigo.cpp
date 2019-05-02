@@ -23,6 +23,23 @@ Enemigo::~Enemigo()
 int j = 1;
 float xb = 100.0f;
 std::vector<Proyectil> disparosene;
+
+void Enemigo::cargarbala(Mapa m)//Elimina las balas si se golpean con la pared
+{
+	for (size_t i = 0; i < disparosene.size(); i++)
+	{
+		disparosene[i].move(disparosene[i].dirx, disparosene[i].diry);
+
+		if (disparosene[i].getGlobalBounds().intersects(m.conjParedes[0].getGlobalBounds())
+			|| disparosene[i].getGlobalBounds().intersects(m.conjParedes[1].getGlobalBounds()) || disparosene[i].getGlobalBounds().intersects(m.conjParedes[2].getGlobalBounds())
+			|| disparosene[i].getGlobalBounds().intersects(m.conjParedes[3].getGlobalBounds()))
+		{
+			disparosene.erase(disparosene.begin() + i);
+			printf("Bala fuera");
+		}
+	}
+}
+
 void Enemigo::disparoe()
 {
 	bool ward = false;
@@ -37,7 +54,7 @@ void Enemigo::disparoe()
 		std::this_thread::sleep_for(10ms);//18000 IQ
 		if (j % 10 == 0) //Caada 100ms la bala se mueve
 		{
-			xb = xb + 0.75f; //El movimiento es doble
+			xb = xb + 10.75f; //El movimiento es doble
 		}
 		if (j % 40 == 0) 
 		{
@@ -48,7 +65,7 @@ void Enemigo::disparoe()
 			//printf("adsajafgfjgygajya");
 
 		}
-		if (j == 401) 
+		if (j == 402) 
 		{
 			j = 2;
 		}
@@ -56,6 +73,7 @@ void Enemigo::disparoe()
 		ward = true;
 	}
 }
+
 /*
 void Enemigo::limpiarbal(Cofre f,Mapa m)
 {

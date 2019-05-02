@@ -1,7 +1,8 @@
+/*
 #include <iostream>
 #include <Windows.h>
 #include <sqlext.h>
-#include <sqltypes.h>
+#include <sq ltypes.h>
 #include <sql.h>
 
 
@@ -88,3 +89,4 @@ int main() {
 	getchar();
 	return 0;
 }
+*/

@@ -20,7 +20,7 @@
 
 int main()
 {
-	B
+	
 	//Crear la pantalla principal de juego con nombre "Isaac" y dimensiones 1056x888p.
 	sf::RenderWindow window(sf::VideoMode(1056, 888, 32), "Issac");
 

@@ -1,5 +1,5 @@
-
 #pragma once
+#include "Mapa.h"
 #include "Personaje.h"
 #include "SFML/Graphics.hpp"
 #include "Proyectil.h"
@@ -20,5 +20,8 @@ public:
 	~Enemigo();
 
 	void disparoe();
+	void cargarbala(Mapa m);
 //	void limpiarbal(Cofre f, Mapa m);
+
+
 };
