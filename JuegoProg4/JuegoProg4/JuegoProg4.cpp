@@ -12,7 +12,6 @@
 #include "Animacion.h"
 #include "Mapa.h"
 #include "Enemigo.h"
-
 #include <thread>
 #include "SFML/System.hpp"
 #include<vector>
@@ -1073,7 +1072,7 @@ int main()
 
 			//Mostrar en la ventana creada los objetos dibujados.
 			window.display();
-
+			//SQLDriverConnect
 		}
 
 	}
