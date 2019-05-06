@@ -152,7 +152,6 @@ int main()
 	Animacion animacoin(&coin[0].textura, vectorcoin, 0.25);
 	float deltacoin = 0.0f;
 
-
 	coin[0].setPosition(460.f, 150.f);
 	coin[1].setPosition(140.f, 275.f);
 	coin[2].setPosition(800.f, 300.f);
@@ -220,13 +219,12 @@ int main()
 
 	///////////
 
-	sf::RectangleShape prueba;
-	prueba.setSize(sf::Vector2f(60.f, 60.f));
-	///////////
-
-	int state=0;
+	int state=2;
 
 	//////////
+
+	int seleccion = 1;
+
 	float opacidadint = 0;
 	float opacidadext = 0;
 	float opacidadtextint = 0;
@@ -289,20 +287,6 @@ int main()
 		std::cout << "No se ha encontrado la textura de: cursor.png\n";
 	}
 	sf::Sprite cursor(cursortexture);
-	
-	//Efecto Daño
-	int opacidaddaño = 0;
-	sf::Texture texturadaño;
-	if (!texturadaño.loadFromFile("./res/Imagenes/DamageEffect.png"))
-	{
-		std::cout << "No se ha encontrado la textura de: DamageEffect.png\n";
-	}
-	sf::Sprite efectodaño;
-	efectodaño.setTexture(texturadaño);
-	
-	sf::Clock dañoclock;
-
-	int seleccion = 1;
 
 	//Musica
 	sf::SoundBuffer buffer_moneda;
@@ -358,12 +342,6 @@ int main()
 		std::cout << "No se ha encontrado la textura de: death_Screen.png\n";
 	}
 
-	sf::Texture texturacalavera;
-	if (!texturacalavera.loadFromFile("./res/Imagenes/skull.png"))
-	{
-		std::cout << "No se ha encontrado la textura de: skull.png\n";
-	}
-
 	//B&W texturas
 	sf::Texture texturamapaBW;
 	if (!texturamapaBW.loadFromFile("./res/Imagenes/PiskelPruebaAnimBW.png"))
@@ -401,17 +379,67 @@ int main()
 	sf::Clock clock_muerte;
 	float opacidadmuerte= 0.f;
 
+	//Pantalla Inicio
+	sf::Texture textura_pprincipal;
+	if (!textura_pprincipal.loadFromFile("./res/Imagenes/PantallaPrincipal.png"))
+	{
+		std::cout << "No se ha encontrado la textura de: PantallaPrincipal.png\n";
+	}
+
+	sf::Sprite sprite_pprincipal;
+	sprite_pprincipal.setTexture(textura_pprincipal);
+
+	sf::Vector2u vector_pprincipal(12, 1);
+	Animacion animacion_pprincipal(&textura_pprincipal, vector_pprincipal, 0.15);
+	float delta_pprincipal = 0.0f;
+
+	sf::Clock clock_pprincipal;
+
+	Text play_pprincipal;
+	Text opciones_pprincipal;
+	Text salir_pprincipal;
+
+	play_pprincipal.setFont(font);
+	play_pprincipal.setString("JUGAR");
+	play_pprincipal.setCharacterSize(45);
+	play_pprincipal.setStyle(sf::Text::Bold);
+	play_pprincipal.setFillColor(sf::Color::White);
+	play_pprincipal.setOutlineColor(sf::Color::Black);
+	play_pprincipal.setOutlineThickness(4);
+	play_pprincipal.setOrigin(play_pprincipal.getGlobalBounds().width / 2, play_pprincipal.getGlobalBounds().height / 2);
+	play_pprincipal.setPosition(playboton.getPosition().x, playboton.getPosition().y - 170);
+
+	opciones_pprincipal.setFont(font);
+	opciones_pprincipal.setString("OPCIONES");
+	opciones_pprincipal.setCharacterSize(45);
+	opciones_pprincipal.setStyle(sf::Text::Bold);
+	opciones_pprincipal.setFillColor(sf::Color::White);
+	opciones_pprincipal.setOutlineColor(sf::Color::Black);
+	opciones_pprincipal.setOutlineThickness(4);
+	opciones_pprincipal.setOrigin(opciones_pprincipal.getGlobalBounds().width / 2, opciones_pprincipal.getGlobalBounds().height / 2);
+	opciones_pprincipal.setPosition(playboton.getPosition().x, playboton.getPosition().y+20);
+
+	salir_pprincipal.setFont(font);
+	salir_pprincipal.setString("SALIR");
+	salir_pprincipal.setCharacterSize(45);
+	salir_pprincipal.setStyle(sf::Text::Bold);
+	salir_pprincipal.setFillColor(sf::Color::White);
+	salir_pprincipal.setOutlineColor(sf::Color::Black);
+	salir_pprincipal.setOutlineThickness(4);
+	salir_pprincipal.setOrigin(salir_pprincipal.getGlobalBounds().width / 2, salir_pprincipal.getGlobalBounds().height / 2);
+	salir_pprincipal.setPosition(playboton.getPosition().x, playboton.getPosition().y + 210);
+
 	//Bucle ejecutado mientras la pantalla se mantenga abierta.
 	while (window.isOpen())
 	{
-		while (state==1)
+		while (state == 1)
 		{
 			musica_juego.setVolume(0);
 			musica_menu.setVolume(80);
 
 			sf::Vector2i mousePos = sf::Mouse::getPosition(window);
 			sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
-			
+
 			if (opacidadint < 140.f)
 			{
 				opacidadint += 140 / 6;
@@ -436,7 +464,7 @@ int main()
 				opciones.setOutlineColor(sf::Color::Color(0, 0, 0, opacidadtextext));
 				salir.setOutlineColor(sf::Color::Color(0, 0, 0, opacidadtextext));
 			}
-			
+
 			printf("%f", opacidadtextext);
 
 			sf::Event event;
@@ -445,101 +473,101 @@ int main()
 			{
 				switch (event.type)
 				{
-					case sf::Event::Closed:
-						window.close();
-						break;
-							
-					case sf::Event::MouseMoved:
-					{
-						if (play.getGlobalBounds().contains(mousePosF) && opacidadtextint >= 252)
-						{
-							seleccion = 1;
-						}
-						else if (opciones.getGlobalBounds().contains(mousePosF) && opacidadtextint >= 252)
-						{
-							seleccion = 2;
-						}
-						else if (salir.getGlobalBounds().contains(mousePosF) && opacidadtextint >= 252)
-						{
-							seleccion = 3;
-						}
-					
-					}
+				case sf::Event::Closed:
+					window.close();
 					break;
-					
-					case sf::Event::MouseButtonPressed:
+
+				case sf::Event::MouseMoved:
+				{
+					if (play.getGlobalBounds().contains(mousePosF) && opacidadtextint >= 252)
 					{
-						if (play.getGlobalBounds().contains(mousePosF))
+						seleccion = 1;
+					}
+					else if (opciones.getGlobalBounds().contains(mousePosF) && opacidadtextint >= 252)
+					{
+						seleccion = 2;
+					}
+					else if (salir.getGlobalBounds().contains(mousePosF) && opacidadtextint >= 252)
+					{
+						seleccion = 3;
+					}
+
+				}
+				break;
+
+				case sf::Event::MouseButtonPressed:
+				{
+					if (play.getGlobalBounds().contains(mousePosF))
+					{
+						opacidadext = 0;
+						opacidadint = 0;
+						opacidadtextext = 0;
+						opacidadtextint = 0;
+
+						player.tiempotot -= player.timer.getElapsedTime().asSeconds();
+						animacoin.tiempotot -= timercoin.getElapsedTime().asSeconds();
+						mapa.tiempotot -= mapa.timer.getElapsedTime().asSeconds();
+
+						musica_menu.pause();
+
+						state = 0;
+					}
+
+					if (opciones.getGlobalBounds().contains(mousePosF))
+					{
+						opciones.setPosition(2000.f, 2000.f);
+						salir.setPosition(2000.f, 2000.f);
+					}
+
+					if (salir.getGlobalBounds().contains(mousePosF))
+					{
+						window.close();
+					}
+				}
+
+				case sf::Event::KeyPressed:
+					switch (event.key.code)
+					{
+					case sf::Keyboard::S:
+						if (seleccion < 3)
+						{
+							seleccion++;
+							printf("%i\n", seleccion);
+						}
+						break;
+					case sf::Keyboard::W:
+						if (seleccion > 1)
+						{
+							seleccion--;
+							printf("%i\n", seleccion);
+						}
+						break;
+					case sf::Keyboard::Enter:
+						if (seleccion == 1)
 						{
 							opacidadext = 0;
 							opacidadint = 0;
 							opacidadtextext = 0;
 							opacidadtextint = 0;
-						
+
 							player.tiempotot -= player.timer.getElapsedTime().asSeconds();
 							animacoin.tiempotot -= timercoin.getElapsedTime().asSeconds();
 							mapa.tiempotot -= mapa.timer.getElapsedTime().asSeconds();
 
-							musica_menu.pause();
-
 							state = 0;
 						}
-
-						if (opciones.getGlobalBounds().contains(mousePosF))
+						if (seleccion == 2)
 						{
-							opciones.setPosition(2000.f,2000.f);
+							opciones.setPosition(2000.f, 2000.f);
 							salir.setPosition(2000.f, 2000.f);
 						}
-
-						if (salir.getGlobalBounds().contains(mousePosF))
+						if (seleccion == 3)
 						{
 							window.close();
 						}
-					}
-
-					case sf::Event::KeyPressed:
-						switch(event.key.code)
-						{
-							case sf::Keyboard::S:
-								if (seleccion < 3)
-								{
-									seleccion++;
-									printf("%i\n", seleccion);
-								}
-								break;
-							case sf::Keyboard::W:
-								if (seleccion > 1)
-								{
-									seleccion--;
-									printf("%i\n", seleccion);
-								}
-								break;
-							case sf::Keyboard::Enter:
-								if (seleccion == 1)
-								{							
-									opacidadext = 0;
-									opacidadint = 0;
-									opacidadtextext = 0;
-									opacidadtextint = 0;
-									
-									player.tiempotot -= player.timer.getElapsedTime().asSeconds();
-									animacoin.tiempotot -= timercoin.getElapsedTime().asSeconds();
-									mapa.tiempotot -= mapa.timer.getElapsedTime().asSeconds();
-
-									state = 0;
-								}
-								if (seleccion == 2)
-								{
-									opciones.setPosition(2000.f, 2000.f);
-									salir.setPosition(2000.f, 2000.f);
-								}
-								if (seleccion == 3)
-								{
-									window.close();
-								}
-								break;
-						}
 						break;
+					}
+					break;
 				}
 			}
 
@@ -551,7 +579,7 @@ int main()
 			{
 				cursortexture.loadFromFile("./res/Imagenes/cursor.png");
 			}
-			
+
 			if (seleccion == 1)
 			{
 				play.setFillColor(sf::Color(163, 131, 55));
@@ -571,7 +599,7 @@ int main()
 				opciones.setFillColor(sf::Color::White);
 				salir.setFillColor(sf::Color(163, 131, 55));
 			}
-			else 
+			else
 			{
 				//main();
 				/*
@@ -580,7 +608,7 @@ int main()
 				salir.setFillColor(sf::Color::White);
 				*/
 			}
-			
+
 			cursor.setPosition(sf::Vector2f(mousePos));
 
 			window.clear();
@@ -589,7 +617,7 @@ int main()
 			window.draw(coinpunt);
 			window.draw(vida);
 			window.draw(puntos);
-			
+
 			for (size_t i = 0; i < disparos.size(); i++)
 			{
 				window.draw(disparos[i]);
@@ -613,13 +641,13 @@ int main()
 			window.display();
 		}
 
-		while (state==0)
+		while (state == 0)
 		{
 			//musica_juego.setPlayingOffset(musica_menu.getPlayingOffset());
 			musica_juego.setVolume(80);
 			musica_menu.setVolume(0);
 
-			
+
 
 			sf::Event event;
 
@@ -641,9 +669,6 @@ int main()
 				salir.setPosition(playboton.getPosition().x, playboton.getPosition().y + 180);
 			}
 
-			///////////
-
-			efectodaño.setColor(sf::Color(255, 0, 0, opacidaddaño));
 
 			///////////
 			centrar = Vector2f(player.getPosition().x + player.getTextureRect().width / 2, player.getPosition().y + player.getTextureRect().height / 2);
@@ -724,11 +749,7 @@ int main()
 			///////////
 
 			mapa.Update(0, mapa.deltatiempo, mapa.timer, mapa);
-			/*
-			deltatiempo = timer.restart().asSeconds();
-			animapp.Update(anim, deltatiempo);
-			player.setTextureRect(animapp.uvRect);
-			*/
+			
 			player.Update(player.anim, player.deltatiempo, player.timer, player);
 
 			explosion.setPosition(player.getPosition().x, player.getPosition().y);
@@ -770,12 +791,12 @@ int main()
 			}
 			if (vidacount <= 0)
 			{
-				
+
 				musica_juego.stop();
 
 				mapa.setTexture(texturamapaBW);
 				player.setTexture(pjtextura_muerte);
-				cofre.setTexture(texturachestBW);			
+				cofre.setTexture(texturachestBW);
 				coinpunt.setTexture(texturacoinpuntBW);
 
 				for (int i = 0; i < coin.size(); i++)
@@ -786,10 +807,10 @@ int main()
 				sonido_muerte_personaje.play();
 				clock_muerte.restart();
 				opacidadmuerte = 0;
-				
+
 				state = 3;
 			}
-	
+
 			puntos.setString(std::to_string(cuenta));
 
 			player.setColor(sf::Color::Color(255, 255, 255, 255));
@@ -817,7 +838,7 @@ int main()
 					}
 				}
 				if (hitbox.getGlobalBounds().intersects(mapa.conjParedes[0].getGlobalBounds())) {
-									
+
 					player.move(0.f, veloc);
 
 					if (invframes.getElapsedTime().asSeconds() >= 0.8f)
@@ -989,7 +1010,6 @@ int main()
 			window.draw(cofre);
 			window.draw(text);
 			window.draw(player);
-			window.draw(efectodaño);
 			//window.draw(cursor);
 			//window.draw(hitbox);
 
@@ -1016,7 +1036,7 @@ int main()
 			if (clock_muerte.getElapsedTime().asSeconds() >= 8)
 			{
 				state = 0;
-				
+
 				window.close();
 
 				main();
@@ -1055,7 +1075,6 @@ int main()
 			window.draw(cofre);
 			window.draw(text);
 			window.draw(player);
-			window.draw(efectodaño);
 			window.draw(you_died);
 			//window.draw(cursor);
 
@@ -1063,6 +1082,147 @@ int main()
 			window.display();
 
 		}
+
+		while (state == 2)
+		{
+			sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+			sf::Vector2f mousePosF(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y));
+
+			sf::Event event;
+
+			while (window.pollEvent(event))
+			{
+				switch (event.type)
+				{
+				case sf::Event::Closed:
+					window.close();
+					break;
+
+				case sf::Event::MouseMoved:
+				{
+					if (play_pprincipal.getGlobalBounds().contains(mousePosF))
+					{
+						seleccion = 1;
+					}
+					else if (opciones_pprincipal.getGlobalBounds().contains(mousePosF))
+					{
+						seleccion = 2;
+					}
+					else if (salir_pprincipal.getGlobalBounds().contains(mousePosF))
+					{
+						seleccion = 3;
+					}
+
+				}
+				break;
+
+				case sf::Event::MouseButtonPressed:
+				{
+					if (play_pprincipal.getGlobalBounds().contains(mousePosF))
+					{
+						player.tiempotot -= player.timer.getElapsedTime().asSeconds();
+						animacoin.tiempotot -= timercoin.getElapsedTime().asSeconds();
+						mapa.tiempotot -= mapa.timer.getElapsedTime().asSeconds();
+
+						state = 0;
+					}
+
+					if (opciones_pprincipal.getGlobalBounds().contains(mousePosF))
+					{
+						opciones_pprincipal.setPosition(2000.f, 2000.f);
+						salir_pprincipal.setPosition(2000.f, 2000.f);
+					}
+
+					if (salir_pprincipal.getGlobalBounds().contains(mousePosF))
+					{
+						window.close();
+					}
+				}
+
+				case sf::Event::KeyPressed:
+					switch (event.key.code)
+					{
+					case sf::Keyboard::S:
+						if (seleccion < 3)
+						{
+							seleccion++;
+						}
+						break;
+					case sf::Keyboard::W:
+						if (seleccion > 1)
+						{
+							seleccion--;
+						}
+						break;
+					case sf::Keyboard::Enter:
+						if (seleccion == 1)
+						{
+							player.tiempotot -= player.timer.getElapsedTime().asSeconds();
+							animacoin.tiempotot -= timercoin.getElapsedTime().asSeconds();
+							mapa.tiempotot -= mapa.timer.getElapsedTime().asSeconds();
+
+							state = 0;
+						}
+						if (seleccion == 2)
+						{
+							opciones_pprincipal.setPosition(2000.f, 2000.f);
+							salir_pprincipal.setPosition(2000.f, 2000.f);
+						}
+						if (seleccion == 3)
+						{
+							window.close();
+						}
+						break;
+					}
+					break;
+				}
+			}
+
+			if (Mouse::isButtonPressed(Mouse::Left))
+			{
+				cursortexture.loadFromFile("./res/Imagenes/pressed_cursor.png");
+			}
+			else
+			{
+				cursortexture.loadFromFile("./res/Imagenes/cursor.png");
+			}
+
+			if (seleccion == 1)
+			{
+				play_pprincipal.setFillColor(sf::Color(163, 131, 55));
+				opciones_pprincipal.setFillColor(sf::Color::White);
+				salir.setFillColor(sf::Color::White);
+			}
+			else if (seleccion == 2)
+			{
+				play_pprincipal.setFillColor(sf::Color::White);
+				opciones_pprincipal.setFillColor(sf::Color(163, 131, 55));
+				salir_pprincipal.setFillColor(sf::Color::White);
+			}
+			else if (seleccion == 3)
+			{
+				play_pprincipal.setFillColor(sf::Color::White);
+				opciones_pprincipal.setFillColor(sf::Color::White);
+				salir_pprincipal.setFillColor(sf::Color(163, 131, 55));
+			}
+			
+			delta_pprincipal = clock_pprincipal.restart().asSeconds();
+			animacion_pprincipal.Update(0, delta_pprincipal);
+			sprite_pprincipal.setTextureRect(animacion_pprincipal.uvRect);
+
+			cursor.setPosition(sf::Vector2f(mousePos));
+			
+			window.clear();
+
+			window.draw(sprite_pprincipal);
+			window.draw(play_pprincipal);
+			window.draw(opciones_pprincipal);
+			window.draw(salir_pprincipal);
+			window.draw(cursor);
+
+			window.display();
+		}
+		
 
 	}
 }
