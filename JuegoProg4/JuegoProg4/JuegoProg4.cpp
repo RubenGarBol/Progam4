@@ -1,3 +1,4 @@
+#include "Utilidades/Conexion.cpp"
 #include "SFML/Graphics.hpp"
 #include "SFML/Audio.hpp"
 #include <iostream>
@@ -11,12 +12,14 @@
 #include "Animacion.h"
 #include "Mapa.h"
 #include "Enemigo.h"
-
+#include <thread>
+#include "SFML/System.hpp"
 #include<vector>
 #include "JuegoProg4.h"
 
 int main()
 {
+	
 	//Crear la pantalla principal de juego con nombre "Isaac" y dimensiones 1056x888p.
 	sf::RenderWindow window(sf::VideoMode(1056, 888, 32), "Issac");
 
@@ -798,7 +801,7 @@ int main()
 				player.setTexture(pjtextura_muerte);
 				cofre.setTexture(texturachestBW);
 				coinpunt.setTexture(texturacoinpuntBW);
-
+			
 				for (int i = 0; i < coin.size(); i++)
 				{
 					coin[i].setTexture(texturacoinBW);
@@ -1005,11 +1008,19 @@ int main()
 				explosion.setTextureRect(animaexpl.uvRect);
 				window.draw(explosion);
 			}
+			Enemigo e2(Vector2f(700.0f, 700.0f), 0, 0, 10, texturaEn);
 
+			//	std::thread hilodisp{};
+			//	hilodisp.join();
+			e2.disparoe();//Esto va a un hilo
+		//	e2.limpiarbal(cofre,mapa);
+		//	window.draw(e2.disparoRe);
 			window.draw(text);
 			window.draw(cofre);
 			window.draw(text);
 			window.draw(player);
+			window.draw(efectodaño);
+			window.draw(e2);
 			//window.draw(cursor);
 			//window.draw(hitbox);
 
