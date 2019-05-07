@@ -1,9 +1,10 @@
-/*
+
 #include <iostream>
 #include <Windows.h>
 #include <sqlext.h>
-#include <sq ltypes.h>
+#include <sqltypes.h>
 #include <sql.h>
+#include "..\Conexion.h"
 
 
 using namespace std;
@@ -14,11 +15,8 @@ void showSQLError(unsigned int handleType, const SQLHANDLE& handle) {
 	if (SQL_SUCCESS == SQLGetDiagRec(handleType, handle, 1, SQLState, NULL, message, 1024, NULL)) {
 		cout << "SQL Driver message: " << message << "\nSQL State: " << SQLState << "." << endl;
 	}
-
-
-
 }
-int main() {
+int initBD() {
 	SQLHANDLE SQLEnvHandle = NULL;
 	SQLHANDLE SQLConnectionHandle = NULL;
 	SQLHANDLE SQLStatementHandle = NULL;
@@ -40,7 +38,7 @@ int main() {
 		}
 		//RECOGIDA DE ERRORES CON EL SWITCH.
 		SQLCHAR retConString[1024];
-		switch (SQLDriverConnect(SQLConnectionHandle, NULL, (SQLCHAR*)"DRIVER=(SQL Server); SERVER=, ; DATABASE= projectBD; UID= myID; PWD= myPW", SQL_NTS, retConString, 1024, NULL, SQL_DRIVER_NOPROMPT)) {
+		switch (SQLDriverConnect(SQLConnectionHandle, NULL, (SQLCHAR*)"DRIVER=(SQL Server); SERVER=prog4.database.windows.net, ; DATABASE= prog4; UID= usuario; PWD= Prog4321", SQL_NTS, retConString, 1024, NULL, SQL_DRIVER_NOPROMPT)) {		
 		case SQL_SUCCESS:
 			break;
 		case SQL_SUCCESS_WITH_INFO:
@@ -85,8 +83,15 @@ int main() {
 	SQLDisconnect(SQLConnectionHandle);
 	SQLFreeHandle(SQL_HANDLE_DBC, SQLConnectionHandle);
 	SQLFreeHandle(SQL_HANDLE_ENV, SQLEnvHandle);
-
-	getchar();
 	return 0;
 }
-*/
+
+SQLFreeHandle(SQL_HANDLE_DBC, SQLConnectionHandle){
+}
+
+SQLFreeHandle(SQL_HANDLE_ENV, SQLEnvHandle){
+}
+
+SQLFreeHandle(SQLSMALLINT HandleType, SQLHANDLE Handle)
+{
+}
