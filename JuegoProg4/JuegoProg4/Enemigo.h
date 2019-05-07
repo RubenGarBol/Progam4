@@ -19,7 +19,7 @@ public:
 	Enemigo(Vector2f pos,int danyo, int vida,int espeed, Texture& texture);
 	~Enemigo();
 
-	void disparoe();
+	void disparoe(sf::RenderWindow* windowsup);
 	void cargarbala(Mapa m);
 //	void limpiarbal(Cofre f, Mapa m);
 

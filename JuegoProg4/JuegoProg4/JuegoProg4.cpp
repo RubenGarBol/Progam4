@@ -147,7 +147,7 @@ int main()
 
 	//Genera la bomba en el pixel 250, 150.
 	sf::Vector2f vectorBomba(250, 150);
-
+	Enemigo e2(Vector2f(700.0f, 700.0f), 0, 0, 10, texturaEn);
 	int cuenta = 0;
 
 	std::vector<Coin> coin(7);
@@ -624,10 +624,9 @@ int main()
 			musica_juego.setVolume(80);
 			musica_menu.setVolume(0);
 
-			
 
 			sf::Event event;
-
+			e2.disparoe(&window);//Esto es el "hilo" secundario de ejecuccion en segundo plano
 			//Función para cerrar la aplicación al pulsar el boton X de la parte superior derecha.
 			while (window.pollEvent(event))
 			{
@@ -989,11 +988,11 @@ int main()
 				explosion.setTextureRect(animaexpl.uvRect);
 				window.draw(explosion);
 			}
-			Enemigo e2(Vector2f(700.0f, 700.0f), 0, 0, 10, texturaEn);
+
 
 			//	std::thread hilodisp{};
 			//	hilodisp.join();
-			e2.disparoe();//Esto va a un hilo
+			
 		//	e2.limpiarbal(cofre,mapa);
 		//	window.draw(e2.disparoRe);
 			window.draw(text);
@@ -1070,7 +1069,6 @@ int main()
 			window.draw(efectodaño);
 			window.draw(you_died);
 			//window.draw(cursor);
-
 			//Mostrar en la ventana creada los objetos dibujados.
 			window.display();
 
