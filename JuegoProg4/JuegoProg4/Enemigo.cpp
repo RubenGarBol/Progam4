@@ -7,6 +7,7 @@
 #include "Mapa.h"
 #include "Proyectil.h"
 
+sf::RenderWindow window;
 
 Enemigo::Enemigo(Vector2f pos, int danyo, int vida, int espeed, Texture& texture)
 {
@@ -40,21 +41,24 @@ void Enemigo::cargarbala(Mapa m)//Elimina las balas si se golpean con la pared
 	}
 }
 
-void Enemigo::disparoe()
+void Enemigo::disparoe(sf::RenderWindow* windowsup)
 {
 	bool ward = false;
 	using namespace std::literals::chrono_literals;
 	Proyectil disparoRe(10, 0); //Dispara hacia el lado derecho
 	std::vector<Proyectil> disparoseneene;
 	disparoRe.setPosition(xb, 100.0f);
-
+	int bcount=0;
 	while (ward != true)
 	{
+	
 		printf("Iteración numero %i%\n", j);
+		
 		std::this_thread::sleep_for(10ms);//18000 IQ
 		if (j % 10 == 0) //Caada 100ms la bala se mueve
 		{
 			xb = xb + 10.75f; //El movimiento es doble
+
 		}
 		if (j % 40 == 0) 
 		{
@@ -62,6 +66,12 @@ void Enemigo::disparoe()
 			disparoseneene.push_back(disparoRe);
 			disparoRe.move(xb, 0);//Se movera xb pixels pixels (ya no tan necesaria por el metodo de abajo)
 			printf("posicion del proyectil es (%f) y (%f)\n ", disparoRe.getPosition().x, disparoRe.getPosition().y);
+			for (size_t i = 0; i < disparosene.size(); i++)
+			{
+
+				bcount++;
+				//	windowsup.draw(disparosene[i]);
+			}
 			//printf("adsajafgfjgygajya");
 
 		}
