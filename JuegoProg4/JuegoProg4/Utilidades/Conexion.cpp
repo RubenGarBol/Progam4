@@ -1,4 +1,4 @@
-
+/*
 #include <iostream>
 #include <Windows.h>
 #include <sqlext.h>
@@ -95,3 +95,4 @@ SQLFreeHandle(SQL_HANDLE_ENV, SQLEnvHandle){
 SQLFreeHandle(SQLSMALLINT HandleType, SQLHANDLE Handle)
 {
 }
+*/

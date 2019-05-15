@@ -1,6 +1,10 @@
 #include "Cofre.h"
 #include "SFML/Graphics.hpp"
 
+Cofre::Cofre()
+{
+}
+
 Cofre::Cofre(Vector2f vector) {
 	textura.loadFromFile("./res/Imagenes/chest.png");
 	setTexture(textura);
