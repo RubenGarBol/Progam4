@@ -5,7 +5,7 @@
 
 
 //Abrimos la BD, si no existe se crea una nueva.
-int main(int argc, char* argv[]) {
+static void iniciarBD(int argc, char* argv[]) {
 	sqlite3 *db;
 	char *zErrMsg = 0;
 	int request;
@@ -15,13 +15,11 @@ int main(int argc, char* argv[]) {
 
 	if (request) {
 		fprintf(stderr, "No se puede abrir la BD %s\n", sqlite3_errmsg(db));
-		return 0;
 	}
 	else {
 		fprintf(stdout, "La BD se ha abierto correctamente.\n");
 	}
-	sqlite3_close(db);
-	return 0;
+	//sqlite3_close(db);
 
 }
 
@@ -48,7 +46,12 @@ static int llamada2(void *data, int argc, char **argv, char **azColName) {
 static void crearTablas(int request, char *sql) {
 	
 	//Crear tablas
-	//sql = "CREATE TABLE PERSONAJE("
+	sql = "CREATE TABLE PERSONAJE("  \
+		"ID INT PRIMARY KEY NOT NULL," \
+		"NAME TEXT NOT NULL," \
+		"ENEMIGOS_ELIMINADOS INT NOT NULL," \
+		"MONEDAS_RECOGIDAS INT NOT NULL);";
+
 	//Ejecutar sentencia SQL
 	request = sqlite3_exec(db, sql, llamada, 0, &zErrMsg);
 
@@ -62,7 +65,9 @@ static void crearTablas(int request, char *sql) {
 }
 
 static void insertarDatos(int request, char *sql) {
-	//sql = "INSERT INTO COMPANY ;
+	sql = "INSERT INTO PERSONAJE (ID,NAME,ENEMIGOS_ELIMINADOS,MONEDAS_RECOGIDAS) " \
+		"VALUES(1, 'P1', 3, 16);"
+
 	request = sqlite3_exec(db, sql, llamada, 0, &zErrMsg);
 
 	if (rc != SQLITE_OK) {

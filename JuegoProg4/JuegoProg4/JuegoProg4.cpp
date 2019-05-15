@@ -1,4 +1,3 @@
-#include "Utilidades/Conexion.cpp"
 #include "SFML/Graphics.hpp"
 #include "SFML/Audio.hpp"
 #include <iostream>
@@ -16,6 +15,7 @@
 #include "SFML/System.hpp"
 #include<vector>
 #include "JuegoProg4.h"
+#include "Conexion.h"
 
 int main()
 {
@@ -1235,4 +1235,5 @@ int main()
 		
 
 	}
+
 }
