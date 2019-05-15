@@ -3,11 +3,15 @@
 #include <stdlib.h>
 #include "Conexion.h"
 
+//Variables
 sqlite3 *db;
 char *zErrMsg = 0;
+int request;
+const char *sql;
+
 //Abrimos la BD, si no existe se crea una nueva.
 static void iniciarBD(int argc, char* argv[]) {
-	int request;
+	
 	request = sqlite3_open("prog4db.db", &db);
 
 	if (request) {
@@ -41,8 +45,6 @@ static int llamada2(void *data, int argc, char **argv, char **azColName) {
 	return 0;
 }
 static void crearTablas() {
-	int request;
-	const char *sql;
 	//Crear tablas
 	sql = "CREATE TABLE PERSONAJE("  \
 		"ID INT PRIMARY KEY NOT NULL," \
@@ -63,8 +65,6 @@ static void crearTablas() {
 }
 
 static void insertarDatos() {
-	int request;
-	const char *sql;
 	sql = "INSERT INTO PERSONAJE (ID,NAME,ENEMIGOS_ELIMINADOS,MONEDAS_RECOGIDAS) " \
 		"VALUES(1, 'P1', 3, 16);";
 
@@ -75,14 +75,12 @@ static void insertarDatos() {
 		sqlite3_free(zErrMsg);
 	}
 	else {
-		fprintf(stdout, "Records created successfully\n");
+		fprintf(stdout, "Los datos se han introducido correctamente\n");
 	}
 
 }
 
 static void seleccionarDatos() {
-	int request;
-	const char *sql;
 	const char* data = "Funcion Llamada iniciada.";
 	sql = "SELECT * FROM PERSONAJE;";
 	request = sqlite3_exec(db, sql, llamada2, (void*)data, &zErrMsg);
@@ -97,8 +95,6 @@ static void seleccionarDatos() {
 
 }
 static void actualizarDatos() {
-	int request;
-	char *sql;
 	const char* data = "Funcion llamada iniciada.";
 	//sql = 
 	request = sqlite3_exec(db, sql, llamada2, (void*)data, &zErrMsg);
@@ -113,8 +109,6 @@ static void actualizarDatos() {
 
 }
 static void borrarDatos() {
-	int request;
-	char *sql;
 	const char* data = "Funcion llamada iniciada.";
 	//sql = 
 	request = sqlite3_exec(db, sql, llamada2, (void*)data, &zErrMsg);

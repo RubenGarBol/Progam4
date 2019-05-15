@@ -1019,7 +1019,7 @@ int main()
 			window.draw(cofre);
 			window.draw(text);
 			window.draw(player);
-			window.draw(efectodaño);
+			//window.draw(efectodaño);
 			window.draw(e2);
 			//window.draw(cursor);
 			//window.draw(hitbox);
