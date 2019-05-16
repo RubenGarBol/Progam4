@@ -4,7 +4,10 @@
 Mapa::Mapa(Texture &textura, RectangleShape paredes[4], RectangleShape puertas[4], std::vector<Coin> coin) : Sprite(textura), Animacion(&textura, Vector2u(3, 1), 0.25) {
 	setTexture(textura);
 	texture = textura;
+
 	this->coin = coin;
+	
+
 
 	for (size_t i = 0; i < 4; i++) 
 {

@@ -220,7 +220,6 @@ PantallaJuego::PantallaJuego(sf::RenderWindow& window)
 	vida.setTexture(texturaVida);
 	vida.setPosition(840, 820);
 
-
 	vectorcoin = Vector2u(4, 1);
 	animacoin =Animacion(&coin[0].textura, vectorcoin, 0.25);
 	float deltacoin = 0.0f;
@@ -232,7 +231,7 @@ PantallaJuego::PantallaJuego(sf::RenderWindow& window)
 	coin[4].setPosition(125.f, 500.f);
 	coin[5].setPosition(250.f, 650.f);
 	coin[6].setPosition(700.f, 700.f);
-
+	
 	coinpunt.setTexture(texturapuntos);
 	coinpunt.setPosition(15.f, 830.f);
 
@@ -388,6 +387,7 @@ void PantallaJuego::Update(sf::RenderWindow& window, int *state, Mapa& mapa, Per
 {
 	sf::Event event;
 
+
 	//Función para cerrar la aplicación al pulsar el boton X de la parte superior derecha.
 	while (window.pollEvent(event))
 	{
@@ -529,9 +529,7 @@ void PantallaJuego::Update(sf::RenderWindow& window, int *state, Mapa& mapa, Per
 
 	if (vidacount <= 0)
 	{
-
 		audio.musica_juego.stop();
-
 		mapa.setTexture(texturamapaBW);
 		player.setTexture(pjtextura_muerte);
 		cofre.setTexture(texturachestBW);
@@ -599,6 +597,8 @@ void PantallaJuego::Update(sf::RenderWindow& window, int *state, Mapa& mapa, Per
 			posicion = posicion - 5;
 			mapaActual = mapaCompleto[posicion];
 			player.setPosition(494, 630);
+			player.tiempotot -= player.timer.getElapsedTime().asSeconds();
+			mapa.tiempotot -= mapa.timer.getElapsedTime().asSeconds();
 
 		}
 
@@ -647,7 +647,13 @@ void PantallaJuego::Update(sf::RenderWindow& window, int *state, Mapa& mapa, Per
 			player.setPosition(494, 60);
 			printf("Puerta Ab");
 			posicion = posicion + 5;
-			mapaActual = mapaCompleto[posicion];
+
+			
+			//std::cout << mapa.coin[0].getPosition().x;
+			mapaActual = mapaCompleto[posicion];	
+		
+			player.tiempotot -= player.timer.getElapsedTime().asSeconds();
+			mapa.tiempotot -= mapa.timer.getElapsedTime().asSeconds();
 
 		}
 		player.Update(player.animd, player.deltatiempo, player.timer, player);
@@ -686,7 +692,11 @@ void PantallaJuego::Update(sf::RenderWindow& window, int *state, Mapa& mapa, Per
 			printf("Puerta Iz");
 			posicion = posicion - 1;
 			mapaActual = mapaCompleto[posicion];
+			
 			player.setPosition(945, 380);
+			player.tiempotot -= player.timer.getElapsedTime().asSeconds();
+			mapa.tiempotot -= mapa.timer.getElapsedTime().asSeconds();
+			animacoin.tiempotot -= timercoin.getElapsedTime().asSeconds();
 
 		}
 
@@ -728,6 +738,8 @@ void PantallaJuego::Update(sf::RenderWindow& window, int *state, Mapa& mapa, Per
 			posicion = posicion + 1;
 			mapaActual = mapaCompleto[posicion];
 			player.setPosition(25, 375);
+			player.tiempotot -= player.timer.getElapsedTime().asSeconds();
+			mapa.tiempotot -= mapa.timer.getElapsedTime().asSeconds();
 
 		}
 		player.Update(1, player.deltatiempo, player.timer, player);
