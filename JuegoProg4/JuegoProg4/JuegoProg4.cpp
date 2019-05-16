@@ -25,9 +25,9 @@
 
 int main()
 {
-	crearTablas();
-	insertarDatos();
-	seleccionarDatos();
+	//crearTablas();
+	//insertarDatos();
+	//seleccionarDatos();
 
 	srand(time(0));
 	//Crear la pantalla principal de juego con nombre "Isaac" y dimensiones 1056x888p.

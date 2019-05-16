@@ -267,59 +267,59 @@ PantallaJuego::PantallaJuego(sf::RenderWindow& window)
 
 	//mapaActual = Mapa(texturaFondo, paredesCruz, puertas);
 
-	AbajoDerecha_1 = Mapa(tAbajoDerecha_1, paredesCruz, puertasAbajoDerecha);
-	AbajoDerecha_2 = Mapa(tAbajoDerecha_2, paredesCruz, puertasAbajoDerecha);
-	AbajoDerecha_3 = Mapa(tAbajoDerecha_3, paredesCruz, puertasAbajoDerecha);
-	AbajoDerecha_4 = Mapa(tAbajoDerecha_4, paredesCruz, puertasAbajoDerecha);
-	AbajoDerecha_5 = Mapa(tAbajoDerecha_5, paredesCruz, puertasAbajoDerecha);
+	AbajoDerecha_1 = Mapa(tAbajoDerecha_1, paredesCruz, puertasAbajoDerecha, coin);
+	AbajoDerecha_2 = Mapa(tAbajoDerecha_2, paredesCruz, puertasAbajoDerecha, coin);
+	AbajoDerecha_3 = Mapa(tAbajoDerecha_3, paredesCruz, puertasAbajoDerecha, coin);
+	AbajoDerecha_4 = Mapa(tAbajoDerecha_4, paredesCruz, puertasAbajoDerecha, coin);
+	AbajoDerecha_5 = Mapa(tAbajoDerecha_5, paredesCruz, puertasAbajoDerecha, coin);
 
-	AbajoIzquierda_1 = Mapa(tAbajoIzquierda_1, paredesCruz, puertasAbajoIzquierda);
-	AbajoIzquierda_2 = Mapa(tAbajoIzquierda_2, paredesCruz, puertasAbajoIzquierda);
-	AbajoIzquierda_3 = Mapa(tAbajoIzquierda_3, paredesCruz, puertasAbajoIzquierda);
-	AbajoIzquierda_4 = Mapa(tAbajoIzquierda_4, paredesCruz, puertasAbajoIzquierda);
-	AbajoIzquierda_5 = Mapa(tAbajoIzquierda_5, paredesCruz, puertasAbajoIzquierda);
+	AbajoIzquierda_1 = Mapa(tAbajoIzquierda_1, paredesCruz, puertasAbajoIzquierda, coin);
+	AbajoIzquierda_2 = Mapa(tAbajoIzquierda_2, paredesCruz, puertasAbajoIzquierda, coin);
+	AbajoIzquierda_3 = Mapa(tAbajoIzquierda_3, paredesCruz, puertasAbajoIzquierda, coin);
+	AbajoIzquierda_4 = Mapa(tAbajoIzquierda_4, paredesCruz, puertasAbajoIzquierda, coin);
+	AbajoIzquierda_5 = Mapa(tAbajoIzquierda_5, paredesCruz, puertasAbajoIzquierda, coin);
 
-	ArribaDerecha_1 = Mapa(tArribaDerecha_1, paredesCruz, puertasArribaDerecha);
-	ArribaDerecha_2 = Mapa(tArribaDerecha_2, paredesCruz, puertasArribaDerecha);
-	ArribaDerecha_3 = Mapa(tArribaDerecha_3, paredesCruz, puertasArribaDerecha);
-	ArribaDerecha_4 = Mapa(tArribaDerecha_4, paredesCruz, puertasArribaDerecha);
-	ArribaDerecha_5 = Mapa(tArribaDerecha_5, paredesCruz, puertasArribaDerecha);
+	ArribaDerecha_1 = Mapa(tArribaDerecha_1, paredesCruz, puertasArribaDerecha, coin);
+	ArribaDerecha_2 = Mapa(tArribaDerecha_2, paredesCruz, puertasArribaDerecha, coin);
+	ArribaDerecha_3 = Mapa(tArribaDerecha_3, paredesCruz, puertasArribaDerecha, coin);
+	ArribaDerecha_4 = Mapa(tArribaDerecha_4, paredesCruz, puertasArribaDerecha, coin);
+	ArribaDerecha_5 = Mapa(tArribaDerecha_5, paredesCruz, puertasArribaDerecha, coin);
 
-	ArribaIzquierda_1 = Mapa(tArribaIzquierda_1, paredesCruz, puertasArribaIzquierda);
-	ArribaIzquierda_2 = Mapa(tArribaIzquierda_1, paredesCruz, puertasArribaIzquierda);
-	ArribaIzquierda_3 = Mapa(tArribaIzquierda_1, paredesCruz, puertasArribaIzquierda);
-	ArribaIzquierda_4 = Mapa(tArribaIzquierda_1, paredesCruz, puertasArribaIzquierda);
-	ArribaIzquierda_5 = Mapa(tArribaIzquierda_1, paredesCruz, puertasArribaIzquierda);
+	ArribaIzquierda_1 = Mapa(tArribaIzquierda_1, paredesCruz, puertasArribaIzquierda, coin);
+	ArribaIzquierda_2 = Mapa(tArribaIzquierda_1, paredesCruz, puertasArribaIzquierda, coin);
+	ArribaIzquierda_3 = Mapa(tArribaIzquierda_1, paredesCruz, puertasArribaIzquierda, coin);
+	ArribaIzquierda_4 = Mapa(tArribaIzquierda_1, paredesCruz, puertasArribaIzquierda, coin);
+	ArribaIzquierda_5 = Mapa(tArribaIzquierda_1, paredesCruz, puertasArribaIzquierda, coin);
 
-	cruz_1 = Mapa(tCruz_1, paredesCruz, puertasCruces);
-	cruz_2 = Mapa(tCruz_2, paredesCruz, puertasCruces);
-	cruz_3 = Mapa(tCruz_3, paredesCruz, puertasCruces);
-	cruz_4 = Mapa(tCruz_4, paredesCruz, puertasCruces);
-	cruz_5 = Mapa(tCruz_5, paredesCruz, puertasCruces);
+	cruz_1 = Mapa(tCruz_1, paredesCruz, puertasCruces, coin);
+	cruz_2 = Mapa(tCruz_2, paredesCruz, puertasCruces, coin);
+	cruz_3 = Mapa(tCruz_3, paredesCruz, puertasCruces, coin);
+	cruz_4 = Mapa(tCruz_4, paredesCruz, puertasCruces, coin);
+	cruz_5 = Mapa(tCruz_5, paredesCruz, puertasCruces, coin);
 
-	PAbajo_1 = Mapa(tPAbajo_1, paredesPasilloV, puertasPAbajo);
-	PAbajo_2 = Mapa(tPAbajo_2, paredesPasilloV, puertasPAbajo);
-	PAbajo_3 = Mapa(tPAbajo_3, paredesPasilloV, puertasPAbajo);
-	PAbajo_4 = Mapa(tPAbajo_4, paredesPasilloV, puertasPAbajo);
-	PAbajo_5 = Mapa(tPAbajo_5, paredesPasilloV, puertasPAbajo);
+	PAbajo_1 = Mapa(tPAbajo_1, paredesPasilloV, puertasPAbajo, coin);
+	PAbajo_2 = Mapa(tPAbajo_2, paredesPasilloV, puertasPAbajo, coin);
+	PAbajo_3 = Mapa(tPAbajo_3, paredesPasilloV, puertasPAbajo, coin);
+	PAbajo_4 = Mapa(tPAbajo_4, paredesPasilloV, puertasPAbajo, coin);
+	PAbajo_5 = Mapa(tPAbajo_5, paredesPasilloV, puertasPAbajo, coin);
 
-	PArriba_1 = Mapa(tPArriba_1, paredesPasilloV, puertasPArriba);
-	PArriba_2 = Mapa(tPArriba_2, paredesPasilloV, puertasPArriba);
-	PArriba_3 = Mapa(tPArriba_3, paredesPasilloV, puertasPArriba);
-	PArriba_4 = Mapa(tPArriba_4, paredesPasilloV, puertasPArriba);
-	PArriba_5 = Mapa(tPArriba_5, paredesPasilloV, puertasPArriba);
+	PArriba_1 = Mapa(tPArriba_1, paredesPasilloV, puertasPArriba, coin);
+	PArriba_2 = Mapa(tPArriba_2, paredesPasilloV, puertasPArriba, coin);
+	PArriba_3 = Mapa(tPArriba_3, paredesPasilloV, puertasPArriba, coin);
+	PArriba_4 = Mapa(tPArriba_4, paredesPasilloV, puertasPArriba, coin);
+	PArriba_5 = Mapa(tPArriba_5, paredesPasilloV, puertasPArriba, coin);
 
-	PDerecha_1 = Mapa(tPDerecha_1, paredesPasilloH, puertasPDerecha);
-	PDerecha_2 = Mapa(tPDerecha_2, paredesPasilloH, puertasPDerecha);
-	PDerecha_3 = Mapa(tPDerecha_3, paredesPasilloH, puertasPDerecha);
-	PDerecha_4 = Mapa(tPDerecha_4, paredesPasilloH, puertasPDerecha);
-	PDerecha_5 = Mapa(tPDerecha_5, paredesPasilloH, puertasPDerecha);
+	PDerecha_1 = Mapa(tPDerecha_1, paredesPasilloH, puertasPDerecha, coin);
+	PDerecha_2 = Mapa(tPDerecha_2, paredesPasilloH, puertasPDerecha, coin);
+	PDerecha_3 = Mapa(tPDerecha_3, paredesPasilloH, puertasPDerecha, coin);
+	PDerecha_4 = Mapa(tPDerecha_4, paredesPasilloH, puertasPDerecha, coin);
+	PDerecha_5 = Mapa(tPDerecha_5, paredesPasilloH, puertasPDerecha, coin);
 
-	PIzquierda_1 = Mapa(tPIzquierda_1, paredesPasilloH, puertasPIzquierda);
-	PIzquierda_2 = Mapa(tPIzquierda_2, paredesPasilloH, puertasPIzquierda);
-	PIzquierda_3 = Mapa(tPIzquierda_3, paredesPasilloH, puertasPIzquierda);
-	PIzquierda_4 = Mapa(tPIzquierda_4, paredesPasilloH, puertasPIzquierda);
-	PIzquierda_5 = Mapa(tPIzquierda_5, paredesPasilloH, puertasPIzquierda);
+	PIzquierda_1 = Mapa(tPIzquierda_1, paredesPasilloH, puertasPIzquierda, coin);
+	PIzquierda_2 = Mapa(tPIzquierda_2, paredesPasilloH, puertasPIzquierda, coin);
+	PIzquierda_3 = Mapa(tPIzquierda_3, paredesPasilloH, puertasPIzquierda, coin);
+	PIzquierda_4 = Mapa(tPIzquierda_4, paredesPasilloH, puertasPIzquierda, coin);
+	PIzquierda_5 = Mapa(tPIzquierda_5, paredesPasilloH, puertasPIzquierda, coin);
 
 	AbajoDerecha[0] = AbajoDerecha_1;
 	AbajoDerecha[1] = AbajoDerecha_2;
@@ -481,18 +481,19 @@ void PantallaJuego::Update(sf::RenderWindow& window, int *state, Mapa& mapa, Per
 	}
 
 	mapa.Update(0, mapa.deltatiempo, mapa.timer, mapa);
+	
 
 	player.Update(player.anim, player.deltatiempo, player.timer, player);
 
-	for (size_t i = 0; i < coin.size(); i++)
+	for (size_t i = 0; i < mapa.coin.size(); i++)
 	{
 		deltacoin = timercoin.restart().asSeconds();
 		animacoin.Update(0, deltacoin);
-		coin[i].setTextureRect(animacoin.uvRect);
+		mapa.coin[i].setTextureRect(animacoin.uvRect);
 
-		if (player.getGlobalBounds().intersects(coin[i].getGlobalBounds()))
+		if (player.getGlobalBounds().intersects(mapa.coin[i].getGlobalBounds()))
 		{
-			coin[i].setPosition(2000.f, 2000.f);
+			mapa.coin[i].setPosition(2000.f, 2000.f);
 			audio.sonido_moneda.play();
 			cuenta++;
 		}
@@ -760,9 +761,9 @@ void PantallaJuego::Update(sf::RenderWindow& window, int *state, Mapa& mapa, Per
 		window.draw(disparos[i]);
 	}
 
-	for (size_t i = 0; i < coin.size(); i++)
+	for (size_t i = 0; i < mapa.coin.size(); i++)
 	{
-		window.draw(coin[i]);
+		window.draw(mapa.coin[i]);
 	}
 
 
