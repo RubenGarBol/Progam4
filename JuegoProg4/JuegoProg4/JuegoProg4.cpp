@@ -25,7 +25,7 @@
 
 int main()
 {
-	
+	srand(time(0));
 	//Crear la pantalla principal de juego con nombre "Isaac" y dimensiones 1056x888p.
 	sf::RenderWindow window(sf::VideoMode(1056, 888, 32), "Issac");
 
@@ -96,7 +96,7 @@ int main()
 	audio.musica_menu.setVolume(0);
 
 	//Objeto Mapa
-	Mapa mapa(texturaFondo, paredes, paredes);
+	//Mapa mapa(texturaFondo, paredes, paredes);
 
 	//Objeto Personaje Principal
 	Personaje player(pjtextura);
@@ -122,7 +122,7 @@ int main()
 			audio.musica_juego.setVolume(80);
 			audio.musica_menu.setVolume(0);
 
-			pjuego.Update(window, &state, mapa, player, audio);
+			pjuego.Update(window, &state, pjuego.mapaActual, player, audio);
 
 			if(pjuego.vidacount<=0)
 			{
@@ -135,7 +135,7 @@ int main()
 		{
 			audio.musica_juego.setVolume(0);
 			audio.musica_menu.setVolume(80);
-			ppausa.Update(window, &state, mapa, player);
+			ppausa.Update(window, &state, pjuego.mapaActual, player);
 
 			if (Keyboard::isKeyPressed(Keyboard::Escape))
 			{
@@ -146,12 +146,12 @@ int main()
 		
 		while (state == 2)
 		{
-			pprincipal.Update(window, &state, mapa, player, cursortexture, cursor, pjuego);
+			pprincipal.Update(window, &state, pjuego.mapaActual, player, cursortexture, cursor, pjuego);
 		}
 
 		while (state == 3)
 		{
-			pmuerte.Update(window, &state, mapa, player);
+			pmuerte.Update(window, &state, pjuego.mapaActual, player);
 			if (pmuerte.clock_muerte.getElapsedTime().asSeconds() > 8.1)
 			{
 				state = 2;
