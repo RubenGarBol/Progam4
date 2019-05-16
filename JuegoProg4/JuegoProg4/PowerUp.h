@@ -6,7 +6,6 @@
 class PowerUp : sf::Sprite
 {
 public:
-
 	sf::Texture textura_vel_ataque;
 	sf::Texture textura_vel_mov;
 
