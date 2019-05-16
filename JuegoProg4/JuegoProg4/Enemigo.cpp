@@ -52,7 +52,7 @@ void Enemigo::disparoe(sf::RenderWindow* windowsup)
 	while (ward != true)
 	{
 	
-		printf("Iteración numero %i%\n", j);
+		printf("Iteración numero %i\n", j);
 		
 		std::this_thread::sleep_for(10ms);//18000 IQ
 		if (j % 10 == 0) //Caada 100ms la bala se mueve
