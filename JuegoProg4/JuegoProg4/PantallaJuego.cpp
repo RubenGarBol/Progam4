@@ -7,7 +7,7 @@
 #include "SFML/Graphics.hpp"
 #include <iostream>
 #include "PantallaMuerte.h"
-
+#include <algorithm>
 
 PantallaJuego::PantallaJuego(sf::RenderWindow& window)
 {
@@ -264,7 +264,7 @@ PantallaJuego::PantallaJuego(sf::RenderWindow& window)
 	sf::Vector2f vectorCofre((window.getSize().x / 2) - 56.f, (window.getSize().y / 2) - 40.f);
 	Cofre cofre(vectorCofre);
 
-	//mapaActual = Mapa(texturaFondo, paredesCruz, puertas);
+	//mapaCompleto[posicion] = Mapa(texturaFondo, paredesCruz, puertas);
 
 	AbajoDerecha_1 = Mapa(tAbajoDerecha_1, paredesCruz, puertasAbajoDerecha, coin);
 	AbajoDerecha_2 = Mapa(tAbajoDerecha_2, paredesCruz, puertasAbajoDerecha, coin);
@@ -377,14 +377,14 @@ PantallaJuego::PantallaJuego(sf::RenderWindow& window)
 	mapaCompleto = generarMapa(ArribaIzquierda,ArribaDerecha,AbajoIzquierda,AbajoDerecha,PuertaDerecha,PuertaIzquierda,PuertaAbajo,PuertaArriba,Cruces);
 
 	posicion = 12;
-	mapaActual = mapaCompleto[posicion];
 
 	Personaje player(pjtextura);
 
 }
 
-void PantallaJuego::Update(sf::RenderWindow& window, int *state, Mapa& mapa, Personaje& player, GestorSonido& audio)
+void PantallaJuego::Update(sf::RenderWindow& window, int *state, Personaje& player, GestorSonido& audio)
 {
+	
 	sf::Event event;
 
 
@@ -472,28 +472,30 @@ void PantallaJuego::Update(sf::RenderWindow& window, int *state, Mapa& mapa, Per
 	{
 		disparos[i].move(disparos[i].dirx, disparos[i].diry);
 
-		if (disparos[i].getGlobalBounds().intersects(cofre.getGlobalBounds()) || disparos[i].getGlobalBounds().intersects(mapa.conjParedes[0].getGlobalBounds())
-			|| disparos[i].getGlobalBounds().intersects(mapa.conjParedes[1].getGlobalBounds()) || disparos[i].getGlobalBounds().intersects(mapa.conjParedes[2].getGlobalBounds())
-			|| disparos[i].getGlobalBounds().intersects(mapa.conjParedes[3].getGlobalBounds()))
+		if (disparos[i].getGlobalBounds().intersects(cofre.getGlobalBounds()) || disparos[i].getGlobalBounds().intersects(mapaCompleto[posicion].conjParedes[0].getGlobalBounds())
+			|| disparos[i].getGlobalBounds().intersects(mapaCompleto[posicion].conjParedes[1].getGlobalBounds()) || disparos[i].getGlobalBounds().intersects(mapaCompleto[posicion].conjParedes[2].getGlobalBounds())
+			|| disparos[i].getGlobalBounds().intersects(mapaCompleto[posicion].conjParedes[3].getGlobalBounds()))
 		{
 			disparos.erase(disparos.begin() + i);
 		}
 	}
 
-	mapa.Update(0, mapa.deltatiempo, mapa.timer, mapa);
+	mapaCompleto[posicion].Update(0, mapaCompleto[posicion].deltatiempo, mapaCompleto[posicion].timer, mapaCompleto[posicion]);
 	
 
 	player.Update(player.anim, player.deltatiempo, player.timer, player);
 
-	for (size_t i = 0; i < mapa.coin.size(); i++)
+	for (size_t i = 0; i < mapaCompleto[posicion].coin.size(); i++)
 	{
 		deltacoin = timercoin.restart().asSeconds();
 		animacoin.Update(0, deltacoin);
-		mapa.coin[i].setTextureRect(animacoin.uvRect);
+		mapaCompleto[posicion].coin[i].setTextureRect(animacoin.uvRect);
 
-		if (player.getGlobalBounds().intersects(mapa.coin[i].getGlobalBounds()))
+		if (player.getGlobalBounds().intersects(mapaCompleto[posicion].coin[i].getGlobalBounds()))
 		{
-			mapa.coin[i].setPosition(2000.f, 2000.f);
+			//mapaCompleto[posicion].coin[i].setPosition(2000.f, 2000.f);
+			mapaCompleto[posicion].coin[i].setPosition(2000, 2000);
+			//mapa.coin.erase(std::remove(mapa.coin.begin(), mapa.coin.end(),mapa.coin[i]),mapa.coin.end());
 			audio.sonido_moneda.play();
 			cuenta++;
 		}
@@ -572,7 +574,7 @@ void PantallaJuego::Update(sf::RenderWindow& window, int *state, Mapa& mapa, Per
 				player.setColor(sf::Color::Color(255, 0, 0, 255));
 			}
 		}
-		if (hitbox.getGlobalBounds().intersects(mapa.conjParedes[0].getGlobalBounds())) {
+		if (hitbox.getGlobalBounds().intersects(mapaCompleto[posicion].conjParedes[0].getGlobalBounds())) {
 
 			player.move(0.f, veloc);
 
@@ -580,6 +582,7 @@ void PantallaJuego::Update(sf::RenderWindow& window, int *state, Mapa& mapa, Per
 			{
 				audio.sonido_pared.play();
 				invframes.restart();
+				
 			}
 
 		}
@@ -591,11 +594,11 @@ void PantallaJuego::Update(sf::RenderWindow& window, int *state, Mapa& mapa, Per
 		{
 			player.animd = 1;
 		}
-		if (hitbox.getGlobalBounds().intersects(mapa.conjPuertas[0].getGlobalBounds())) 
+		if (hitbox.getGlobalBounds().intersects(mapaCompleto[posicion].conjPuertas[0].getGlobalBounds()))
 		{
 			printf("Puerta Ar");
 			posicion = posicion - 5;
-			mapaActual = mapaCompleto[posicion];
+			mapaCompleto[posicion] = mapaCompleto[posicion];
 			player.setPosition(494, 630);
 			player.tiempotot -= player.timer.getElapsedTime().asSeconds();
 			mapa.tiempotot -= mapa.timer.getElapsedTime().asSeconds();
@@ -624,7 +627,7 @@ void PantallaJuego::Update(sf::RenderWindow& window, int *state, Mapa& mapa, Per
 				player.setColor(sf::Color::Color(255, 0, 0, 255));
 			}
 		}
-		if (player.getGlobalBounds().intersects(mapa.conjParedes[2].getGlobalBounds())) {
+		if (player.getGlobalBounds().intersects(mapaCompleto[posicion].conjParedes[2].getGlobalBounds())) {
 			player.move(0.f, -veloc);
 
 			if (invframes.getElapsedTime().asSeconds() >= 0.8f)
@@ -642,11 +645,13 @@ void PantallaJuego::Update(sf::RenderWindow& window, int *state, Mapa& mapa, Per
 		{
 			player.animd = 1;
 		}
-		if (player.getGlobalBounds().intersects(mapa.conjPuertas[2].getGlobalBounds()))
+		if (player.getGlobalBounds().intersects(mapaCompleto[posicion].conjPuertas[2].getGlobalBounds()))
 		{
 			player.setPosition(494, 60);
 			printf("Puerta Ab");
 			posicion = posicion + 5;
+			mapaCompleto[posicion] = mapaCompleto[posicion];
+
 
 			
 			//std::cout << mapa.coin[0].getPosition().x;
@@ -679,7 +684,7 @@ void PantallaJuego::Update(sf::RenderWindow& window, int *state, Mapa& mapa, Per
 				player.setColor(sf::Color::Color(255, 0, 0, 255));
 			}
 		}
-		if (hitbox.getGlobalBounds().intersects(mapa.conjParedes[1].getGlobalBounds())) {
+		if (hitbox.getGlobalBounds().intersects(mapaCompleto[posicion].conjParedes[1].getGlobalBounds())) {
 			player.move(veloc, 0.f);
 			if (invframes.getElapsedTime().asSeconds() >= 0.8f)
 			{
@@ -687,12 +692,11 @@ void PantallaJuego::Update(sf::RenderWindow& window, int *state, Mapa& mapa, Per
 				invframes.restart();
 			}
 		}
-		if (hitbox.getGlobalBounds().intersects(mapa.conjPuertas[3].getGlobalBounds())) 
+		if (hitbox.getGlobalBounds().intersects(mapaCompleto[posicion].conjPuertas[3].getGlobalBounds()))
 		{
 			printf("Puerta Iz");
 			posicion = posicion - 1;
-			mapaActual = mapaCompleto[posicion];
-			
+			mapaCompleto[posicion] = mapaCompleto[posicion];
 			player.setPosition(945, 380);
 			player.tiempotot -= player.timer.getElapsedTime().asSeconds();
 			mapa.tiempotot -= mapa.timer.getElapsedTime().asSeconds();
@@ -724,7 +728,7 @@ void PantallaJuego::Update(sf::RenderWindow& window, int *state, Mapa& mapa, Per
 				player.setColor(sf::Color::Color(255, 0, 0, 255));
 			}
 		}
-		if (hitbox.getGlobalBounds().intersects(mapa.conjParedes[3].getGlobalBounds())) {
+		if (hitbox.getGlobalBounds().intersects(mapaCompleto[posicion].conjParedes[3].getGlobalBounds())) {
 			player.move(-veloc, 0.f);
 			if (invframes.getElapsedTime().asSeconds() >= 0.8f)
 			{
@@ -732,11 +736,11 @@ void PantallaJuego::Update(sf::RenderWindow& window, int *state, Mapa& mapa, Per
 				invframes.restart();
 			}
 		}
-		if (hitbox.getGlobalBounds().intersects(mapa.conjPuertas[1].getGlobalBounds())) 
+		if (hitbox.getGlobalBounds().intersects(mapaCompleto[posicion].conjPuertas[1].getGlobalBounds()))
 		{
 			printf("Puerta Dr");
 			posicion = posicion + 1;
-			mapaActual = mapaCompleto[posicion];
+			mapaCompleto[posicion] = mapaCompleto[posicion];
 			player.setPosition(25, 375);
 			player.tiempotot -= player.timer.getElapsedTime().asSeconds();
 			mapa.tiempotot -= mapa.timer.getElapsedTime().asSeconds();
@@ -763,7 +767,7 @@ void PantallaJuego::Update(sf::RenderWindow& window, int *state, Mapa& mapa, Per
 	window.clear();
 
 	//Dibujar el fondo y los objetos, enemigos y personaje de la pantalla.
-	window.draw(mapa);
+	window.draw(mapaCompleto[posicion]);
 	window.draw(coinpunt);
 	window.draw(vida);
 	window.draw(puntos);
@@ -773,9 +777,9 @@ void PantallaJuego::Update(sf::RenderWindow& window, int *state, Mapa& mapa, Per
 		window.draw(disparos[i]);
 	}
 
-	for (size_t i = 0; i < mapa.coin.size(); i++)
+	for (size_t i = 0; i < mapaCompleto[posicion].coin.size(); i++)
 	{
-		window.draw(mapa.coin[i]);
+		window.draw(mapaCompleto[posicion].coin[i]);
 	}
 
 

@@ -126,7 +126,7 @@ int main()
 			audio.musica_juego.setVolume(80);
 			audio.musica_menu.setVolume(0);
 
-			pjuego.Update(window, &state, pjuego.mapaActual, player, audio);
+			pjuego.Update(window, &state, player, audio);
 
 			if(pjuego.vidacount<=0)
 			{
@@ -139,7 +139,7 @@ int main()
 		{
 			audio.musica_juego.setVolume(0);
 			audio.musica_menu.setVolume(80);
-			ppausa.Update(window, &state, pjuego.mapaActual, player);
+			ppausa.Update(window, &state, pjuego.mapaCompleto[pjuego.posicion], player);
 
 			if (Keyboard::isKeyPressed(Keyboard::Escape))
 			{
@@ -150,12 +150,12 @@ int main()
 		
 		while (state == 2)
 		{
-			pprincipal.Update(window, &state, pjuego.mapaActual, player, cursortexture, cursor, pjuego);
+			pprincipal.Update(window, &state, pjuego.mapaCompleto[pjuego.posicion], player, cursortexture, cursor, pjuego);
 		}
 
 		while (state == 3)
 		{
-			pmuerte.Update(window, &state, pjuego.mapaActual, player);
+			pmuerte.Update(window, &state, pjuego.mapaCompleto[pjuego.posicion], player);
 			if (pmuerte.clock_muerte.getElapsedTime().asSeconds() > 8.1)
 			{
 				state = 2;

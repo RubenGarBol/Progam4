@@ -6,7 +6,7 @@
 #include "Cofre.h"
 #include "Proyectil.h"
 #include "GestorSonido.h"
-
+#include <algorithm>
 class PantallaJuego
 {
 public:
@@ -67,7 +67,7 @@ public:
 	RectangleShape paredesPasilloH[4];
 	RectangleShape paredesPasilloV[4];
 
-	//Mapa mapaActual;
+	//Mapa mapaCompleto[posicion];
 
 	Texture tCruz_1;
 	Texture tCruz_2;
@@ -189,7 +189,6 @@ public:
 
 	std::vector<Mapa> mapaCompleto;
 	int posicion;
-	Mapa mapaActual;
 
 	Personaje player;
 
@@ -204,7 +203,6 @@ public:
 	int cuenta = 0;
 
 	std::vector<Coin> coin = std::vector<Coin>(7);
-	Coin moneda;
 	sf::Vector2u vectorcoin;
 	Animacion animacoin;
 	float deltacoin = 0.0f;
@@ -236,7 +234,7 @@ public:
 	std::vector<Proyectil> disparos;
 	
 	PantallaJuego(sf::RenderWindow& window);
-	void Update(sf::RenderWindow& window, int *state, Mapa& mapa, Personaje& player, GestorSonido& audio);
+	void Update(sf::RenderWindow& window, int *state, Personaje& player, GestorSonido& audio);
 	std::vector<Mapa> generarMapa(Mapa esArIz[5], Mapa esArDr[5], Mapa esAbIz[5], Mapa esAbDr[5],
 		Mapa derecha[5], Mapa izquierda[5], Mapa abajo[5], Mapa arriba[5], Mapa central[5]);//En el main hacer srand(time(0));
 	~PantallaJuego();
