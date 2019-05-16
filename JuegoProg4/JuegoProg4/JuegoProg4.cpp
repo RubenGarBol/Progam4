@@ -1,4 +1,4 @@
-#include "Utilidades/Conexion.cpp"
+#include "Conexion.h"
 #include "SFML/Graphics.hpp"
 #include "SFML/Audio.hpp"
 #include <iostream>
