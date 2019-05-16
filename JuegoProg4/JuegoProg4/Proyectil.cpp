@@ -2,6 +2,10 @@
 
 
 
+Proyectil::Proyectil()
+{
+}
+
 Proyectil::Proyectil(float x, float y)
 {
 	setFillColor(Color::White);

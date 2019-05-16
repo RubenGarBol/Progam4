@@ -19,6 +19,7 @@ public:
 	int animd;
 	int vida;
 
+	Personaje();
 	Personaje(sf::Texture &textura);
 
 

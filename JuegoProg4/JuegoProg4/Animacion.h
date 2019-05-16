@@ -4,6 +4,7 @@
 class Animacion
 {
 public:
+	Animacion();
 	Animacion(sf::Texture* texture, sf::Vector2u CuentaImg, float switchtiempo);
 	~Animacion();
 

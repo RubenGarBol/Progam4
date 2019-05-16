@@ -23,6 +23,7 @@ class Mapa : public Sprite , public Animacion
 	RectangleShape getPuertaAr();
 	RectangleShape getPuertaAb();
 
+	Mapa();
 	~Mapa();
 };
 

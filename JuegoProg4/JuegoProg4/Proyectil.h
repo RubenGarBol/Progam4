@@ -8,8 +8,9 @@ public:
 
 	float dirx;
 	float diry;
+	
+	Proyectil();
 	Proyectil(float x, float y);
-
 	~Proyectil();
 };
 

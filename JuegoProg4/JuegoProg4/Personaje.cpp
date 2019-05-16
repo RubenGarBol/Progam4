@@ -4,6 +4,10 @@
 #include "SFML/Graphics.hpp"
 
 
+Personaje::Personaje()
+{
+}
+
 Personaje::Personaje(sf::Texture &textura) :Sprite(textura), Animacion(&textura, Vector2u(4, 4), 0.15) {
 	anim = 0;
 	animd = 0;

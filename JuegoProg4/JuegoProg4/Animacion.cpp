@@ -3,6 +3,10 @@
 
 
 
+Animacion::Animacion()
+{
+}
+
 Animacion::Animacion(sf::Texture* texture, sf::Vector2u CuentaImg, float switchtiempo)
 {
 	this->CuentaImg  = CuentaImg;
