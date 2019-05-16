@@ -76,10 +76,27 @@ PantallaJuego::PantallaJuego(sf::RenderWindow& window)
 	pared4.setPosition(sf::Vector2f(1026.f, 0.f));
 	pared4.setSize(sf::Vector2f(30.f, 888.f));
 
-	paredes[0] = pared1;
-	paredes[1] = pared2;
-	paredes[2] = pared3;
-	paredes[3] = pared4;
+	puertaIz.setPosition(sf::Vector2f(5.f, 430.f));
+	puertaIz.setSize(sf::Vector2f(25.f, 108.f));
+
+	puertaAr.setPosition(sf::Vector2f(482.f, 25.f));
+	puertaAr.setSize(sf::Vector2f(92.f, 95.f));
+
+	puertaDr.setPosition(sf::Vector2f(1024.f, 409.f));
+	puertaDr.setSize(sf::Vector2f(31.f, 98.f));
+
+	puertaAb.setPosition(sf::Vector2f(492.f, 764.f));
+	puertaAb.setSize(sf::Vector2f(86.f, 115.f));
+
+	paredesCruz[0] = pared1;
+	paredesCruz[1] = pared2;
+	paredesCruz[2] = pared3;
+	paredesCruz[3] = pared4;
+
+	puertas[0] = puertaAr;
+	puertas[1] = puertaDr;
+	puertas[2] = puertaAb;
+	puertas[3] = puertaIz;
 
 	vida.setTexture(texturaVida);
 	vida.setPosition(840, 820);
@@ -129,7 +146,7 @@ PantallaJuego::PantallaJuego(sf::RenderWindow& window)
 	sf::Vector2f vectorCofre((window.getSize().x / 2) - 56.f, (window.getSize().y / 2) - 40.f);
 	Cofre cofre(vectorCofre);
 
-	Mapa mapa(texturaFondo, paredes, paredes);
+	Mapa mapa(texturaFondo, paredesCruz, puertas);
 
 	Personaje player(pjtextura);
 

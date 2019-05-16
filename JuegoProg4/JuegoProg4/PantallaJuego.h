@@ -39,7 +39,13 @@ public:
 	sf::RectangleShape pared2;
 	sf::RectangleShape pared3;
 	sf::RectangleShape pared4;
-	RectangleShape paredes[4];
+	sf::RectangleShape puertaIz;
+	sf::RectangleShape puertaAr;
+	sf::RectangleShape puertaDr;
+	sf::RectangleShape puertaAb;
+
+	RectangleShape puertas[4];
+	RectangleShape paredesCruz[4];
 	Mapa mapa;
 
 	Personaje player;
