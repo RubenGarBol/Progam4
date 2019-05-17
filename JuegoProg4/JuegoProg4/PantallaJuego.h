@@ -215,10 +215,18 @@ public:
 	sf::Text puntos;
 	sf::Text text;
 
-	//Velocidad personaje principal
+	//Velocidad disparos personaje principal
 	float veloc = 4.f;
 
 	///////////
+
+	std::vector<RectangleShape> colisiones=std::vector<RectangleShape>(1);
+	std::vector<RectangleShape> colisiones_cruces_1= std::vector<RectangleShape>(6);
+
+
+
+	//////////
+
 
 	Vector2f centrar;
 
