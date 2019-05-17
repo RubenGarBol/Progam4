@@ -102,6 +102,7 @@ void PantallaPrincipal::Update(sf::RenderWindow& window, int *state, Mapa& mapa,
 			{
 				player.tiempotot -= player.timer.getElapsedTime().asSeconds();
 				mapa.tiempotot -= mapa.timer.getElapsedTime().asSeconds();
+				pjuego.animacoin.tiempotot-= pjuego.timer.getElapsedTime().asSeconds();
 				*state = 0;
 			}
 
@@ -137,7 +138,7 @@ void PantallaPrincipal::Update(sf::RenderWindow& window, int *state, Mapa& mapa,
 				{
 					player.tiempotot -= player.timer.getElapsedTime().asSeconds();
 					mapa.tiempotot -= mapa.timer.getElapsedTime().asSeconds();
-
+					pjuego.animacoin.tiempotot -= pjuego.timer.getElapsedTime().asSeconds();
 					*state = 0;
 				}
 				if (seleccion == 2)
