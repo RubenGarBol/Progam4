@@ -203,6 +203,7 @@ public:
 	int cuenta = 0;
 
 	std::vector<Coin> coin = std::vector<Coin>(7);
+	Coin moneda;
 	sf::Vector2u vectorcoin;
 	Animacion animacoin;
 	float deltacoin = 0.0f;
