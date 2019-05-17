@@ -101,7 +101,6 @@ PantallaJuego::PantallaJuego(sf::RenderWindow& window)
 	vida.setTexture(texturaVida);
 	vida.setPosition(840, 820);
 
-
 	vectorcoin = Vector2u(4, 1);
 	animacoin =Animacion(&coin[0].textura, vectorcoin, 0.25);
 	float deltacoin = 0.0f;

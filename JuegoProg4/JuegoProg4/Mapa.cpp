@@ -1,5 +1,5 @@
 #include "Mapa.h"
-#include "SFML/Graphics.hpp"
+
 
 Mapa::Mapa(Texture &textura, RectangleShape paredes[4], RectangleShape puertas[4]) : Sprite(textura), Animacion(&textura, Vector2u(3, 1), 0.25) {
 	setTexture(textura);
