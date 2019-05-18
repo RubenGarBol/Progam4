@@ -7,7 +7,7 @@ Mapa::Mapa(Texture &textura, RectangleShape paredes[4], RectangleShape puertas[4
 
 	this->coin = coin;
 	this->colisiones = colisiones;
-
+	this->colisiones_daño = colisiones_daño;
 
 	for (size_t i = 0; i < 4; i++) 
 {

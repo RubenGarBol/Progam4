@@ -122,7 +122,6 @@ int main()
 	{
 		while (state == 0)
 		{
-			
 			audio.musica_juego.setVolume(80);
 			audio.musica_menu.setVolume(0);
 

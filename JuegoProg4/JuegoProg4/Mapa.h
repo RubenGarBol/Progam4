@@ -1,8 +1,7 @@
-#pragma once
 #include "SFML/Graphics.hpp"
 #include "Animacion.h"
 #include "Coin.h"
-
+#pragma once
 using namespace sf;
 
 class Mapa : public Sprite , public Animacion

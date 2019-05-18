@@ -41,7 +41,34 @@ void Enemigo::cargarbala(Mapa m)//Elimina las balas si se golpean con la pared
 	}
 }
 
-void Enemigo::disparoe(sf::RenderWindow* windowsup)
+void Enemigo::movimiento()
+{
+	int random = rand() % 15;
+
+	if (random == 1)
+	{
+		
+	}
+	if (random == 2)
+	{
+
+	}
+	if (random == 3)
+	{
+
+	}
+	if (random == 4)
+	{
+
+	}
+	else
+	{
+
+	}
+}
+
+
+void Enemigo::disparoe(sf::RenderWindow& windowsup)
 {
 	bool ward = false;
 	using namespace std::literals::chrono_literals;

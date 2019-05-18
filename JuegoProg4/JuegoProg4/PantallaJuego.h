@@ -6,6 +6,7 @@
 #include "Cofre.h"
 #include "Proyectil.h"
 #include "GestorSonido.h"
+#include "EnemigoAereo.h"
 #include <algorithm>
 class PantallaJuego
 {
@@ -203,7 +204,7 @@ public:
 	int cuenta = 0;
 
 	std::vector<Coin> coinCruces_1 = std::vector<Coin>(7);
-	std::vector<Coin> coinCruces_2 = std::vector<Coin>(4);
+	std::vector<Coin> coinCruces_2 = std::vector<Coin>(14);
 	std::vector<Coin> coinCruces_3 = std::vector<Coin>(3);
 	std::vector<Coin> coin = std::vector<Coin>(7);
 	Coin moneda;
@@ -223,12 +224,19 @@ public:
 	///////////
 
 	std::vector<RectangleShape> colisiones=std::vector<RectangleShape>(1);
+
 	std::vector<RectangleShape> colisiones_cruces_1= std::vector<RectangleShape>(6);
-
-
+	std::vector<RectangleShape> colisiones_cruces_2 = std::vector<RectangleShape>(14);
+	std::vector<RectangleShape> colisiones_cruces_3 = std::vector<RectangleShape>(2);
+	std::vector<RectangleShape> colisiones_cruces_3_daño = std::vector<RectangleShape>(4);
+	std::vector<RectangleShape> colisiones_cruces_4 = std::vector<RectangleShape>(6);
+	
+	std::vector<RectangleShape> colisiones_abajoD_1 = std::vector<RectangleShape>(2);
 
 	//////////
 
+	EnemigoAereo enemy;
+	/////////
 
 	Vector2f centrar;
 
