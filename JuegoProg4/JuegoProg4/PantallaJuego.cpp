@@ -116,9 +116,9 @@ PantallaJuego::PantallaJuego(sf::RenderWindow& window)
 	tPIzquierda_4.loadFromFile("./res/Imagenes/Mapas/PuertaIzquierda/PIzquierda_4.png");
 	tPIzquierda_5.loadFromFile("./res/Imagenes/Mapas/PuertaIzquierda/PIzquierda_5.png");
 
-	enemigo_cruces[0] = EnemigoAereo(400, 400);
-	enemigo_cruces[1] = EnemigoAereo(600, 600);
-	enemigo_cruces[2] = EnemigoAereo(200, 200);
+	enemigo_cruces[0] = EnemigoAereo((window.getSize().x / 2)-((window.getSize().x / 4)), window.getSize().y / 2);
+	enemigo_cruces[1] = EnemigoAereo((window.getSize().x/2) + ((window.getSize().x / 4)), window.getSize().y / 2);
+	
 
 	hitbox.setSize(sf::Vector2f(60.f, 20.f));
 	hitbox.setOrigin(-15.f, -95.f);
@@ -600,14 +600,28 @@ void PantallaJuego::Update(sf::RenderWindow& window, int *state, Personaje& play
 	{
 		disparos[i].move(disparos[i].dirx, disparos[i].diry);
 
-		if (disparos[i].getGlobalBounds().intersects(cofre.getGlobalBounds()) || disparos[i].getGlobalBounds().intersects(mapaCompleto[posicion].conjParedes[0].getGlobalBounds())
-			|| disparos[i].getGlobalBounds().intersects(mapaCompleto[posicion].conjParedes[1].getGlobalBounds()) || disparos[i].getGlobalBounds().intersects(mapaCompleto[posicion].conjParedes[2].getGlobalBounds())
+		if (   disparos[i].getGlobalBounds().intersects(mapaCompleto[posicion].conjParedes[0].getGlobalBounds())
+			|| disparos[i].getGlobalBounds().intersects(mapaCompleto[posicion].conjParedes[1].getGlobalBounds()) 
+			|| disparos[i].getGlobalBounds().intersects(mapaCompleto[posicion].conjParedes[2].getGlobalBounds())
 			|| disparos[i].getGlobalBounds().intersects(mapaCompleto[posicion].conjParedes[3].getGlobalBounds()))
 		{
 			disparos.erase(disparos.begin() + i);
 		}
-	}
 
+		else
+		{ 
+		for (size_t j = 0; j < mapaCompleto[posicion].enemigo.size(); j++)
+		{
+			if (disparos[i].getGlobalBounds().intersects(mapaCompleto[posicion].enemigo[j].enemigo.getGlobalBounds()))
+			{
+				disparos.erase(disparos.begin() + i);
+				mapaCompleto[posicion].enemigo.erase(mapaCompleto[posicion].enemigo.begin() + j);
+				//break;
+			}
+		}
+		}
+	}
+	printf("%i", mapaCompleto[posicion].enemigo.size());
 	mapaCompleto[posicion].Update(0, mapaCompleto[posicion].deltatiempo, mapaCompleto[posicion].timer, mapaCompleto[posicion]);
 	
 	player.Update(player.anim, player.deltatiempo, player.timer, player);
@@ -731,7 +745,7 @@ void PantallaJuego::Update(sf::RenderWindow& window, int *state, Personaje& play
 		{
 			player.animd = 1;
 		}
-		if ((hitbox.getGlobalBounds().intersects(mapaCompleto[posicion].conjPuertas[0].getGlobalBounds())) && (mapaCompleto[posicion].coin.empty()))
+		if ((hitbox.getGlobalBounds().intersects(mapaCompleto[posicion].conjPuertas[0].getGlobalBounds())) )
 		{
 			for (size_t i = 0; i < disparos.size(); i++)
 			{
@@ -792,7 +806,7 @@ void PantallaJuego::Update(sf::RenderWindow& window, int *state, Personaje& play
 		{
 			player.animd = 1;
 		}
-		if ((player.getGlobalBounds().intersects(mapaCompleto[posicion].conjPuertas[2].getGlobalBounds())) && (mapaCompleto[posicion].coin.empty()))
+		if ((player.getGlobalBounds().intersects(mapaCompleto[posicion].conjPuertas[2].getGlobalBounds())) )
 		{
 			for (size_t i = 0; i < disparos.size(); i++)
 			{
@@ -837,7 +851,7 @@ void PantallaJuego::Update(sf::RenderWindow& window, int *state, Personaje& play
 				invframes.restart();
 			}
 		}
-		if ((hitbox.getGlobalBounds().intersects(mapaCompleto[posicion].conjPuertas[3].getGlobalBounds())) && (mapaCompleto[posicion].coin.empty()))
+		if ((hitbox.getGlobalBounds().intersects(mapaCompleto[posicion].conjPuertas[3].getGlobalBounds())))
 		{
 			for (size_t i = 0; i < disparos.size(); i++)
 			{
@@ -891,7 +905,7 @@ void PantallaJuego::Update(sf::RenderWindow& window, int *state, Personaje& play
 				invframes.restart();
 			}
 		}
-		if ((hitbox.getGlobalBounds().intersects(mapaCompleto[posicion].conjPuertas[1].getGlobalBounds())) && (mapaCompleto[posicion].coin.empty()))
+		if ((hitbox.getGlobalBounds().intersects(mapaCompleto[posicion].conjPuertas[1].getGlobalBounds())) )
 		{
 			for (size_t i = 0; i < disparos.size(); i++)
 			{
@@ -929,49 +943,60 @@ void PantallaJuego::Update(sf::RenderWindow& window, int *state, Personaje& play
 		player.Update(player.anim, player.deltatiempo, player.timer, player);
 	}
 
-	enemigo_cruces[0].movimiento();
-
-	enemigo_cruces[1].movimiento();
-	enemigo_cruces[1].disparo();
-
-	enemigo_cruces[2].disparo();
-
+	for (int i = 0; i < mapaCompleto[posicion].enemigo.size(); i++)
+	{
+		mapaCompleto[posicion].enemigo[i].movimiento();
+		mapaCompleto[posicion].enemigo[i].disparo();
+	}
 
 	//Estos For estan hechos en la clase pantallaJuego, porque si los implemento en la clase del enemigo, tengo que pasarle el header de mapa para las colisiones 
 	//y me da un error de depencia ciclica, ya que el mapa depende del enemigo (tiene enemigos) y el enemigo depende del mapa (para las colisiones)
-	for (size_t i = 0; i < enemigo_cruces.size(); i++)
+	for (size_t i = 0; i < mapaCompleto[posicion].enemigo.size(); i++)
 	{ 
-		if (enemigo_cruces[i].enemigo.getGlobalBounds().intersects(mapaCompleto[posicion].conjParedes[0].getGlobalBounds()))
+		if (mapaCompleto[posicion].enemigo[i].enemigo.getGlobalBounds().intersects(mapaCompleto[posicion].conjParedes[0].getGlobalBounds()))
 		{
-			enemigo_cruces[i].enemigo.move(0, enemigo_cruces[i].veloc_mov);
+			mapaCompleto[posicion].enemigo[i].enemigo.move(0, mapaCompleto[posicion].enemigo[i].veloc_mov);
 		}
-		if (enemigo_cruces[i].enemigo.getGlobalBounds().intersects(mapaCompleto[posicion].conjParedes[1].getGlobalBounds()))
+		if (mapaCompleto[posicion].enemigo[i].enemigo.getGlobalBounds().intersects(mapaCompleto[posicion].conjParedes[1].getGlobalBounds()))
 		{
-			enemigo_cruces[i].enemigo.move(enemigo_cruces[i].veloc_mov, 0);
+			mapaCompleto[posicion].enemigo[i].enemigo.move(mapaCompleto[posicion].enemigo[i].veloc_mov, 0);
 		}
-		if (enemigo_cruces[i].enemigo.getGlobalBounds().intersects(mapaCompleto[posicion].conjParedes[2].getGlobalBounds()))
+		if (mapaCompleto[posicion].enemigo[i].enemigo.getGlobalBounds().intersects(mapaCompleto[posicion].conjParedes[2].getGlobalBounds()))
 		{
-			enemigo_cruces[i].enemigo.move(0, -enemigo_cruces[i].veloc_mov);
+			mapaCompleto[posicion].enemigo[i].enemigo.move(0, -mapaCompleto[posicion].enemigo[i].veloc_mov);
 		}
-		if (enemigo_cruces[i].enemigo.getGlobalBounds().intersects(mapaCompleto[posicion].conjParedes[3].getGlobalBounds()))
+		if (mapaCompleto[posicion].enemigo[i].enemigo.getGlobalBounds().intersects(mapaCompleto[posicion].conjParedes[3].getGlobalBounds()))
 		{
-			enemigo_cruces[i].enemigo.move(-enemigo_cruces[i].veloc_mov, 0);
+			mapaCompleto[posicion].enemigo[i].enemigo.move(-mapaCompleto[posicion].enemigo[i].veloc_mov, 0);
 		}
 	}
-	for (size_t j = 0; j < enemigo_cruces.size(); j++)
+	for (size_t j = 0; j < mapaCompleto[posicion].enemigo.size(); j++)
 	{
-		printf("ABDUSCAN\n");
-		for (size_t i = 0; i < enemigo_cruces[j].disparos.size(); i++)
+		for (size_t i = 0; i < mapaCompleto[posicion].enemigo[j].disparos.size(); i++)
 		{
-			printf("Primer For\n");
-			enemigo_cruces[j].disparos[i].move(enemigo_cruces[j].disparos[i].dirx, enemigo_cruces[j].disparos[i].diry);
+			mapaCompleto[posicion].enemigo[j].disparos[i].move(mapaCompleto[posicion].enemigo[j].disparos[i].dirx, mapaCompleto[posicion].enemigo[j].disparos[i].diry);
 
-			if (enemigo_cruces[j].disparos[i].getGlobalBounds().intersects(mapaCompleto[posicion].conjParedes[0].getGlobalBounds())
-				|| enemigo_cruces[j].disparos[i].getGlobalBounds().intersects(mapaCompleto[posicion].conjParedes[1].getGlobalBounds())
-				|| enemigo_cruces[j].disparos[i].getGlobalBounds().intersects(mapaCompleto[posicion].conjParedes[2].getGlobalBounds())
-				|| enemigo_cruces[j].disparos[i].getGlobalBounds().intersects(mapaCompleto[posicion].conjParedes[3].getGlobalBounds()))
+			if (mapaCompleto[posicion].enemigo[j].disparos[i].getGlobalBounds().intersects(mapaCompleto[posicion].conjParedes[0].getGlobalBounds())
+				|| mapaCompleto[posicion].enemigo[j].disparos[i].getGlobalBounds().intersects(mapaCompleto[posicion].conjParedes[1].getGlobalBounds())
+				|| mapaCompleto[posicion].enemigo[j].disparos[i].getGlobalBounds().intersects(mapaCompleto[posicion].conjParedes[2].getGlobalBounds())
+				|| mapaCompleto[posicion].enemigo[j].disparos[i].getGlobalBounds().intersects(mapaCompleto[posicion].conjParedes[3].getGlobalBounds()))
 			{
-				enemigo_cruces[j].disparos.erase(enemigo_cruces[j].disparos.begin() + i);
+				mapaCompleto[posicion].enemigo[j].disparos.erase(mapaCompleto[posicion].enemigo[j].disparos.begin() + i);
+			}
+			
+			else if (mapaCompleto[posicion].enemigo[j].disparos[i].getGlobalBounds().intersects(player.getGlobalBounds()))
+			{
+				mapaCompleto[posicion].enemigo[j].disparos.erase(mapaCompleto[posicion].enemigo[j].disparos.begin() + i);
+				audio.sonido_daño_personaje.play();
+				vidacount = vidacount - 1; 
+
+				if(invframes.getElapsedTime().asSeconds() <= 0.1f)
+				{
+					texturaVida.loadFromFile("./res/Imagenes/Vida_Anim.png");
+					player.setColor(sf::Color::Color(255, 0, 0, 255));
+					invframes.restart();
+				}
+				player.setColor(sf::Color::Color(255, 0, 0, 255));
 			}
 		}
 	}
@@ -990,11 +1015,11 @@ void PantallaJuego::Update(sf::RenderWindow& window, int *state, Personaje& play
 		window.draw(disparos[i]);
 	}
 	
-	for (size_t i = 0; i < enemigo_cruces.size(); i++)
+	for (size_t i = 0; i < mapaCompleto[posicion].enemigo.size(); i++)
 	{
-		for (size_t j = 0; j < enemigo_cruces[i].disparos.size(); j++)
+		for (size_t j = 0; j < mapaCompleto[posicion].enemigo[i].disparos.size(); j++)
 		{
-			window.draw(enemigo_cruces[i].disparos[j]);
+			window.draw(mapaCompleto[posicion].enemigo[i].disparos[j]);
 		}
 	}
 	
@@ -1002,9 +1027,9 @@ void PantallaJuego::Update(sf::RenderWindow& window, int *state, Personaje& play
 	{
 		window.draw(mapaCompleto[posicion].coin[i]);
 	}
-	for (size_t i = 0; i < enemigo_cruces.size(); i++)
+	for (size_t i = 0; i < mapaCompleto[posicion].enemigo.size(); i++)
 	{
-		window.draw(enemigo_cruces[i].enemigo);
+		window.draw(mapaCompleto[posicion].enemigo[i].enemigo);
 	}
 	//Enemigo e2(Vector2f(700.0f, 700.0f), 0, 0, 10, texturaEn);
 
@@ -1027,7 +1052,8 @@ void PantallaJuego::Update(sf::RenderWindow& window, int *state, Personaje& play
 }
 
 std::vector<Mapa> PantallaJuego::generarMapa(Mapa esArIz[5], Mapa esArDr[5], Mapa esAbIz[5], Mapa esAbDr[5],
-	Mapa derecha[5], Mapa izquierda[5], Mapa abajo[5], Mapa arriba[5], Mapa central[5]) {
+	Mapa derecha[5], Mapa izquierda[5], Mapa abajo[5], Mapa arriba[5], Mapa central[5]) 
+{
 	std::vector<Mapa> arrayMapa(25);
 
 	int aleatorios[13];
@@ -1054,86 +1080,4 @@ std::vector<Mapa> PantallaJuego::generarMapa(Mapa esArIz[5], Mapa esArDr[5], Map
 }
 
 PantallaJuego::~PantallaJuego()
-{
-	texturaFondo.~Texture();
-	
-	pjtextura.~Texture();
-	
-
-	texturamapaBW.~Texture();
-	
-	texturachestBW.~Texture();
-	
-
-	texturacoinBW.~Texture();
-
-
-	texturacoinpuntBW.~Texture();
-	
-
-	pjtextura_muerte.~Texture();
-
-
-	texturaVida.~Texture();
-	
-
-	font.~Font();
-	
-
-	texturapuntos.~Texture();
-	
-
-	tCruz_1.~Texture();
-	tCruz_2.~Texture();
-	tCruz_3.~Texture();
-	tCruz_4.~Texture();
-	tCruz_5.~Texture();
-
-	tAbajoDerecha_1.~Texture();
-	tAbajoDerecha_2.~Texture();
-	tAbajoDerecha_3.~Texture();
-	tAbajoDerecha_4.~Texture();
-	tAbajoDerecha_5.~Texture();
-
-	tAbajoIzquierda_1.~Texture();
-	tAbajoIzquierda_2.~Texture();
-	tAbajoIzquierda_3.~Texture();
-	tAbajoIzquierda_4.~Texture();
-	tAbajoIzquierda_5.~Texture();
-
-	tArribaDerecha_1.~Texture();
-	tArribaDerecha_2.~Texture();
-	tArribaDerecha_3.~Texture();
-	tArribaDerecha_4.~Texture();
-	tArribaDerecha_5.~Texture();
-
-	tArribaIzquierda_1.~Texture();
-	tArribaIzquierda_2.~Texture();
-	tArribaIzquierda_3.~Texture();
-	tArribaIzquierda_4.~Texture();
-	tArribaIzquierda_5.~Texture();
-
-	tPAbajo_1.~Texture();
-	tPAbajo_2.~Texture();
-	tPAbajo_3.~Texture();
-	tPAbajo_4.~Texture();
-	tPAbajo_5.~Texture();
-
-	tPArriba_1.~Texture();
-	tPArriba_2.~Texture();
-	tPArriba_3.~Texture();
-	tPArriba_4.~Texture();
-	tPArriba_5.~Texture();
-
-	tPDerecha_1.~Texture();
-	tPDerecha_2.~Texture();
-	tPDerecha_3.~Texture();
-	tPDerecha_4.~Texture();
-	tPDerecha_5.~Texture();
-
-	tPIzquierda_1.~Texture();
-	tPIzquierda_2.~Texture();
-	tPIzquierda_3.~Texture();
-	tPIzquierda_4.~Texture();
-	tPIzquierda_5.~Texture();
-}
+{}
