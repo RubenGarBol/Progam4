@@ -1,13 +1,14 @@
 #include "Mapa.h"
 
-
-Mapa::Mapa(Texture &textura, RectangleShape paredes[4], RectangleShape puertas[4], std::vector<Coin> coin, std::vector<RectangleShape> colisiones, std::vector<RectangleShape> colisiones_daño) : Sprite(textura), Animacion(&textura, Vector2u(3, 1), 0.25) {
+Mapa::Mapa(Texture &textura, RectangleShape paredes[4], RectangleShape puertas[4], std::vector<Coin> coin, std::vector<RectangleShape> colisiones, std::vector<RectangleShape> colisiones_daño, std::vector<EnemigoAereo>enemigo) : Sprite(textura), Animacion(&textura, Vector2u(3, 1), 0.25) 
+{
 	setTexture(textura);
 	texture = textura;
 
 	this->coin = coin;
 	this->colisiones = colisiones;
 	this->colisiones_daño = colisiones_daño;
+	this->enemigo = enemigo;
 
 	for (size_t i = 0; i < 4; i++) 
 {

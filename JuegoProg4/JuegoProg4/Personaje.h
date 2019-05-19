@@ -1,8 +1,7 @@
 #pragma once
-
 #include "SFML/Graphics.hpp"
 #include "Animacion.h"
-#include "Enemigo.h"
+
 
 using namespace sf;
 

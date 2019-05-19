@@ -11,7 +11,6 @@
 #include "Proyectil.h"
 #include "Animacion.h"
 #include "Mapa.h"
-#include "Enemigo.h"
 #include <thread>
 #include "SFML/System.hpp"
 #include<vector>
@@ -161,6 +160,8 @@ int main()
 			pmuerte.Update(window, &state, pjuego.mapaCompleto[pjuego.posicion], player);
 			if (pmuerte.clock_muerte.getElapsedTime().asSeconds() > 8.1)
 			{
+				conseguirID();
+				guardarPuntuacion(pjuego.cuenta, 0);
 				state = 2;
 				window.close();
 				main();
