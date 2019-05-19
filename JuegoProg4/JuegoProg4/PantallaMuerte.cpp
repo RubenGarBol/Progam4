@@ -1,7 +1,7 @@
 #include "PantallaMuerte.h"
 #include "SFML/Graphics.hpp"
 #include <iostream>
-#include "JuegoProg4.h"
+
 PantallaMuerte::PantallaMuerte(sf::RenderWindow& window)
 {
 	if (!texturamuerte.loadFromFile("./res/Imagenes/death_screen.png"))

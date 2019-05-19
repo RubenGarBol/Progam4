@@ -15,7 +15,6 @@
 #include "SFML/System.hpp"
 #include<vector>
 #include <stdlib.h>
-#include "JuegoProg4.h"
 #include "PantallaPrincipal.h"
 #include "PantallaPausa.h"
 #include "PantallaMuerte.h"
@@ -27,7 +26,7 @@ int main()
 	//crearTablas();
 	//insertarDatos();
 	//seleccionarDatos();
-
+	
 	srand(time(0));
 	//Crear la pantalla principal de juego con nombre "Isaac" y dimensiones 1056x888p.
 	sf::RenderWindow window(sf::VideoMode(1056, 888, 32), "Issac");
@@ -44,11 +43,7 @@ int main()
 	window.setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
 
 	//Carga de texturas desde los .png, si no se encuentran avisar al usuario mediante una excepción.
-	sf::Texture texturaFondo;
-	if (!texturaFondo.loadFromFile("./res/Imagenes/PiskelPruebaAnim.png"))
-	{
-		std::cout << "No se ha encontrado la textura de: PiskelPruebaAnim.png\n";
-	}
+	
 
 	//Carga del spritesheet de las animaciones del personaje principal
 	sf::Texture pjtextura;
@@ -61,29 +56,7 @@ int main()
 	int state = 2;
 	
 	//Objetos pared para delimitar los bordes jugables de la pantalla.
-	sf::RectangleShape pared1;
-	pared1.setPosition(sf::Vector2f(0.f, 0.f));
-	pared1.setSize(sf::Vector2f(1056.f, 120.f));
-
-	sf::RectangleShape pared2;
-	pared2.setPosition(sf::Vector2f(0.f, 0.f));
-	pared2.setSize(sf::Vector2f(30.f, 888.f));
-
-	sf::RectangleShape pared3;
-	pared3.setPosition(sf::Vector2f(0.f, 768.f));
-	pared3.setSize(sf::Vector2f(1056.f, 120.f));
-
-	sf::RectangleShape pared4;
-	pared4.setPosition(sf::Vector2f(1026.f, 0.f));
-	pared4.setSize(sf::Vector2f(30.f, 888.f));
-
-	RectangleShape paredes[4];
-	paredes[0] = pared1;
-	paredes[1] = pared2;
-	paredes[2] = pared3;
-	paredes[3] = pared4;
-
-
+	
 	//Cursor personalizado
 	window.setMouseCursorVisible(false);
 	sf::Texture cursortexture;
