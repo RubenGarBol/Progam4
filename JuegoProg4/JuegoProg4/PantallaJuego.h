@@ -238,6 +238,8 @@ public:
 
 	//////////
 	std::vector<EnemigoAereo> enemigo_cruces = std::vector<EnemigoAereo>(2);
+	std::vector<EnemigoAereo> enemigoH = std::vector<EnemigoAereo>(1);
+	std::vector<EnemigoAereo> enemigoV = std::vector<EnemigoAereo>(1);
 	/////////
 
 	Vector2f centrar;
