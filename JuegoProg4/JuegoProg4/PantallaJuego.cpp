@@ -1031,19 +1031,11 @@ void PantallaJuego::Update(sf::RenderWindow& window, int *state, Personaje& play
 	{
 		window.draw(mapaCompleto[posicion].enemigo[i].enemigo);
 	}
-	//Enemigo e2(Vector2f(700.0f, 700.0f), 0, 0, 10, texturaEn);
 
-	//std::thread hilodisp{};
-	//hilodisp.join();
-	//e2.disparoe();//Esto va a un hilo
-	//e2.limpiarbal(cofre,mapa);
-	//window.draw(e2.disparoRe);
 	window.draw(text);
 	window.draw(cofre);
 	window.draw(text);
 	window.draw(player);
-	//window.draw(efectodaño);
-	//window.draw(e2);
 	//window.draw(cursor);
 	//window.draw(hitbox);
 
