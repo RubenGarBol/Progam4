@@ -8,6 +8,7 @@
 #include "GestorSonido.h"
 #include "EnemigoAereo.h"
 #include <algorithm>
+#include <vector>
 class PantallaJuego
 {
 public:
@@ -234,8 +235,8 @@ public:
 	std::vector<RectangleShape> colisiones_abajoD_1 = std::vector<RectangleShape>(2);
 
 	//////////
-
-	EnemigoAereo enemy;
+	std::vector<EnemigoAereo> enemigo_cruces = std::vector<EnemigoAereo>(3);
+	//EnemigoAereo enemy;
 	/////////
 
 	Vector2f centrar;

@@ -11,7 +11,6 @@
 #include "Proyectil.h"
 #include "Animacion.h"
 #include "Mapa.h"
-#include "Enemigo.h"
 #include <thread>
 #include "SFML/System.hpp"
 #include<vector>
