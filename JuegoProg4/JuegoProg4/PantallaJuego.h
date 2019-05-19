@@ -205,8 +205,10 @@ public:
 	int cuenta = 0;
 
 	std::vector<Coin> coinCruces_1 = std::vector<Coin>(7);
-	std::vector<Coin> coinCruces_2 = std::vector<Coin>(14);
+	std::vector<Coin> coinCruces_2 = std::vector<Coin>(4);
 	std::vector<Coin> coinCruces_3 = std::vector<Coin>(3);
+	std::vector<Coin> coinPasilloH = std::vector<Coin>(2);
+	std::vector<Coin> coinPasilloV= std::vector<Coin>(2);
 	std::vector<Coin> coin = std::vector<Coin>(7);
 	Coin moneda;
 	sf::Vector2u vectorcoin;

@@ -12,10 +12,6 @@
 
 PantallaJuego::PantallaJuego(sf::RenderWindow& window)
 {
-	if (!texturaFondo.loadFromFile("./res/Imagenes/PiskelPruebaAnim.png"))
-	{
-		std::cout << "No se ha encontrado la textura de: PiskelPruebaAnim.png\n";
-	}
 
 	if (!pjtextura.loadFromFile("./res/Imagenes/pjtextura.png"))
 	{
@@ -349,14 +345,20 @@ PantallaJuego::PantallaJuego(sf::RenderWindow& window)
 	coinCruces_1[5].setPosition(250.f, 650.f);
 	coinCruces_1[6].setPosition(700.f, 600.f);
 
-	coinCruces_2[0].setPosition(308.f, 238.f);
+	coinCruces_2[0].setPosition(250.f, 238.f);
 	coinCruces_2[1].setPosition(620.f, 338.f);
 	coinCruces_2[2].setPosition(580.f, 674.f);
 	coinCruces_2[3].setPosition(834.f, 428.f);
 
 	coinCruces_3[0].setPosition(410.f, 527.f);
 	coinCruces_3[1].setPosition(500.f, 691.f);
-	coinCruces_3[2].setPosition(500.f, 237.f);
+	coinCruces_3[2].setPosition(600.f, 237.f);
+
+	coinPasilloH[0].setPosition(315.f,445.f);
+	coinPasilloH[1].setPosition(789.f, 445.f);
+
+	coinPasilloV[0].setPosition(500.f,340.f);
+	coinPasilloV[1].setPosition(500.f, 540.f);
 	
 	coinpunt.setTexture(texturapuntos);
 	coinpunt.setPosition(15.f, 830.f);
@@ -427,29 +429,29 @@ PantallaJuego::PantallaJuego(sf::RenderWindow& window)
 	cruz_4 = Mapa(tCruz_4, paredesCruz, puertasCruces, coinCruces_1, colisiones, colisiones_cruces_4, enemigo_cruces);
 	cruz_5 = Mapa(tCruz_5, paredesCruz, puertasCruces, coinCruces_2, colisiones, colisiones, enemigo_cruces);
 
-	PAbajo_1 = Mapa(tPAbajo_1, paredesPasilloV, puertasPAbajo, coinCruces_1, colisiones, colisiones, enemigo_cruces);
-	PAbajo_2 = Mapa(tPAbajo_2, paredesPasilloV, puertasPAbajo, coinCruces_1, colisiones, colisiones, enemigo_cruces);
-	PAbajo_3 = Mapa(tPAbajo_3, paredesPasilloV, puertasPAbajo, coinCruces_1, colisiones, colisiones, enemigo_cruces);
-	PAbajo_4 = Mapa(tPAbajo_4, paredesPasilloV, puertasPAbajo, coinCruces_1, colisiones, colisiones, enemigo_cruces);
-	PAbajo_5 = Mapa(tPAbajo_5, paredesPasilloV, puertasPAbajo, coinCruces_1, colisiones, colisiones, enemigo_cruces);
+	PAbajo_1 = Mapa(tPAbajo_1, paredesPasilloV, puertasPAbajo, coinPasilloV, colisiones, colisiones, enemigo_cruces);
+	PAbajo_2 = Mapa(tPAbajo_2, paredesPasilloV, puertasPAbajo, coinPasilloV, colisiones, colisiones, enemigo_cruces);
+	PAbajo_3 = Mapa(tPAbajo_3, paredesPasilloV, puertasPAbajo, coinPasilloV, colisiones, colisiones, enemigo_cruces);
+	PAbajo_4 = Mapa(tPAbajo_4, paredesPasilloV, puertasPAbajo, coinPasilloV, colisiones, colisiones, enemigo_cruces);
+	PAbajo_5 = Mapa(tPAbajo_5, paredesPasilloV, puertasPAbajo, coinPasilloV, colisiones, colisiones, enemigo_cruces);
 
-	PArriba_1 = Mapa(tPArriba_1, paredesPasilloV, puertasPArriba, coinCruces_1, colisiones, colisiones, enemigo_cruces);
-	PArriba_2 = Mapa(tPArriba_2, paredesPasilloV, puertasPArriba, coinCruces_1, colisiones, colisiones, enemigo_cruces);
-	PArriba_3 = Mapa(tPArriba_3, paredesPasilloV, puertasPArriba, coinCruces_1, colisiones, colisiones, enemigo_cruces);
-	PArriba_4 = Mapa(tPArriba_4, paredesPasilloV, puertasPArriba, coinCruces_1, colisiones, colisiones, enemigo_cruces);
-	PArriba_5 = Mapa(tPArriba_5, paredesPasilloV, puertasPArriba, coinCruces_1, colisiones, colisiones, enemigo_cruces);
+	PArriba_1 = Mapa(tPArriba_1, paredesPasilloV, puertasPArriba, coinPasilloV, colisiones, colisiones, enemigo_cruces);
+	PArriba_2 = Mapa(tPArriba_2, paredesPasilloV, puertasPArriba, coinPasilloV, colisiones, colisiones, enemigo_cruces);
+	PArriba_3 = Mapa(tPArriba_3, paredesPasilloV, puertasPArriba, coinPasilloV, colisiones, colisiones, enemigo_cruces);
+	PArriba_4 = Mapa(tPArriba_4, paredesPasilloV, puertasPArriba, coinPasilloV, colisiones, colisiones, enemigo_cruces);
+	PArriba_5 = Mapa(tPArriba_5, paredesPasilloV, puertasPArriba, coinPasilloV, colisiones, colisiones, enemigo_cruces);
 
-	PDerecha_1 = Mapa(tPDerecha_1, paredesPasilloH, puertasPDerecha, coinCruces_1, colisiones, colisiones, enemigo_cruces);
-	PDerecha_2 = Mapa(tPDerecha_2, paredesPasilloH, puertasPDerecha, coinCruces_1, colisiones, colisiones, enemigo_cruces);
-	PDerecha_3 = Mapa(tPDerecha_3, paredesPasilloH, puertasPDerecha, coinCruces_1, colisiones, colisiones, enemigo_cruces);
-	PDerecha_4 = Mapa(tPDerecha_4, paredesPasilloH, puertasPDerecha, coinCruces_1, colisiones, colisiones, enemigo_cruces);
-	PDerecha_5 = Mapa(tPDerecha_5, paredesPasilloH, puertasPDerecha, coinCruces_1, colisiones, colisiones, enemigo_cruces);
+	PDerecha_1 = Mapa(tPDerecha_1, paredesPasilloH, puertasPDerecha, coinPasilloH, colisiones, colisiones, enemigo_cruces);
+	PDerecha_2 = Mapa(tPDerecha_2, paredesPasilloH, puertasPDerecha, coinPasilloH, colisiones, colisiones, enemigo_cruces);
+	PDerecha_3 = Mapa(tPDerecha_3, paredesPasilloH, puertasPDerecha, coinPasilloH, colisiones, colisiones, enemigo_cruces);
+	PDerecha_4 = Mapa(tPDerecha_4, paredesPasilloH, puertasPDerecha, coinPasilloH, colisiones, colisiones, enemigo_cruces);
+	PDerecha_5 = Mapa(tPDerecha_5, paredesPasilloH, puertasPDerecha, coinPasilloH, colisiones, colisiones, enemigo_cruces);
 
-	PIzquierda_1 = Mapa(tPIzquierda_1, paredesPasilloH, puertasPIzquierda, coinCruces_1, colisiones, colisiones, enemigo_cruces);
-	PIzquierda_2 = Mapa(tPIzquierda_2, paredesPasilloH, puertasPIzquierda, coinCruces_1, colisiones, colisiones, enemigo_cruces);
-	PIzquierda_3 = Mapa(tPIzquierda_3, paredesPasilloH, puertasPIzquierda, coinCruces_1, colisiones, colisiones, enemigo_cruces);
-	PIzquierda_4 = Mapa(tPIzquierda_4, paredesPasilloH, puertasPIzquierda, coinCruces_1, colisiones, colisiones, enemigo_cruces);
-	PIzquierda_5 = Mapa(tPIzquierda_5, paredesPasilloH, puertasPIzquierda, coinCruces_1, colisiones, colisiones, enemigo_cruces);
+	PIzquierda_1 = Mapa(tPIzquierda_1, paredesPasilloH, puertasPIzquierda, coinPasilloH, colisiones, colisiones, enemigo_cruces);
+	PIzquierda_2 = Mapa(tPIzquierda_2, paredesPasilloH, puertasPIzquierda, coinPasilloH, colisiones, colisiones, enemigo_cruces);
+	PIzquierda_3 = Mapa(tPIzquierda_3, paredesPasilloH, puertasPIzquierda, coinPasilloH, colisiones, colisiones, enemigo_cruces);
+	PIzquierda_4 = Mapa(tPIzquierda_4, paredesPasilloH, puertasPIzquierda, coinPasilloH, colisiones, colisiones, enemigo_cruces);
+	PIzquierda_5 = Mapa(tPIzquierda_5, paredesPasilloH, puertasPIzquierda, coinPasilloH, colisiones, colisiones, enemigo_cruces);
 
 	AbajoDerecha[0] = AbajoDerecha_1;
 	AbajoDerecha[1] = AbajoDerecha_2;
@@ -621,7 +623,7 @@ void PantallaJuego::Update(sf::RenderWindow& window, int *state, Personaje& play
 		}
 		}
 	}
-	printf("%i", mapaCompleto[posicion].enemigo.size());
+	
 	mapaCompleto[posicion].Update(0, mapaCompleto[posicion].deltatiempo, mapaCompleto[posicion].timer, mapaCompleto[posicion]);
 	
 	player.Update(player.anim, player.deltatiempo, player.timer, player);
@@ -751,7 +753,7 @@ void PantallaJuego::Update(sf::RenderWindow& window, int *state, Personaje& play
 			{
 				disparos.erase(disparos.begin(),disparos.end());
 			}
-			printf("Puerta Ar");
+			
 			posicion = posicion - 5;
 			mapaCompleto[posicion] = mapaCompleto[posicion];
 			player.setPosition(494, 630);
@@ -813,7 +815,7 @@ void PantallaJuego::Update(sf::RenderWindow& window, int *state, Personaje& play
 				disparos.erase(disparos.begin(), disparos.end());
 			}
 			player.setPosition(494, 60);
-			printf("Puerta Ab");
+		
 			posicion = posicion + 5;
 			mapaCompleto[posicion] = mapaCompleto[posicion];
 			player.tiempotot -= player.timer.getElapsedTime().asSeconds();
@@ -857,7 +859,6 @@ void PantallaJuego::Update(sf::RenderWindow& window, int *state, Personaje& play
 			{
 				disparos.erase(disparos.begin(), disparos.end());
 			}
-			printf("Puerta Iz");
 			posicion = posicion - 1;
 			mapaCompleto[posicion] = mapaCompleto[posicion];
 			player.setPosition(945, 380);
@@ -911,7 +912,6 @@ void PantallaJuego::Update(sf::RenderWindow& window, int *state, Personaje& play
 			{
 				disparos.erase(disparos.begin(), disparos.end());
 			}
-			printf("Puerta Dr");
 			posicion = posicion + 1;
 			mapaCompleto[posicion] = mapaCompleto[posicion];
 			player.setPosition(25, 375);
@@ -1059,7 +1059,6 @@ std::vector<Mapa> PantallaJuego::generarMapa(Mapa esArIz[5], Mapa esArDr[5], Map
 	int aleatorios[13];
 	for (int i = 0; i < 13; i++) {
 		int numero = rand() % ((5 - 1) + 1);
-		printf("%i",numero);
 		aleatorios[i] = numero;
 	}
 	arrayMapa[2] = abajo[aleatorios[0]];
