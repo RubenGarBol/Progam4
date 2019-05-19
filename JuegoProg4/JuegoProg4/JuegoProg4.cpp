@@ -28,6 +28,10 @@ int main()
 	//crearTablas();
 	//insertarDatos();
 	//seleccionarDatos();
+	conseguirID();
+	guardarPuntuacion(1, 1);
+	int x = printId();
+	printf("Id: %i \n", x);
 
 	srand(time(0));
 	//Crear la pantalla principal de juego con nombre "Isaac" y dimensiones 1056x888p.
